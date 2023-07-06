@@ -10,6 +10,7 @@ const EnhancedHeader: FC = () => {
     const history = useHistory();
     const { mutate } = useLogout();
 
+
     const handleLogout = useCallback(() => {
         mutate(undefined, {
             onSuccess: () => {
@@ -18,7 +19,7 @@ const EnhancedHeader: FC = () => {
         });
     }, [history, mutate]);
 
-    return <Header userName={user?.name} userEmail={user?.email} handleLogout={handleLogout}/>;
+    return <Header userName={user?.name} userNickName={user?.nick_name} handleLogout={handleLogout}/>;
 };
 
 export default EnhancedHeader;

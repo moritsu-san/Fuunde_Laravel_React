@@ -30,7 +30,6 @@ const EnhancedRegister = () => {
     const statusCode = (error as AxiosError)?.response?.status;
     const resNameErrors = (error as AxiosError)?.response?.data?.errors?.name;
     const resEmailErrors = (error as AxiosError)?.response?.data?.errors?.email;
-    console.log((error as AxiosError)?.response);
 
     const {
         error: socialLoginError,
@@ -61,6 +60,8 @@ const EnhancedRegister = () => {
             handleSubmit={handleSubmit}
             isValid={isValid}
             errors={errors}
+            resNameErrors={resNameErrors}
+            resEmailErrors={resEmailErrors}
             handleRegister={handleRegister}
             statusCode={statusCode}
             socialLoginStatusCode={socialLoginStatusCode}

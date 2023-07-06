@@ -54,7 +54,8 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255', 'unique:users'],
+            'name' => ['required', 'string', 'max:15', 'unique:users'],
+            'nick_name' => ['required', 'string', 'max:15'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
@@ -70,47 +71,48 @@ class RegisterController extends Controller
     {
         return User::create([
             'name' => $data['name'],
+            'nick_name' => $data['nick_name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
     }
 
-    public function showProviderUserRegistrationForm(Request $request, string $provider)
-    {
-        $token = $request->token;
+    // public function showProviderUserRegistrationForm(Request $request, string $provider)
+    // {
+    //     $token = $request->token;
 
-        $providerUser = Socialite::driver($provider)->userFromToken($token);
+    //     $providerUser = Socialite::driver($provider)->userFromToken($token);
 
-        return view('auth.social_register', [
-            'provider' => $provider,
-            'email' => $providerUser->getEmail(),
-            'token' => $token,
-        ]);
+    //     return view('auth.social_register', [
+    //         'provider' => $provider,
+    //         'email' => $providerUser->getEmail(),
+    //         'token' => $token,
+    //     ]);
 
-    }
+    // }
 
-    public function registerProviderUser(Request $request, string $provider)
-    {
-        $request->validate([
-            'name' => ['required', 'string', 'unique:users'],
-            'token' => ['required', 'string'],
-        ]);
+    // public function registerProviderUser(Request $request, string $provider)
+    // {
+    //     $request->validate([
+    //         'name' => ['required', 'string', 'unique:users'],
+    //         'token' => ['required', 'string'],
+    //     ]);
 
-        $token = $request->token;
+    //     $token = $request->token;
 
-        $providerUser = Socialite::driver($provider)->userFromToken($token);
+    //     $providerUser = Socialite::driver($provider)->userFromToken($token);
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $providerUser->getEmail(),
-            'password' => null,
-        ]);
+    //     $user = User::create([
+    //         'name' => $request->name,
+    //         'email' => $providerUser->getEmail(),
+    //         'password' => null,
+    //     ]);
 
-        $this->guard()->login($user);
+    //     $this->guard()->login($user);
 
-        return $this->registered($request, $user)
-            ?: redirect($this->redirectPath());
-    }
+    //     return $this->registered($request, $user)
+    //         ?: redirect($this->redirectPath());
+    // }
 
     //$userをレスポンス
     protected function registered(Request $request, $user)

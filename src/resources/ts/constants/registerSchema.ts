@@ -2,7 +2,17 @@ import * as z from "zod";
 
 export const registerSchema = z
     .object({
-        name: z.string().max(15, { message: "15文字以下にしてください。" }),
+        name: z
+            .string()
+            .min(1, { message: "入力してください。" })
+            .max(15, { message: "15文字以下にしてください。" })
+            .regex(/^([a-zA-Z0-9]{0,15})$/, {
+                message: "半角英数字のみ使えます。",
+            }),
+        nick_name: z
+            .string()
+            .min(1, { message: "入力してください。" })
+            .max(15, { message: "15文字以下にしてください。" }),
         email: z
             .string()
             .email({ message: "メールアドレス形式ではありません。" }),
@@ -16,7 +26,11 @@ export const registerSchema = z
             .string()
             .min(1, { message: "確認用のパスワードを入力してください。" }),
     })
-    .refine(({ password, password_confirmation }) => password === password_confirmation, {
-        path: ["password_confirmation"],
-        message: "パスワードが一致しません。",
-    });
+    .refine(
+        ({ password, password_confirmation }) =>
+            password === password_confirmation,
+        {
+            path: ["password_confirmation"],
+            message: "パスワードが一致しません。",
+        }
+    );

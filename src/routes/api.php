@@ -34,6 +34,8 @@ Route::get('/login/{provider}', [OAuthController::class, 'getProviderOAuthURL'])
             ->where('provider', 'github')->name('oauth.request');
 Route::post('/login/{provider}/callback', [OAuthController::class, 'handleProviderCallback'])
             ->where('provider', 'github')->name('oauth.callback');
+Route::post('/register/{provider}/callback', [OAuthController::class, 'handleRegisterCallback'])
+            ->where('provider', 'github');
 Route::get('/users/me', [UserController::class, 'show'])->name('user');
 
 

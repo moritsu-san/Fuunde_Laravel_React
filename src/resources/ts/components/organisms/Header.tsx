@@ -20,15 +20,19 @@ const pages = [
     { name: "お題", to: "/odai" },
     { name: "MC", to: "/MC" },
 ];
-const settings = ["アカウント", "設定"];
+const authSettings = ["アカウント", "設定"];
+const unAuthSettings = [
+    { name: "新規登録", to: "/register" },
+    { name: "ログイン", to: "/login" },
+];
 
 type Props = {
     userName?: string;
-    userEmail?: string;
+    userNickName?: string;
     handleLogout: VoidFunction;
 };
 
-const Header: FC<Props> = ({ userName, userEmail, handleLogout }) => {
+const Header: FC<Props> = ({ userName, userNickName, handleLogout }) => {
     const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
     const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
 
@@ -206,35 +210,51 @@ const Header: FC<Props> = ({ userName, userEmail, handleLogout }) => {
                                                     fontWeight: "bold",
                                                 }}
                                             >
-                                                {userName}
+                                                {userNickName}
                                             </Typography>
-                                            <Typography variant="caption">
-                                                {userEmail}
+                                            <Typography variant="subtitle2">
+                                                {`@${userName}`}
                                             </Typography>
                                         </Box>
                                     </Box>
                                     <Divider />
                                 </div>
                             )}
+                            {!userName &&
+                                unAuthSettings.map((setting) => (
+                                    <MenuItem
+                                        key={setting.name}
+                                        onClick={handleCloseNavMenu}
+                                        component={Link}
+                                        to={setting.to}
+                                    >
+                                        <Typography textAlign="center">
+                                            {setting.name}
+                                        </Typography>
+                                    </MenuItem>
+                                ))}
 
-                            {settings.map((setting) => (
+                            {userName &&
+                                authSettings.map((setting) => (
+                                    <MenuItem
+                                        key={setting}
+                                        onClick={handleCloseUserMenu}
+                                    >
+                                        <Typography textAlign="center">
+                                            {setting}
+                                        </Typography>
+                                    </MenuItem>
+                                ))}
+                            {userName && (
                                 <MenuItem
-                                    key={setting}
-                                    onClick={handleCloseUserMenu}
-                                >
-                                    <Typography textAlign="center">
-                                        {setting}
-                                    </Typography>
-                                </MenuItem>
-                            ))}
-                            <MenuItem
-                                    key={'ログアウト'}
+                                    key={"ログアウト"}
                                     onClick={handleLogout}
                                 >
                                     <Typography textAlign="center">
                                         ログアウト
                                     </Typography>
                                 </MenuItem>
+                            )}
                         </Menu>
                     </Box>
                 </Toolbar>

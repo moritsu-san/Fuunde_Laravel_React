@@ -18,6 +18,11 @@ const EnhancedSocialLoginProgress: FC = () => {
     const { error, mutate: socialLogin } = useSocailLogin();
     const statusCode = error?.response?.status;
 
+    const [openForm, setOpenForm] = useState(false);
+    const [nick_name, setName] = useState("");
+    const [email, setEmail] = useState("");
+    const [provider_user_id, setProviderUserId] = useState("");
+
     useEffect(() => {
         if (Object.prototype.hasOwnProperty.call(socialResponse, "error")) {
             setOAuthError(true);
@@ -29,11 +34,31 @@ const EnhancedSocialLoginProgress: FC = () => {
                 onSuccess: () => {
                     history.replace("/");
                 },
+                onError: (error) => {
+                    if (error?.response?.status === 422) {
+                        setName(error?.response?.data?.nick_name);
+                        setEmail(error?.response?.data?.email);
+                        setProviderUserId(
+                            error?.response?.data?.provider_user_id
+                        );
+                        setOpenForm(true);
+                    }
+                },
             }
         );
     }, [history, provider, socialResponse, socialLogin]);
 
-    return <SocialLoginProgress oAuthError= {oAuthError} statusCode={statusCode}/>;
+    return (
+        <SocialLoginProgress
+            oAuthError={oAuthError}
+            statusCode={statusCode}
+            openForm={openForm}
+            provider={provider}
+            nick_name={nick_name}
+            email={email}
+            provider_user_id={provider_user_id}
+        />
+    );
 };
 
 export default EnhancedSocialLoginProgress;

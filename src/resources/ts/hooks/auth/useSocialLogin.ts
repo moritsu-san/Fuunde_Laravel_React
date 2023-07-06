@@ -9,7 +9,7 @@ import { User } from "../../models/User";
 
 const socialLogin = async (
     provider: Provider,
-    authParams: OAuthParams
+    authParams: OAuthParams,
 ): Promise<User> => {
     const { data } = await axios.post(
         `/api/login/${provider}/callback`,

@@ -26,6 +26,7 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'nick_name',
         'email',
         'auth_type',
         'password',
@@ -38,6 +39,7 @@ class User extends Authenticatable
      */
     protected $visible = [
         'name',
+        'nick_name',
         'email',
         'auth_type',
         
@@ -99,22 +101,12 @@ class User extends Authenticatable
                 return $existingUser;
             });
         } else {
-            // アカウントがない場合は、ユーザ情報 + 認証プロバイダー情報を登録
-            $user = DB::transaction(function () use ($providerUser, $provider) {
-                // nameがない時もあるので、その時はnicknameを使う
-                $providerUserName = $providerUser->getName() ? $providerUser->getName() : $providerUser->getNickname();
-                $user = User::create([
-                    'name' => $providerUserName,
-                    'auth_type' => 'SOCIAL',
-                    'email' => $providerUser->getEmail(),
-                ]);
-                $user->identityProviders()->answerscreate([
-                    'provider_user_id' => $providerUser->getId(),
-                    'provider_name' => $provider,
-                ]);
-
-                return $user;
-            });
+            $providerUserName = $providerUser->getName() ? $providerUser->getName() : $providerUser->getNickname();
+            return (object) [
+                'nick_name' => $providerUserName,
+                'email' => $providerUser->getEmail(),
+                'provider_user_id' => $providerUser->getId()
+            ];
         }
 
         return $user;

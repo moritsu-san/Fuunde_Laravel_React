@@ -34,6 +34,8 @@ type Props = {
     handleSubmit: UseFormHandleSubmit<RegisterForm, undefined>;
     isValid: boolean;
     errors: FieldErrors<RegisterForm>;
+    resNameErrors?: Array<string>;
+    resEmailErrors?: Array<string>;
     handleRegister: SubmitHandler<RegisterForm>;
     statusCode?: number | undefined;
     socialLoginStatusCode?: number;
@@ -46,6 +48,8 @@ const Register: FC<Props> = ({
     handleSubmit,
     isValid,
     errors,
+    resNameErrors,
+    resEmailErrors,
     handleRegister,
     statusCode,
     socialLoginStatusCode,
@@ -87,13 +91,29 @@ const Register: FC<Props> = ({
                             fullWidth
                             color={errors.name && "error"}
                             id="name"
-                            label="名前"
-                            autoComplete="name"
+                            label="@ユーザーネーム(一意)"
+                            placeholder="@"
                             autoFocus
                             {...register("name")}
                         />
                         <Typography variant="subtitle2" color="error">
                             {errors.name?.message}
+                        </Typography>
+                        {resNameErrors && (
+                            <Typography variant="subtitle2" color="error">
+                                このユーザーネームはすでに存在します。
+                            </Typography>
+                        )}
+                        <TextField
+                            margin="normal"
+                            fullWidth
+                            color={errors.nick_name && "error"}
+                            id="nick_name"
+                            label="ニックネーム(表示される名前)"
+                            {...register("nick_name")}
+                        />
+                        <Typography variant="subtitle2" color="error">
+                            {errors.nick_name?.message}
                         </Typography>
                         <TextField
                             margin="normal"
@@ -107,6 +127,11 @@ const Register: FC<Props> = ({
                         <Typography variant="subtitle2" color="error">
                             {errors.email?.message}
                         </Typography>
+                        {resEmailErrors && (
+                            <Typography variant="subtitle2" color="error">
+                                このメールアドレスはすでに存在します。
+                            </Typography>
+                        )}
                         <TextField
                             margin="normal"
                             fullWidth

@@ -5,7 +5,9 @@ use Laravel\Socialite\Facades\Socialite;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class OAuthController extends Controller
 {
@@ -35,12 +37,38 @@ class OAuthController extends Controller
             // TODO ログ出力など
             abort(500, 'hello');
         }
-
+        
         $authUser = User::socialFindOrCreate($providerUser, $provider);
+
+        if (property_exists( $authUser, 'provider_user_id' )) {
+            return response()->json($authUser, 422);
+        }
+
         Auth::login($authUser, true);
 
         // ログインのみ or 既存ユーザに紐づけ + ログイン：200
-        // 紐づけしたうえでユーザ新規登録 + ログイン：201
         return $authUser;
+    }
+
+    public function handleRegisterCallback(string $provider, Request $request) {
+        $request->validate([
+            'name' => ['required', 'max:15', 'unique:users']
+        ]);
+        //アカウントがない場合は、ユーザ情報 + 認証プロバイダー情報を登録
+        $user = DB::transaction(function () use ( $provider, $request) {
+            $user = User::create([
+                'name' => $request->input('name'),
+                'nick_name' => $request->input('nick_name'),
+                'auth_type' => 'SOCIAL',
+                'email' => $request->input('email'),
+            ]);
+            $user->identityProviders()->create([
+                'provider_user_id' => $request->input('provider_user_id'),
+                'provider_name' => $provider,
+            ]);
+            return $user;
+        });
+
+        return $user;
     }
 }
