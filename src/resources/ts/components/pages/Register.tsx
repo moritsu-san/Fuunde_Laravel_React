@@ -1,5 +1,4 @@
 import { FC } from "react";
-import Header from "../../containers/organisms/Header";
 import {
     Avatar,
     Backdrop,
@@ -58,7 +57,6 @@ const Register: FC<Props> = ({
 }) => {
     return (
         <>
-            <Header />
             <Container component="main" maxWidth="xs">
                 <Box
                     sx={{

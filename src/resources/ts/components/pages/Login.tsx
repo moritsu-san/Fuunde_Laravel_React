@@ -24,7 +24,6 @@ import {
 import { LoginForm } from "../../models/LoginForm";
 import { Provider } from "../../models/OAuth";
 import GitHubLoginButton from "../atoms/GitHubLoginButton";
-import Header from "../../containers/organisms/Header";
 import SocialLoginAlert from "../molecules/SocialLoginAlert";
 
 type Props = {
@@ -54,7 +53,6 @@ const Login: FC<Props> = ({
 }) => {
     return (
         <>
-            <Header />
             <Container component="main" maxWidth="xs">
                 <Box
                     sx={{

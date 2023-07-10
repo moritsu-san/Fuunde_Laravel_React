@@ -10,4 +10,13 @@ export const themeOptions: ThemeOptions = {
             main: "#9c27b0",
         },
     },
+    breakpoints: {
+        values: {
+            xs: 0,
+            sm: 630,
+            md: 720,
+            lg: 1020,
+            xl: 1300,
+        },
+    },
 };

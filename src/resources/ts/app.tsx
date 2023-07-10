@@ -29,10 +29,19 @@ import Register from "./containers/pages/Register";
 import useCurrentUser from "./hooks/user/useCurrentUser";
 import useGetUserQuery from "./hooks/user/useGetUserQuery";
 import Loading from "./components/pages/Loading";
-import { CssBaseline, ThemeProvider, createTheme } from "@mui/material";
+import {
+    Box,
+    Container,
+    CssBaseline,
+    ThemeProvider,
+    createTheme,
+} from "@mui/material";
 import { FC, ReactNode } from "react";
 import { themeOptions } from "./constants/themeOptions";
 import SocialLoginProgress from "./containers/pages/SocialLoginProgress";
+import Account from "./containers/pages/Account";
+import Header from "./containers/organisms/Header";
+import SideBar from "./containers/organisms/SideBar";
 
 const client = new QueryClient();
 
@@ -89,23 +98,57 @@ const App = () => {
     }
 
     return (
-        <Switch>
-            <Route exact path={["/", "/answer"]}>
-                <Answer />
-            </Route>
-            <UnAuthRoute exact path="/login">
-                <Login />
-            </UnAuthRoute>
-            <UnAuthRoute exact path="/login/:provider/callback">
-                <SocialLoginProgress />
-            </UnAuthRoute>
-            <UnAuthRoute exact path="/register">
-                <Register />
-            </UnAuthRoute>
-            <AuthRoute path="*">
-                <NotFound />
-            </AuthRoute>
-        </Switch>
+        <Container fixed disableGutters maxWidth="xl" sx={{ display: "flex" }}>
+            <Header />
+            <Box component="main" width="100%" flexGrow="2" flexShrink="1">
+                <Box
+                    sx={{
+                        width: {
+                            xs: "100%",
+                            md: "600px",
+                            lg: "930px",
+                            xl: "990px",
+                        },
+                        display: "flex",
+                        justifyContent: "space-between",
+                    }}
+                >
+                    <Box
+                        sx={{
+                            maxWidth: { sm: "600px" },
+                            m: 0,
+                            borderLeft: 1,
+                            borderRight: 1,
+                            zIndex: 1,
+                            flexGrow: 1,
+                        }}
+                    >
+                        <Switch>
+                            <Route exact path={["/", "/answer"]}>
+                                <Answer />
+                            </Route>
+                            <UnAuthRoute exact path="/login">
+                                <Login />
+                            </UnAuthRoute>
+                            <UnAuthRoute exact path="/login/:provider/callback">
+                                <SocialLoginProgress />
+                            </UnAuthRoute>
+                            <UnAuthRoute exact path="/register">
+                                <Register />
+                            </UnAuthRoute>
+                            <AuthRoute path="/:userName">
+                                <Account />
+                            </AuthRoute>
+                            <AuthRoute path="*">
+                                <NotFound />
+                            </AuthRoute>
+                        </Switch>
+                    </Box>
+
+                    <SideBar />
+                </Box>
+            </Box>
+        </Container>
     );
 };
 
@@ -114,6 +157,7 @@ if (document.getElementById("app")) {
     const root = ReactDOM.createRoot(
         document.getElementById("app") as HTMLElement
     );
+
     root.render(
         <Router>
             <QueryClientProvider client={client}>

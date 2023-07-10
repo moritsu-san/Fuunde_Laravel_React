@@ -15,7 +15,6 @@ import {
 import { FC } from "react";
 import { Link, useHistory } from "react-router-dom";
 import ArrowCircleLeftIcon from "@mui/icons-material/ArrowCircleLeft";
-import Header from "../../containers/organisms/Header";
 
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -195,8 +194,6 @@ const SocialLoginProgress: FC<Props> = ({
     provider_user_id,
 }) => {
     return (
-        <>
-            <Header />
             <main>
                 <Container maxWidth="xs">
                     <Card
@@ -224,7 +221,6 @@ const SocialLoginProgress: FC<Props> = ({
                     </Card>
                 </Container>
             </main>
-        </>
     );
 };
 
