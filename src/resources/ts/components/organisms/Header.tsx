@@ -1,23 +1,30 @@
-import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import Menu from "@mui/material/Menu";
-import MenuIcon from "@mui/icons-material/Menu";
-import Container from "@mui/material/Container";
-import MicIcon from "@mui/icons-material/Mic";
+import MicExternalOnIcon from "@mui/icons-material/MicExternalOn";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import HomeIcon from "@mui/icons-material/Home";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
-import WidthNormalOutlinedIcon from "@mui/icons-material/WidthNormalOutlined";
+import ChatBubbleIcon from "@mui/icons-material/ChatBubble";
+import ArticleOutlinedIcon from "@mui/icons-material/ArticleOutlined";
+import ArticleIcon from "@mui/icons-material/Article";
+import PeopleAltOutlinedIcon from "@mui/icons-material/PeopleAltOutlined";
+import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import SearchIcon from "@mui/icons-material/Search";
-import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
-import PeopleOutlineIcon from "@mui/icons-material/PeopleOutline";
-import Button from "@mui/material/Button";
+import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
+import NotificationsIcon from "@mui/icons-material/Notifications";
+import Diversity1OutlinedIcon from "@mui/icons-material/Diversity1Outlined";
+import Diversity1Icon from "@mui/icons-material/Diversity1";
+import LoginIcon from "@mui/icons-material/Login";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-import { Link } from "react-router-dom";
+import {
+    Link,
+    useHistory,
+    useLocation,
+    useParams,
+    useRouteMatch,
+} from "react-router-dom";
 import { FC, useState } from "react";
 import {
     Divider,
@@ -27,6 +34,7 @@ import {
     ListItemIcon,
     ListItemText,
 } from "@mui/material";
+import { grey } from "@mui/material/colors";
 
 type Props = {
     userName?: string;
@@ -35,18 +43,13 @@ type Props = {
 };
 
 const Header: FC<Props> = ({ userName, userNickName, handleLogout }) => {
-    const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
+    const { pathname } = useLocation();
+    const firstPath = "/" + pathname.split("/")[1];
+
     const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
 
-    const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
-        setAnchorElNav(event.currentTarget);
-    };
     const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElUser(event.currentTarget);
-    };
-
-    const handleCloseNavMenu = () => {
-        setAnchorElNav(null);
     };
 
     const handleCloseUserMenu = () => {
@@ -60,35 +63,62 @@ const Header: FC<Props> = ({ userName, userNickName, handleLogout }) => {
 
     const pages = [
         {
-            name: "Answer",
+            name: "アンサー",
             to: "/answer",
-            icon: <ChatBubbleOutlineIcon sx={{ fontSize: "32px" }} />,
+            defaultIcon: (
+                <ChatBubbleOutlineIcon sx={{ fontSize: 28, mb: "-6px" }} />
+            ),
+            activeIcon: (
+                <ChatBubbleIcon
+                    sx={{ color: grey[900], fontSize: 28, mb: "-6px" }}
+                />
+            ),
         },
         {
-            name: "Odai",
+            name: "お題",
             to: "/odai",
-            icon: <WidthNormalOutlinedIcon sx={{ fontSize: "32px" }} />,
+            defaultIcon: <ArticleOutlinedIcon sx={{ fontSize: 28 }} />,
+            activeIcon: <ArticleIcon sx={{ color: grey[900], fontSize: 28 }} />,
         },
         {
             name: "MC",
             to: "/MC",
-            icon: <PeopleOutlineIcon sx={{ fontSize: "32px" }} />,
+            defaultIcon: <PeopleAltOutlinedIcon sx={{ fontSize: 28 }} />,
+            activeIcon: (
+                <PeopleAltIcon sx={{ color: grey[900], fontSize: 28 }} />
+            ),
         },
         {
-            name: "Explore",
+            name: "検索",
             to: "/",
-            icon: <SearchIcon sx={{ fontSize: "32px" }} />,
+            defaultIcon: <SearchIcon sx={{ fontSize: 28 }} />,
+            activeIcon: <SearchIcon sx={{ color: grey[900], fontSize: 28 }} />,
         },
         {
-            name: "Notifications",
+            name: "通知",
             to: "/",
-            icon: <NotificationsNoneIcon sx={{ fontSize: "32px" }} />,
+            defaultIcon: <NotificationsOutlinedIcon sx={{ fontSize: 28 }} />,
+            activeIcon: (
+                <NotificationsIcon sx={{ color: grey[900], fontSize: 28 }} />
+            ),
         },
     ];
 
     const unAuthSettings = [
-        { name: "新規登録", to: "/register" },
-        { name: "ログイン", to: "/login" },
+        {
+            name: "新規登録",
+            to: "/register",
+            defaultIcon: <Diversity1OutlinedIcon sx={{ fontSize: 28 }} />,
+            activeIcon: (
+                <Diversity1Icon sx={{ color: grey[900], fontSize: 28 }} />
+            ),
+        },
+        {
+            name: "ログイン",
+            to: "/login",
+            defaultIcon: <LoginIcon sx={{ fontSize: 28 }} />,
+            activeIcon: <LoginIcon sx={{ color: grey[900], fontSize: 28 }} />,
+        },
     ];
 
     return (
@@ -108,234 +138,227 @@ const Header: FC<Props> = ({ userName, userNickName, handleLogout }) => {
                 }}
             >
                 <Box height="100%" position="fixed" top="0px">
-                    <List sx={{ height: "100%", fontSize: "20px" }}>
-                        <ListItem>
-                            <Button variant="contained" component={Link} to="/">
-                                <ListItemIcon sx={{ minWidth: "36px" }}>
-                                    <MicIcon sx={{ fontSize: "36px" }} />
-                                </ListItemIcon>
-                                <ListItemText
-                                    primary="FunnDe"
-                                    primaryTypographyProps={{
-                                        display: {
-                                            xs: "none",
-                                            xl: "inline",
-                                        },
-                                        fontSize: "20px",
-                                    }}
-                                    sx={{ ml: "16px", mr: "8px" }}
-                                ></ListItemText>
-                            </Button>
-                        </ListItem>
-                        {pages.map((page) => (
+                    <Box
+                        sx={{
+                            display: "flex",
+                            flexDirection: "column",
+                            justifyContent: "space-between",
+                            height: "100%",
+                            ml: { xl: "60px" },
+                        }}
+                    >
+                        <List>
+                            {/* ロゴ */}
                             <ListItem>
-                                <ListItemButton component={Link} to={page.to}>
-                                    <ListItemIcon sx={{ minWidth: "32px" }}>
-                                        {page.icon}
+                                <ListItemButton
+                                    disableRipple
+                                    component={Link}
+                                    to="/"
+                                >
+                                    <ListItemIcon sx={{ minWidth: "28px" }}>
+                                        <MicExternalOnIcon
+                                            color="primary"
+                                            sx={{ fontSize: 28 }}
+                                        />
                                     </ListItemIcon>
                                     <ListItemText
-                                        primary={page.name}
+                                        primary="FunnDe"
                                         primaryTypographyProps={{
                                             display: {
                                                 xs: "none",
                                                 xl: "inline",
                                             },
                                             fontSize: "18px",
+                                            color: "primary",
                                         }}
-                                        sx={{ ml: "16px", mr: "8px" }}
-                                    />
+                                        sx={{ ml: "12px", mr: "8px" }}
+                                    ></ListItemText>
                                 </ListItemButton>
                             </ListItem>
-                        ))}
 
-                        {/* <Box
-                    sx={{
-                        flexGrow: 1,
-                        display: { xs: "flex", md: "none" },
-                    }}
-                >
-                    <IconButton
-                        size="large"
-                        aria-label="account of current user"
-                        aria-controls="menu-appbar"
-                        aria-haspopup="true"
-                        onClick={handleOpenNavMenu}
-                        color="inherit"
-                        disableRipple
-                    >
-                        <MenuIcon />
-                    </IconButton>
-                    <Menu
-                        id="menu-appbar"
-                        anchorEl={anchorElNav}
-                        anchorOrigin={{
-                            vertical: "bottom",
-                            horizontal: "left",
-                        }}
-                        keepMounted
-                        transformOrigin={{
-                            vertical: "top",
-                            horizontal: "left",
-                        }}
-                        open={Boolean(anchorElNav)}
-                        onClose={handleCloseNavMenu}
-                        sx={{
-                            display: { xs: "block", md: "none" },
-                        }}
-                    >
-                        {pages.map((page) => (
-                            <MenuItem
-                                key={page.name}
-                                onClick={handleCloseNavMenu}
-                                component={Link}
-                                to={page.to}
-                            >
-                                <Typography textAlign="center">
-                                    {page.name}
-                                </Typography>
-                            </MenuItem>
-                        ))}
-                    </Menu>
-                </Box> */}
-                        {/* <MicIcon
-                    sx={{ display: { xs: "flex", md: "none" }, mr: 0.5 }}
-                />
-                <Typography
-                    variant="h5"
-                    noWrap
-                    component={Link}
-                    to="/"
-                    sx={{
-                        mr: 2,
-                        display: { xs: "flex", md: "none" },
-                        flexGrow: 1,
-                        fontWeight: 700,
-                        letterSpacing: ".1rem",
-                        color: "inherit",
-                        textDecoration: "none",
-                    }}
-                >
-                    FunnDe
-                </Typography> */}
-                        {/* <Box
-                    sx={{
-                        flexGrow: 1,
-                        display: { xs: "none", md: "flex" },
-                    }}
-                >
-                    {pages.map((page) => (
-                        <Button
-                            key={page.name}
-                            component={Link}
-                            to={page.to}
-                            sx={{
-                                my: 2,
-                                color: "text.primary",
-                                display: "block",
-                                textAlign: "center",
-                            }}
-                        >
-                            {page.name}
-                        </Button>
-                    ))}
-                </Box> */}
+                            {/* Navメニュー */}
+                            {pages.map((page) => (
+                                <ListItem>
+                                    <ListItemButton
+                                        disableRipple
+                                        component={Link}
+                                        to={page.to}
+                                    >
+                                        <ListItemIcon sx={{ minWidth: "28px" }}>
+                                            {firstPath === page.to
+                                                ? page.activeIcon
+                                                : page.defaultIcon}
+                                        </ListItemIcon>
+                                        <ListItemText
+                                            primary={page.name}
+                                            primaryTypographyProps={
+                                                firstPath === page.to
+                                                    ? {
+                                                          display: {
+                                                              xs: "none",
+                                                              xl: "inline",
+                                                          },
+                                                          fontSize: "18px",
+                                                          fontWeight: 600,
+                                                      }
+                                                    : {
+                                                          display: {
+                                                              xs: "none",
+                                                              xl: "inline",
+                                                          },
+                                                          fontSize: "18px",
+                                                      }
+                                            }
+                                            sx={{ ml: "12px", mr: "8px" }}
+                                        />
+                                    </ListItemButton>
+                                </ListItem>
+                            ))}
+                        </List>
 
-                        <Box sx={{ position: "absolute", bottom: "8px" }}>
-                            <Tooltip title="設定を開く">
-                                <IconButton
-                                    onClick={handleOpenUserMenu}
-                                    sx={{ p: 0, display: "block" }}
-                                    disableRipple
-                                    color="inherit"
-                                >
-                                    <AccountCircleIcon
-                                        sx={{ fontSize: "2.4rem" }}
-                                    />
-                                </IconButton>
-                            </Tooltip>
-                            <Menu
-                                sx={{ mt: "45px" }}
-                                id="menu-appbar"
-                                anchorEl={anchorElUser}
-                                anchorOrigin={{
-                                    vertical: "top",
-                                    horizontal: "right",
-                                }}
-                                keepMounted
-                                transformOrigin={{
-                                    vertical: "bottom",
-                                    horizontal: "left",
-                                }}
-                                open={Boolean(anchorElUser)}
-                                onClose={handleCloseUserMenu}
-                            >
-                                {userName && (
-                                    <div>
-                                        <Box sx={{ display: "flex", p: 1.5 }}>
-                                            <AccountCircleIcon
-                                                sx={{
-                                                    fontSize: "2rem",
-                                                    mr: 0.5,
-                                                }}
+                        {/* 新規登録とログインのメニュー */}
+                        <List>
+                            {!userName &&
+                                unAuthSettings.map((setting) => (
+                                    <ListItem>
+                                        <ListItemButton
+                                            disableRipple
+                                            component={Link}
+                                            to={setting.to}
+                                        >
+                                            <ListItemIcon
+                                                sx={{ minWidth: "28px" }}
+                                            >
+                                                {firstPath === setting.to
+                                                    ? setting.activeIcon
+                                                    : setting.defaultIcon}
+                                            </ListItemIcon>
+                                            <ListItemText
+                                                primary={setting.name}
+                                                primaryTypographyProps={
+                                                    firstPath === setting.to
+                                                        ? {
+                                                              display: {
+                                                                  xs: "none",
+                                                                  xl: "inline",
+                                                              },
+                                                              fontSize: "18px",
+                                                              fontWeight: 600,
+                                                          }
+                                                        : {
+                                                              display: {
+                                                                  xs: "none",
+                                                                  xl: "inline",
+                                                              },
+                                                              fontSize: "18px",
+                                                          }
+                                                }
+                                                sx={{ ml: "12px", mr: "8px" }}
                                             />
-                                            <Box>
-                                                <Typography
-                                                    variant="subtitle2"
-                                                    sx={{
-                                                        mb: "-0.5rem",
-                                                        fontWeight: "bold",
-                                                    }}
-                                                >
-                                                    {userNickName}
-                                                </Typography>
-                                                <Typography variant="subtitle2">
-                                                    {`@${userName}`}
-                                                </Typography>
-                                            </Box>
-                                        </Box>
-                                        <Divider />
-                                    </div>
-                                )}
-                                {!userName &&
-                                    unAuthSettings.map((setting) => (
-                                        <MenuItem
-                                            key={setting.name}
-                                            onClick={handleCloseNavMenu}
-                                            component={Link}
-                                            to={setting.to}
+                                        </ListItemButton>
+                                    </ListItem>
+                                ))}
+                            {/* Userアイコン */}
+                            {userName && (
+                                <Tooltip title="設定を開く">
+                                    <ListItem>
+                                        <ListItemButton
+                                            onClick={handleOpenUserMenu}
+                                            disableRipple
+                                            color="inherit"
+                                            sx={{ p: 0, display: "flex" }}
                                         >
-                                            <Typography textAlign="center">
-                                                {setting.name}
-                                            </Typography>
-                                        </MenuItem>
-                                    ))}
+                                            <ListItemIcon sx={{ ml: "6px" }}>
+                                                <AccountCircleIcon
+                                                    sx={{ fontSize: "46px" }}
+                                                />
+                                            </ListItemIcon>
+                                            <ListItemText
+                                                sx={{
+                                                    display: {
+                                                        xs: "none",
+                                                        xl: "block",
+                                                    },
+                                                    ml: "-4px",
+                                                }}
+                                            >
+                                                <Box>
+                                                    <Typography
+                                                        variant="subtitle2"
+                                                        sx={{
+                                                            mb: "-1px",
+                                                            fontWeight: "bold",
+                                                        }}
+                                                    >
+                                                        {userNickName}
+                                                    </Typography>
+                                                    <Typography variant="subtitle2">
+                                                        {`@${userName}`}
+                                                    </Typography>
+                                                </Box>
+                                            </ListItemText>
+                                        </ListItemButton>
+                                    </ListItem>
+                                </Tooltip>
+                            )}
+                        </List>
 
-                                {userName &&
-                                    authSettings.map((setting) => (
-                                        <MenuItem
-                                            key={setting.name}
-                                            onClick={handleCloseNavMenu}
-                                            component={Link}
-                                            to={setting.to}
-                                        >
-                                            <Typography textAlign="center">
-                                                {setting.name}
-                                            </Typography>
-                                        </MenuItem>
-                                    ))}
-                                {userName && (
+                        {/* Userアイコンのドロップダウン */}
+                        <Menu
+                            sx={{ mt: "45px" }}
+                            id="menu-appbar"
+                            anchorEl={anchorElUser}
+                            anchorOrigin={{
+                                vertical: "top",
+                                horizontal: "right",
+                            }}
+                            keepMounted
+                            transformOrigin={{
+                                vertical: "bottom",
+                                horizontal: "left",
+                            }}
+                            open={Boolean(anchorElUser)}
+                            onClose={handleCloseUserMenu}
+                        >
+                            {!userName &&
+                                unAuthSettings.map((setting) => (
                                     <MenuItem
-                                        key={"ログアウト"}
-                                        onClick={handleLogout}
+                                        key={setting.name}
+                                        onClick={handleCloseUserMenu}
+                                        component={Link}
+                                        to={setting.to}
                                     >
                                         <Typography textAlign="center">
-                                            ログアウト
+                                            {setting.name}
                                         </Typography>
                                     </MenuItem>
-                                )}
-                            </Menu>
-                        </Box>
-                    </List>
+                                ))}
+
+                            {userName &&
+                                authSettings.map((setting) => (
+                                    <MenuItem
+                                        key={setting.name}
+                                        onClick={handleCloseUserMenu}
+                                        component={Link}
+                                        to={setting.to}
+                                    >
+                                        <Typography textAlign="center">
+                                            {setting.name}
+                                        </Typography>
+                                    </MenuItem>
+                                ))}
+                            {userName && (
+                                <MenuItem
+                                    key={"ログアウト"}
+                                    onClick={handleLogout}
+                                >
+                                    <Typography textAlign="center">
+                                        ログアウト
+                                    </Typography>
+                                </MenuItem>
+                            )}
+                        </Menu>
+                    </Box>
                 </Box>
             </Box>
         </Box>

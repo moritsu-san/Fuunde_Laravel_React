@@ -195,7 +195,7 @@ const Register: FC<Props> = ({
                 }}
                 open={isLoading}
             >
-                <CircularProgress color="secondary" />
+                <CircularProgress sx={{ mr: 18 }} />
             </Backdrop>
         </>
     );

@@ -93,6 +93,8 @@ const App = () => {
         },
     });
 
+    const sh = window.screen.height;
+
     if (isLoading) {
         return <Loading />;
     }
@@ -116,6 +118,7 @@ const App = () => {
                     <Box
                         sx={{
                             maxWidth: { sm: "600px" },
+                            minHeight: `${sh}px`,
                             m: 0,
                             borderLeft: 1,
                             borderRight: 1,
