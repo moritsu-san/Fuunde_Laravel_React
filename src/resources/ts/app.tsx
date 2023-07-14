@@ -42,6 +42,10 @@ import SocialLoginProgress from "./containers/pages/SocialLoginProgress";
 import Account from "./containers/pages/Account";
 import Header from "./containers/organisms/Header";
 import SideBar from "./containers/organisms/SideBar";
+import Setting from "./containers/pages/Setting";
+import Explore from "./containers/pages/Explore";
+import Notifications from "./containers/pages/Notifications";
+import { grey } from "@mui/material/colors";
 
 const client = new QueryClient();
 
@@ -122,12 +126,13 @@ const App = () => {
                             m: 0,
                             borderLeft: 1,
                             borderRight: 1,
+                            borderColor: grey[300],
                             zIndex: 1,
                             flexGrow: 1,
                         }}
                     >
                         <Switch>
-                            <Route exact path={["/", "/answer"]}>
+                            <Route path="/answer">
                                 <Answer />
                             </Route>
                             <UnAuthRoute exact path="/login">
@@ -139,12 +144,21 @@ const App = () => {
                             <UnAuthRoute exact path="/register">
                                 <Register />
                             </UnAuthRoute>
-                            <AuthRoute path="/:userName">
+                            <AuthRoute exact path="/explore">
+                                <Explore />
+                            </AuthRoute>
+                            <AuthRoute exact path="/notifications">
+                                <Notifications />
+                            </AuthRoute>
+                            <AuthRoute exact path="/:userName">
                                 <Account />
                             </AuthRoute>
-                            <AuthRoute path="*">
-                                <NotFound />
+                            <AuthRoute path="/setting">
+                                <Setting />
                             </AuthRoute>
+                            <Route path="*">
+                                <NotFound />
+                            </Route>
                         </Switch>
                     </Box>
 

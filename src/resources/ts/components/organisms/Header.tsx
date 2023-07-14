@@ -1,5 +1,4 @@
 import Box from "@mui/material/Box";
-import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import Menu from "@mui/material/Menu";
 import MicExternalOnIcon from "@mui/icons-material/MicExternalOn";
@@ -20,14 +19,10 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import {
     Link,
-    useHistory,
     useLocation,
-    useParams,
-    useRouteMatch,
 } from "react-router-dom";
 import { FC, useState } from "react";
 import {
-    Divider,
     List,
     ListItem,
     ListItemButton,
@@ -58,7 +53,7 @@ const Header: FC<Props> = ({ userName, userNickName, handleLogout }) => {
 
     const authSettings = [
         { name: "アカウント", to: `/${userName}` },
-        { name: "設定", to: `/${userName}` },
+        { name: "設定", to: "/setting" },
     ];
 
     const pages = [
@@ -90,13 +85,13 @@ const Header: FC<Props> = ({ userName, userNickName, handleLogout }) => {
         },
         {
             name: "検索",
-            to: "/",
+            to: "/explore",
             defaultIcon: <SearchIcon sx={{ fontSize: 28 }} />,
             activeIcon: <SearchIcon sx={{ color: grey[900], fontSize: 28 }} />,
         },
         {
             name: "通知",
-            to: "/",
+            to: "/notifications",
             defaultIcon: <NotificationsOutlinedIcon sx={{ fontSize: 28 }} />,
             activeIcon: (
                 <NotificationsIcon sx={{ color: grey[900], fontSize: 28 }} />
