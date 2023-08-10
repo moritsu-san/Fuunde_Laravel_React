@@ -102,7 +102,7 @@ class AnswerController extends Controller
 
         return [
             'id' => $answer->id,
-            'countLikes' => $answer->count_likes,
+            'likes_count' => $answer->count_likes,
         ];
 
     }
@@ -113,7 +113,7 @@ class AnswerController extends Controller
 
         return [
             'id' => $answer->id,
-            'countLikes' => $answer->count_likes,
+            'likes_count' => $answer->count_likes,
         ];
     }
 }

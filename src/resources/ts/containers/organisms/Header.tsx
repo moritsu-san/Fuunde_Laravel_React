@@ -1,16 +1,15 @@
-import { FC, useCallback, useMemo } from "react";
+import { FC, useCallback } from "react";
 import Header from "../../components/organisms/Header";
 import useCurrentUser from "../../hooks/user/useCurrentUser";
-import { useHistory, useLocation } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import useLogout from "../../hooks/auth/useLogout";
 
 const EnhancedHeader: FC = () => {
     const history = useHistory();
-    const location = useLocation();
 
-    const user = useMemo(() => useCurrentUser(), [history, location]);
+    const user = useCurrentUser();
 
-    const { mutate } = useLogout();
+    const { mutate, isLoading: logoutIsLoading } = useLogout();
 
     const handleLogout = useCallback(() => {
         mutate(undefined, {
@@ -22,9 +21,10 @@ const EnhancedHeader: FC = () => {
 
     return (
         <Header
-            userName={user?.name}
-            userNickName={user?.nick_name}
+            username={user?.username}
+            name={user?.name}
             handleLogout={handleLogout}
+            logoutIsLoading={logoutIsLoading}
         />
     );
 };

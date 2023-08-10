@@ -2,7 +2,6 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Menu from "@mui/material/Menu";
 import MicExternalOnIcon from "@mui/icons-material/MicExternalOn";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 import ChatBubbleIcon from "@mui/icons-material/ChatBubble";
 import ArticleOutlinedIcon from "@mui/icons-material/ArticleOutlined";
@@ -17,12 +16,11 @@ import Diversity1Icon from "@mui/icons-material/Diversity1";
 import LoginIcon from "@mui/icons-material/Login";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-import {
-    Link,
-    useLocation,
-} from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { FC, useState } from "react";
 import {
+    Avatar,
+    Backdrop,
     List,
     ListItem,
     ListItemButton,
@@ -30,14 +28,22 @@ import {
     ListItemText,
 } from "@mui/material";
 import { grey } from "@mui/material/colors";
+import { cardAvatar } from "../../hooks/libs/cardAvatar";
+import PostButton from "../molecules/PostButton";
 
 type Props = {
-    userName?: string;
-    userNickName?: string;
+    username?: string;
+    name?: string;
     handleLogout: VoidFunction;
+    logoutIsLoading: boolean;
 };
 
-const Header: FC<Props> = ({ userName, userNickName, handleLogout }) => {
+const Header: FC<Props> = ({
+    username,
+    name,
+    handleLogout,
+    logoutIsLoading,
+}) => {
     const { pathname } = useLocation();
     const firstPath = "/" + pathname.split("/")[1];
 
@@ -52,7 +58,7 @@ const Header: FC<Props> = ({ userName, userNickName, handleLogout }) => {
     };
 
     const authSettings = [
-        { name: "アカウント", to: `/${userName}` },
+        { name: "アカウント", to: `/${username}` },
         { name: "設定", to: "/setting" },
     ];
 
@@ -130,6 +136,7 @@ const Header: FC<Props> = ({ userName, userNickName, handleLogout }) => {
             <Box
                 sx={{
                     width: { xs: "68px", sm: "88px", xl: "275px" },
+                    mr: { xs: "8px", xl: "0" },
                 }}
             >
                 <Box height="100%" position="fixed" top="0px">
@@ -144,7 +151,7 @@ const Header: FC<Props> = ({ userName, userNickName, handleLogout }) => {
                     >
                         <List>
                             {/* ロゴ */}
-                            <ListItem>
+                            <ListItem key="ロゴ">
                                 <ListItemButton
                                     disableRipple
                                     component={Link}
@@ -173,7 +180,7 @@ const Header: FC<Props> = ({ userName, userNickName, handleLogout }) => {
 
                             {/* Navメニュー */}
                             {pages.map((page) => (
-                                <ListItem>
+                                <ListItem key={page.name}>
                                     <ListItemButton
                                         disableRipple
                                         component={Link}
@@ -209,13 +216,20 @@ const Header: FC<Props> = ({ userName, userNickName, handleLogout }) => {
                                     </ListItemButton>
                                 </ListItem>
                             ))}
+                            {username && (
+                                <ListItem>
+                                    <Box width="90%" my="12px">
+                                        <PostButton />
+                                    </Box>
+                                </ListItem>
+                            )}
                         </List>
 
                         {/* 新規登録とログインのメニュー */}
                         <List>
-                            {!userName &&
+                            {!username &&
                                 unAuthSettings.map((setting) => (
-                                    <ListItem>
+                                    <ListItem key={setting.name}>
                                         <ListItemButton
                                             disableRipple
                                             component={Link}
@@ -254,9 +268,9 @@ const Header: FC<Props> = ({ userName, userNickName, handleLogout }) => {
                                     </ListItem>
                                 ))}
                             {/* Userアイコン */}
-                            {userName && (
+                            {username && (
                                 <Tooltip title="設定を開く">
-                                    <ListItem>
+                                    <ListItem key="ユーザー">
                                         <ListItemButton
                                             onClick={handleOpenUserMenu}
                                             disableRipple
@@ -264,8 +278,10 @@ const Header: FC<Props> = ({ userName, userNickName, handleLogout }) => {
                                             sx={{ p: 0, display: "flex" }}
                                         >
                                             <ListItemIcon sx={{ ml: "6px" }}>
-                                                <AccountCircleIcon
-                                                    sx={{ fontSize: "46px" }}
+                                                <Avatar
+                                                    {...cardAvatar(
+                                                        name as string
+                                                    )}
                                                 />
                                             </ListItemIcon>
                                             <ListItemText
@@ -285,10 +301,10 @@ const Header: FC<Props> = ({ userName, userNickName, handleLogout }) => {
                                                             fontWeight: "bold",
                                                         }}
                                                     >
-                                                        {userNickName}
+                                                        {name}
                                                     </Typography>
                                                     <Typography variant="subtitle2">
-                                                        {`@${userName}`}
+                                                        {`@${username}`}
                                                     </Typography>
                                                 </Box>
                                             </ListItemText>
@@ -315,7 +331,7 @@ const Header: FC<Props> = ({ userName, userNickName, handleLogout }) => {
                             open={Boolean(anchorElUser)}
                             onClose={handleCloseUserMenu}
                         >
-                            {!userName &&
+                            {!username &&
                                 unAuthSettings.map((setting) => (
                                     <MenuItem
                                         key={setting.name}
@@ -329,7 +345,7 @@ const Header: FC<Props> = ({ userName, userNickName, handleLogout }) => {
                                     </MenuItem>
                                 ))}
 
-                            {userName &&
+                            {username &&
                                 authSettings.map((setting) => (
                                     <MenuItem
                                         key={setting.name}
@@ -342,7 +358,7 @@ const Header: FC<Props> = ({ userName, userNickName, handleLogout }) => {
                                         </Typography>
                                     </MenuItem>
                                 ))}
-                            {userName && (
+                            {username && (
                                 <MenuItem
                                     key={"ログアウト"}
                                     onClick={handleLogout}
@@ -356,6 +372,13 @@ const Header: FC<Props> = ({ userName, userNickName, handleLogout }) => {
                     </Box>
                 </Box>
             </Box>
+            <Backdrop
+                sx={{
+                    color: "#fff",
+                    zIndex: (theme) => theme.zIndex.drawer + 1,
+                }}
+                open={logoutIsLoading}
+            ></Backdrop>
         </Box>
     );
 };

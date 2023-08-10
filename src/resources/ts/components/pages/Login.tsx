@@ -1,7 +1,6 @@
 import { FC } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
@@ -14,7 +13,7 @@ import Container from "@mui/material/Container";
 import Copyright from "../atoms/Copyright";
 import LoginAlert from "../molecules/LoginAlert";
 import { INTERNAL_SERVER_ERROR } from "../../constants/statusCode";
-import { Backdrop, CircularProgress, Divider } from "@mui/material";
+import { Backdrop, Divider } from "@mui/material";
 import {
     FieldErrors,
     SubmitHandler,
@@ -25,6 +24,7 @@ import { LoginForm } from "../../models/LoginForm";
 import { Provider } from "../../models/OAuth";
 import GitHubLoginButton from "../atoms/GitHubLoginButton";
 import SocialLoginAlert from "../molecules/SocialLoginAlert";
+import { LoadingButton } from "@mui/lab";
 
 type Props = {
     register: UseFormRegister<LoginForm>;
@@ -35,7 +35,8 @@ type Props = {
     handleLogin: SubmitHandler<LoginForm>;
     statusCode?: number | undefined;
     socialLoginStatusCode?: number;
-    isLoading: boolean;
+    loginIsLoading: boolean;
+    socialLoginIsLoading: boolean;
     handleSocialLoginRequest: (provider: Provider) => void;
 };
 
@@ -48,7 +49,8 @@ const Login: FC<Props> = ({
     handleLogin,
     statusCode,
     socialLoginStatusCode,
-    isLoading,
+    loginIsLoading,
+    socialLoginIsLoading,
     handleSocialLoginRequest,
 }) => {
     return (
@@ -120,7 +122,8 @@ const Login: FC<Props> = ({
                             }
                             label="ログイン状態を保持する"
                         />
-                        <Button
+                        <LoadingButton
+                            loading={loginIsLoading}
                             disabled={!isValid}
                             type="submit"
                             fullWidth
@@ -128,7 +131,7 @@ const Login: FC<Props> = ({
                             sx={{ mt: 2, mb: 2 }}
                         >
                             ログイン
-                        </Button>
+                        </LoadingButton>
                         <Grid container>
                             <Grid item xs>
                                 <Link
@@ -152,6 +155,7 @@ const Login: FC<Props> = ({
                         <Divider sx={{ mt: 2 }} />
                         <Box sx={{ width: 1, mt: 2 }}>
                             <GitHubLoginButton
+                                socialLoginIsLoading={socialLoginIsLoading}
                                 handleSocialLoginRequest={
                                     handleSocialLoginRequest
                                 }
@@ -166,10 +170,8 @@ const Login: FC<Props> = ({
                     color: "#fff",
                     zIndex: (theme) => theme.zIndex.drawer + 1,
                 }}
-                open={isLoading}
-            >
-                <CircularProgress sx={{ mr: 18 }} />
-            </Backdrop>
+                open={loginIsLoading || socialLoginIsLoading}
+            ></Backdrop>
         </>
     );
 };

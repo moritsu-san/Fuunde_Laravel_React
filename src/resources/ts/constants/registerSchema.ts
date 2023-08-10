@@ -5,14 +5,14 @@ export const registerSchema = z
         name: z
             .string()
             .min(1, { message: "入力してください。" })
+            .max(15, { message: "15文字以下にしてください。" }),
+        username: z
+            .string()
+            .min(1, { message: "入力してください。" })
             .max(15, { message: "15文字以下にしてください。" })
             .regex(/^([a-zA-Z0-9]{0,15})$/, {
                 message: "半角英数字のみ使えます。",
             }),
-        nick_name: z
-            .string()
-            .min(1, { message: "入力してください。" })
-            .max(15, { message: "15文字以下にしてください。" }),
         email: z
             .string()
             .email({ message: "メールアドレス形式ではありません。" }),

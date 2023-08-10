@@ -43,11 +43,11 @@ const MainHeader = () => {
                         alignItems: "center",
                     }}
                 >
-                    <ListItem>
+                    <ListItem key="1">
                         <ListItemButton
                             disableRipple
                             component={Link}
-                            to={"/answer"}
+                            to={"/answer/recent"}
                             sx={{
                                 display: "flex",
                                 justifyContent: "center",
@@ -67,7 +67,7 @@ const MainHeader = () => {
                                 <Box
                                     position="absolute"
                                     display={
-                                        pathname === "/answer"
+                                        pathname === "/answer/recent"
                                             ? "inline-flex"
                                             : "none"
                                     }
@@ -79,7 +79,7 @@ const MainHeader = () => {
                             </Box>
                         </ListItemButton>
                     </ListItem>
-                    <ListItem>
+                    <ListItem key="2">
                         <ListItemButton
                             disableRipple
                             component={Link}

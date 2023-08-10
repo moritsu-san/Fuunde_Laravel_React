@@ -39,7 +39,6 @@ const EnhancedRegister = () => {
 
     const socialLoginStatusCode = (socialLoginError as AxiosError)?.response
         ?.status;
-    const isLoading = registerIsLoading || socialLoginIsLoading;
 
     const handleRegister: SubmitHandler<RegisterForm> = (data, event?) => {
         event?.preventDefault();
@@ -65,7 +64,8 @@ const EnhancedRegister = () => {
             handleRegister={handleRegister}
             statusCode={statusCode}
             socialLoginStatusCode={socialLoginStatusCode}
-            isLoading={isLoading}
+            registerIsLoading={registerIsLoading}
+            socialLoginIsLoading={socialLoginIsLoading}
             handleSocialLoginRequest={handleSocialLoginRequest}
         />
     );

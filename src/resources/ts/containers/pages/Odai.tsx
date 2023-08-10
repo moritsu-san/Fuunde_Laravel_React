@@ -5,26 +5,25 @@ import { Route, Switch } from "react-router-dom";
 import NotFound from "./NotFound";
 import { Data } from "../../models/Thread";
 import { AxiosError } from "axios";
-import AnswerBoard from "../../components/organisms/AnswerBoard";
+import OdaiBoard from "../../components/organisms/OdaiBoard";
 
-const Answer = () => {
+const Odai = () => {
     const { data, isLoading, error } = useFetchThreadList();
-    console.log(data);
     const statusCode = (error as AxiosError)?.response?.status;
 
     return (
         <Box display="flex" flexDirection="column">
             <MainHeader />
             <Switch>
-                <Route exact path="/answer/recent">
-                    <AnswerBoard
+                <Route exact path="/odai/recent">
+                    <OdaiBoard
                         data={data as Data[]}
                         isLoading={isLoading}
                         statusCode={statusCode}
                     />
                 </Route>
-                <Route exact path="/answer/popular">
-                    <AnswerBoard
+                <Route exact path="/odai/popular">
+                    <OdaiBoard
                         data={data as Data[]}
                         isLoading={isLoading}
                         statusCode={statusCode}
@@ -38,4 +37,4 @@ const Answer = () => {
     );
 };
 
-export default Answer;
+export default Odai;

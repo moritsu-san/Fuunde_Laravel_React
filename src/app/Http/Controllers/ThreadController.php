@@ -39,7 +39,7 @@ class ThreadController extends Controller
      */
     public function index()
     {
-        $threads = $this->thread_service->getThreadsWithAnswers(10);
+        $threads = $this->thread_service->getThreadsWithAnswers();
         return response()->json($threads);                                                                 
     }
 
@@ -52,17 +52,20 @@ class ThreadController extends Controller
     public function store(ThreadRequest $request)
     {
         try{
-            $data = $request->validated();
-            $data['name'] = Auth::user()->name;
-            $data['user_id'] = Auth::id();
+            $validated = $request->validate([
+                'body' => 'required|max:30'
+            ]);
 
-            $thread = $this->thread_service->createNewThread(Auth::id(), $data);
-            $this->slack_notification_service->send(Auth::user()->name. 'がお題として"' . $request->body . '"を投稿しました。');
+            $body = $validated['body'];
+            $user_id = Auth::id();
+
+            $thread = $this->thread_service->createThread($body, $user_id);
+            // $this->slack_notification_service->send(Auth::user()->name. 'がお題として"' . $request->body . '"を投稿しました。');
         } catch (Throwable $error) {
-            return response()->json();
+            return response($error);
         }
 
-        return response()->json();
+        return response($thread, 201);
     }
 
     /*今は使わないのでコメントアウト*/
@@ -134,5 +137,21 @@ class ThreadController extends Controller
             return redirect()->route('answer.recent')->with('error', 'お題の削除に失敗しました...');
         }
         return redirect()->route('answer.recent')->with('success', 'お題を削除しました!');
+    }
+
+    public function like(Request $request, Thread $thread)
+    {
+        $thread->likes()->detach($request->user()->id);
+        $thread->likes()->attach($request->user()->id);
+
+        return response()->json($thread);
+
+    }
+
+    public function unlike(Request $request, Thread $thread)
+    {
+        $thread->likes()->detach($request->user()->id);
+
+        return response()->json($thread);
     }
 }

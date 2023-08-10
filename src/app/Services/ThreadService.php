@@ -17,19 +17,24 @@ class ThreadService
         $this->thread_repository = $thread_repository;
     }
 
-    public function createNewThread(string $user_id, array $data)
-    {
+    public function createThread(string $body, string $user_id)
+    {   
+        $store_data = [
+            'body' => $body,
+            'user_id' => $user_id,     
+            'latest_answer_time' => Carbon::now()
+        ];
+
         DB::beginTransaction();
         try{
-            $thread_data = $this->getThreadData($user_id, $data['name'], $data['body']);
-            $thread = $this->thread_repository->create($thread_data);
+            $thread = $this->thread_repository->create($store_data);
+            DB::commit();
+            return $thread;
         } catch (Throwable $error){
             DB::rollback();
             info($error->getMessage());
             throw $error;
         }
-        DB::commit();
-        return $thread;
     }
 
     public function getThreadData(string $user_id, string $name, string $body)
@@ -42,10 +47,10 @@ class ThreadService
         ];
     }
 
-    //いいね数順にそｑされたanswersと共にPaginatedThreadsを取得
-    public function getThreadsWithAnswers(int $per_page)
+    //いいね数順にソートされたanswersと共にPaginatedThreadsを取得
+    public function getThreadsWithAnswers()
     {
-        $threads = $this->thread_repository->getPaginatedThreadsWithAnswers($per_page);
+        $threads = $this->thread_repository->getPaginatedThreadsWithAnswers();
         return $threads;
     }
 

@@ -46,6 +46,8 @@ import Setting from "./containers/pages/Setting";
 import Explore from "./containers/pages/Explore";
 import Notifications from "./containers/pages/Notifications";
 import { grey } from "@mui/material/colors";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import Odai from "./containers/pages/Odai";
 
 const client = new QueryClient();
 
@@ -74,12 +76,15 @@ const AuthRoute: FC<Props> = ({ exact = false, path, children }) => {
         <Route
             exact={exact}
             path={path}
-            render={({ location }) =>
+            render={(routeProps: any) =>
                 user ? (
                     children
                 ) : (
                     <Redirect
-                        to={{ pathname: "/login", state: { from: location } }}
+                        to={{
+                            pathname: "/login",
+                            state: { from: routeProps.location },
+                        }}
                     />
                 )
             }
@@ -132,8 +137,38 @@ const App = () => {
                         }}
                     >
                         <Switch>
+                            <Route
+                                exact
+                                path="/"
+                                render={() => (
+                                    <Redirect
+                                        to={{ pathname: "/answer/recent" }}
+                                    />
+                                )}
+                            />
+                            <Route
+                                exact
+                                path="/answer"
+                                render={() => (
+                                    <Redirect
+                                        to={{ pathname: "/answer/recent" }}
+                                    />
+                                )}
+                            />
                             <Route path="/answer">
                                 <Answer />
+                            </Route>
+                            <Route
+                                exact
+                                path="/odai"
+                                render={() => (
+                                    <Redirect
+                                        to={{ pathname: "/odai/recent" }}
+                                    />
+                                )}
+                            />
+                            <Route path="/odai">
+                                <Odai />
                             </Route>
                             <UnAuthRoute exact path="/login">
                                 <Login />
@@ -182,6 +217,7 @@ if (document.getElementById("app")) {
                     <CssBaseline />
                     <App />
                 </ThemeProvider>
+                <ReactQueryDevtools />
             </QueryClientProvider>
         </Router>
     );

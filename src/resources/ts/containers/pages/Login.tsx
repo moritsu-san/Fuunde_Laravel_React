@@ -45,7 +45,6 @@ const EnhancedLogin = () => {
 
     const socialLoginStatusCode = (socialLoginError as AxiosError)?.response
         ?.status;
-    const isLoading = loginIsLoading || socialLoginIsLoading;
 
     const handleLogin: SubmitHandler<LoginForm> = (data, event?) => {
         event?.preventDefault();
@@ -70,7 +69,8 @@ const EnhancedLogin = () => {
             handleLogin={handleLogin}
             statusCode={statusCode}
             socialLoginStatusCode={socialLoginStatusCode}
-            isLoading={isLoading}
+            loginIsLoading={loginIsLoading}
+            socialLoginIsLoading={socialLoginIsLoading}
             handleSocialLoginRequest={handleSocialLoginRequest}
         />
     );

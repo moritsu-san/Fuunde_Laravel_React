@@ -3,8 +3,6 @@ import {
     Avatar,
     Backdrop,
     Box,
-    Button,
-    CircularProgress,
     Container,
     Divider,
     Grid,
@@ -27,6 +25,7 @@ import LoginAlert from "../molecules/LoginAlert";
 import { INTERNAL_SERVER_ERROR } from "../../constants/statusCode";
 import SocialLoginAlert from "../molecules/SocialLoginAlert";
 import Copyright from "../atoms/Copyright";
+import { LoadingButton } from "@mui/lab";
 
 type Props = {
     register: UseFormRegister<RegisterForm>;
@@ -38,7 +37,8 @@ type Props = {
     handleRegister: SubmitHandler<RegisterForm>;
     statusCode?: number | undefined;
     socialLoginStatusCode?: number;
-    isLoading: boolean;
+    registerIsLoading: boolean;
+    socialLoginIsLoading: boolean;
     handleSocialLoginRequest: (provider: Provider) => void;
 };
 
@@ -52,7 +52,8 @@ const Register: FC<Props> = ({
     handleRegister,
     statusCode,
     socialLoginStatusCode,
-    isLoading,
+    registerIsLoading,
+    socialLoginIsLoading,
     handleSocialLoginRequest,
 }) => {
     return (
@@ -87,15 +88,15 @@ const Register: FC<Props> = ({
                         <TextField
                             margin="normal"
                             fullWidth
-                            color={errors.name && "error"}
-                            id="name"
+                            color={errors.username && "error"}
+                            id="username"
                             label="@ユーザーネーム(一意)"
                             placeholder="@"
                             autoFocus
-                            {...register("name")}
+                            {...register("username")}
                         />
                         <Typography variant="subtitle2" color="error">
-                            {errors.name?.message}
+                            {errors.username?.message}
                         </Typography>
                         {resNameErrors && (
                             <Typography variant="subtitle2" color="error">
@@ -105,13 +106,13 @@ const Register: FC<Props> = ({
                         <TextField
                             margin="normal"
                             fullWidth
-                            color={errors.nick_name && "error"}
+                            color={errors.name && "error"}
                             id="nick_name"
                             label="ニックネーム(表示される名前)"
-                            {...register("nick_name")}
+                            {...register("name")}
                         />
                         <Typography variant="subtitle2" color="error">
-                            {errors.nick_name?.message}
+                            {errors.name?.message}
                         </Typography>
                         <TextField
                             margin="normal"
@@ -156,7 +157,8 @@ const Register: FC<Props> = ({
                         <Typography variant="subtitle2" color="error">
                             {errors.password_confirmation?.message}
                         </Typography>
-                        <Button
+                        <LoadingButton
+                            loading={registerIsLoading}
                             disabled={!isValid}
                             type="submit"
                             fullWidth
@@ -164,7 +166,7 @@ const Register: FC<Props> = ({
                             sx={{ mt: 2, mb: 2 }}
                         >
                             登録
-                        </Button>
+                        </LoadingButton>
                         <Grid container>
                             <Grid item>
                                 <Link
@@ -179,6 +181,7 @@ const Register: FC<Props> = ({
                         <Divider sx={{ mt: 2 }} />
                         <Box sx={{ width: 1, mt: 2 }}>
                             <GitHubLoginButton
+                                socialLoginIsLoading={socialLoginIsLoading}
                                 handleSocialLoginRequest={
                                     handleSocialLoginRequest
                                 }
@@ -193,10 +196,8 @@ const Register: FC<Props> = ({
                     color: "#fff",
                     zIndex: (theme) => theme.zIndex.drawer + 1,
                 }}
-                open={isLoading}
-            >
-                <CircularProgress sx={{ mr: 18 }} />
-            </Backdrop>
+                open={registerIsLoading || socialLoginIsLoading}
+            ></Backdrop>
         </>
     );
 };

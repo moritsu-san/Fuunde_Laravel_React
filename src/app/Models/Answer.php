@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
@@ -23,6 +24,8 @@ class Answer extends Model
         'name', 'body', 'thread_id', 'user_id'
     ];
 
+    protected $appends = ['diff_for_humans'];
+
     public function user(): BelongsTo
     {
         return $this->belongsTo('App\Models\User');
@@ -40,6 +43,23 @@ class Answer extends Model
             : false;
     }
 
+    /**
+     * diffForHumans()
+     *
+     * @param  void
+     * @return string
+     */
+    public function getDiffForHumansAttribute()
+    {
+        return Carbon::parse($this->created_at)->diffForHumans();
+    }
+
+    /**
+     * count_likes
+     *
+     * @param  void
+     * @return int
+     */
     public function getCountLikesAttribute(): int
     {
         return $this->likes->count();

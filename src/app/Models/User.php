@@ -26,7 +26,7 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
-        'nick_name',
+        'username',
         'email',
         'auth_type',
         'password',
@@ -38,8 +38,9 @@ class User extends Authenticatable
      * @var array
      */
     protected $visible = [
+        'id',
         'name',
-        'nick_name',
+        'username',
         'email',
         'auth_type',
         
@@ -53,6 +54,16 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * Undocumented function
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\belongsToMany
+     */
+    public function threads(): BelongsToMany
+    {
+        return $this->belongsToMany('App\Models\Thread');
+    }
 
     /**
      * Undocumented function
@@ -103,7 +114,7 @@ class User extends Authenticatable
         } else {
             $providerUserName = $providerUser->getName() ? $providerUser->getName() : $providerUser->getNickname();
             return (object) [
-                'nick_name' => $providerUserName,
+                'name' => $providerUserName,
                 'email' => $providerUser->getEmail(),
                 'provider_user_id' => $providerUser->getId()
             ];

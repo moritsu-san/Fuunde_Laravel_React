@@ -38,15 +38,19 @@ Route::post('/register/{provider}/callback', [OAuthController::class, 'handleReg
             ->where('provider', 'github');
 Route::get('/users/me', [UserController::class, 'show'])->name('user');
 
-
-Route::post('/postOdai', [ThreadController::class, 'store'])->name('postOdai');
-
-Route::get('/getOdais', [ThreadController::class, 'index']);
-
+/**
+ * thread
+ */
+Route::post('/postThread', [ThreadController::class, 'store']);
+Route::get('/getThreadsWithAnswers', [ThreadController::class, 'index']);
 Route::get('/threads/{id}', [ThreadController::class, 'shosai']);
+
 
 Route::get('/isLiked/{answer}', [AnswerController::class, 'isLiked']);
 Route::get('/countLikes/{answer}', [AnswerController::class, 'countLikes']);
 
-Route::put('/{answer}/like', [AnswerController::class, 'like'])->name('like');
-Route::delete('/{answer}/like', [AnswerController::class, 'unlike'])->name('unlike');
+Route::put('/thread/{thread}/like', [ThreadController::class, 'like']);
+Route::delete('/thread/{thread}/like', [ThreadController::class, 'unlike']);
+
+Route::put('/answer/{answer}/like', [AnswerController::class, 'like']);
+Route::delete('/answer/{answer}/like', [AnswerController::class, 'unlike']);
