@@ -10,12 +10,11 @@ type LikesUser = {
     username: string;
     email: string;
     auth_type: "SOCIAL" | "MAIL" | "BOTH";
-};
+}
 
-export type DataAnswers = {
+export type DataThread = {
     id: number;
     body: string;
-    thread_id: number;
     user_id: number;
     created_at: string;
     diff_for_humans: string;
@@ -31,11 +30,13 @@ export type DataAnswers = {
 export type Data = {
     id: number;
     user_id: number;
+    thread_id:number;
     body: string;
     likes_count: number;
     created_at: string;
     diff_for_humans: string;
     updated_at: string;
     user: DataUser;
+    thread: DataThread;
     likes: LikesUser[];
 };

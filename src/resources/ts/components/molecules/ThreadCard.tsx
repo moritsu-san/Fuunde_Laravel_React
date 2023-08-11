@@ -8,21 +8,22 @@ import { cardAvatar } from "../../hooks/libs/cardAvatar";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import LikeButton from "../atoms/LikeButton";
+import useCurrentUser from "../../hooks/user/useCurrentUser";
 
 type Props = {
     data: Data;
-    hasAnswer: boolean;
 };
 
-const ThreadCard: FC<Props> = ({ data, hasAnswer }) => {
-    const user = data.user;
+const ThreadCard: FC<Props> = ({ data }) => {
+    const user = useCurrentUser();
+
+    const defIsLiked =
+        data.likes?.find((i) => i.username === user?.username) === undefined
+            ? false
+            : true;
 
     return (
-        <Box
-            width={1}
-            borderBottom={hasAnswer ? "none" : 1}
-            borderColor={grey[300]}
-        >
+        <Box width={1} borderBottom={1} borderColor={grey[300]}>
             <Box
                 component="article"
                 width={1}
@@ -32,138 +33,116 @@ const ThreadCard: FC<Props> = ({ data, hasAnswer }) => {
                 sx={{ cursor: "pointer" }}
             >
                 <Box display="flex">
-                    {data ? (
-                        <>
-                            <Box
-                                mr="12px"
-                                display="flex"
-                                flexDirection="column"
-                            >
-                                <Box component={Link} to={`/${user.username}`}>
-                                    <Avatar {...cardAvatar(user.name)} />
-                                </Box>
-                                {hasAnswer && (
-                                    <Box
-                                        display="block"
-                                        width="2px"
-                                        height="100%"
-                                        bgcolor={grey[600]}
-                                        mt="4px"
-                                        mx="auto"
-                                    ></Box>
-                                )}
+                    <>
+                        <Box mr="12px" display="flex" flexDirection="column">
+                            <Box component={Link} to={`/${data.user.username}`}>
+                                <Avatar {...cardAvatar(data.user.name)} />
                             </Box>
-                            <Box pb="8px" width={1}>
-                                <Box mb="2px">
-                                    <Box
-                                        display="flex"
-                                        justifyContent="space-between"
-                                    >
-                                        <Box
-                                            display="flex"
-                                            alignItems="baseline"
-                                        >
-                                            <Box>
-                                                <Box
-                                                    component={Link}
-                                                    to={`/${user.username}`}
-                                                >
-                                                    <Typography
-                                                        fontSize="15px"
-                                                        fontWeight="bold"
-                                                    >
-                                                        {user.name}
-                                                    </Typography>
-                                                </Box>
-                                            </Box>
-                                            <Box ml="4px">
-                                                <Box
-                                                    component={Link}
-                                                    to={`/${data.user.username}`}
-                                                >
-                                                    <Typography
-                                                        fontSize="15px"
-                                                        sx={{
-                                                            color: grey[600],
-                                                        }}
-                                                    >
-                                                        @{data.user.username}
-                                                    </Typography>
-                                                </Box>
-                                            </Box>
+                        </Box>
+                        <Box pb="8px" width={1}>
+                            <Box mb="2px">
+                                <Box
+                                    display="flex"
+                                    justifyContent="space-between"
+                                >
+                                    <Box display="flex" alignItems="baseline">
+                                        <Box>
                                             <Box
-                                                component="span"
-                                                fontSize="15px"
-                                                fontWeight="bold"
-                                                color={grey[600]}
-                                                px="4px"
+                                                component={Link}
+                                                to={`/${data.user.username}`}
                                             >
-                                                ·
-                                            </Box>
-                                            <Box>
-                                                <Box
-                                                    component={Link}
-                                                    to={`/${data.user.username}`}
+                                                <Typography
+                                                    fontSize="15px"
+                                                    fontWeight="bold"
                                                 >
-                                                    <Box
-                                                        component="time"
-                                                        dateTime={
-                                                            data.created_at
-                                                        }
-                                                        sx={{
-                                                            color: grey[600],
-                                                            fontSize: "15px",
-                                                        }}
-                                                    >
-                                                        {data.diff_for_humans}
-                                                    </Box>
-                                                </Box>
+                                                    {data.user.name}
+                                                </Typography>
                                             </Box>
+                                        </Box>
+                                        <Box ml="4px">
+                                            <Box
+                                                component={Link}
+                                                to={`/${data.user.username}`}
+                                            >
+                                                <Typography
+                                                    fontSize="15px"
+                                                    sx={{
+                                                        color: grey[600],
+                                                    }}
+                                                >
+                                                    @{data.user.username}
+                                                </Typography>
+                                            </Box>
+                                        </Box>
+                                        <Box
+                                            component="span"
+                                            fontSize="15px"
+                                            fontWeight="bold"
+                                            color={grey[600]}
+                                            px="4px"
+                                        >
+                                            ·
                                         </Box>
                                         <Box>
-                                            <MoreHorizIcon
-                                                sx={{ color: grey[500] }}
-                                            />
+                                            <Box
+                                                component={Link}
+                                                to={`/${data.user.username}`}
+                                            >
+                                                <Box
+                                                    component="time"
+                                                    dateTime={data.created_at}
+                                                    sx={{
+                                                        color: grey[600],
+                                                        fontSize: "15px",
+                                                    }}
+                                                >
+                                                    {data.diff_for_humans}
+                                                </Box>
+                                            </Box>
                                         </Box>
                                     </Box>
-                                </Box>
-                                <Box pt="14px" pb={1}>
-                                    <Typography
-                                        variant="h6"
-                                        textAlign="center"
-                                        fontWeight="bold"
-                                    >
-                                        {data.body}
-                                    </Typography>
-                                </Box>
-                                <Box display="flex">
-                                    <Box mr="auto">
-                                        <IconButton sx={{ p: 0 }}>
-                                            <ChatBubbleOutlineIcon
-                                                sx={{ width: "1.25rem" }}
-                                            />
-                                        </IconButton>
-                                    </Box>
-                                    <Box mr="50px">
-                                        <LikeButton
-                                            id={data.id}
-                                            defIsLiked={data.is_liked}
-                                            defLikesCount={data.likes_count}
+                                    <Box>
+                                        <MoreHorizIcon
+                                            sx={{ color: grey[500] }}
                                         />
-                                    </Box>
-                                    <Box mr="20px">
-                                        <IconButton sx={{ p: 0 }}>
-                                            <BookmarkBorderIcon
-                                                sx={{ width: "1.25rem" }}
-                                            />
-                                        </IconButton>
                                     </Box>
                                 </Box>
                             </Box>
-                        </>
-                    ) : (
-                        <Skeleton variant="rectangular" />
-                    )}
+                            <Box pt="14px" pb={1}>
+                                <Typography
+                                    variant="h6"
+                                    textAlign="center"
+                                    fontWeight="bold"
+                                >
+                                    {data.body}
+                                </Typography>
+                            </Box>
+                            <Box display="flex">
+                                <Box mr="auto">
+                                    <IconButton sx={{ p: 0 }}>
+                                        <ChatBubbleOutlineIcon
+                                            sx={{ width: "1.25rem" }}
+                                        />
+                                    </IconButton>
+                                </Box>
+                                <Box mr="50px">
+                                    <LikeButton
+                                        mode="thread"
+                                        id={data.id}
+                                        defIsLiked={defIsLiked}
+                                        defLikesCount={data.likes_count}
+                                    />
+                                </Box>
+                                <Box mr="20px">
+                                    <IconButton sx={{ p: 0 }}>
+                                        <BookmarkBorderIcon
+                                            sx={{ width: "1.25rem" }}
+                                        />
+                                    </IconButton>
+                                </Box>
+                            </Box>
+                        </Box>
+                    </>
                 </Box>
             </Box>
         </Box>

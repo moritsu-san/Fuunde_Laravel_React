@@ -1,14 +1,14 @@
 import { Box } from "@mui/material";
-import useFetchThreadList from "../../hooks/fetch/useFetchThreadList";
 import MainHeader from "../../components/molecules/MainHeader";
 import { Route, Switch } from "react-router-dom";
 import NotFound from "./NotFound";
-import { Data } from "../../models/Thread";
+import { Data } from "../../models/Answer";
 import { AxiosError } from "axios";
 import AnswerBoard from "../../components/organisms/AnswerBoard";
+import useFetchAnswerList from "../../hooks/fetch/useFetchAnswerList";
 
 const Answer = () => {
-    const { data, isLoading, error } = useFetchThreadList();
+    const { data, isLoading, error } = useFetchAnswerList();
     console.log(data);
     const statusCode = (error as AxiosError)?.response?.status;
 

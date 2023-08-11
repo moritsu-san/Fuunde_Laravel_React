@@ -29,25 +29,15 @@ class Thread extends Model
         'user_id', 'body', 'is_user_checked', 'latest_answer_time'
     ];
 
-    protected $appends = ['diff_for_humans', 'is_liked'];
+    protected $appends = ['diff_for_humans'];
 
     /**
      * The attributes that should be visible in arrays.
      *
      * @var array
      */
-    protected $visible = [
-        'id',
-        'user_id',
-        'body',
-        'is_liked',
-        'likes_count',
-        'created_at',
-        'diff_for_humans',
-        'updated_at',
-        'user',
-        'answers',
-    ];
+
+    protected $hidden = ['latest_answer_time'];
     
     /**
      * diff_for_humans
@@ -58,17 +48,6 @@ class Thread extends Model
     public function getDiffForHumansAttribute()
     {
         return Carbon::parse($this->created_at)->diffForHumans();
-    }
-
-    /**
-     * is_liked
-     *
-     * @param  void
-     * @return string
-     */
-    public function getIsLikedAttribute()
-    {
-        return $this->islikedBy(Auth::user());
     }
 
     public function user()

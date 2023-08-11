@@ -26,6 +26,36 @@ class Answer extends Model
 
     protected $appends = ['diff_for_humans'];
 
+    // protected $visible = [
+    //     'id',
+    //     'body',
+    //     'thread_id',
+    //     'user_id',
+    //     'created_at',
+    //     'updated_at',
+    //     'diff_for_humans',
+    //     'likes_count',
+    //     'likes',
+    //     'thread',
+    //     'user'
+    // ];
+
+    /**
+     * diffForHumans()
+     *
+     * @param  void
+     * @return string
+     */
+    public function getDiffForHumansAttribute()
+    {
+        return Carbon::parse($this->created_at)->diffForHumans();
+    }
+
+    public function thread(): BelongsTo
+    {
+        return $this->belongsTo('App\Models\Thread');
+    }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo('App\Models\User');
@@ -41,27 +71,5 @@ class Answer extends Model
         return $user
             ? (bool)$this->likes->where('id', $user->id)->count()
             : false;
-    }
-
-    /**
-     * diffForHumans()
-     *
-     * @param  void
-     * @return string
-     */
-    public function getDiffForHumansAttribute()
-    {
-        return Carbon::parse($this->created_at)->diffForHumans();
-    }
-
-    /**
-     * count_likes
-     *
-     * @param  void
-     * @return int
-     */
-    public function getCountLikesAttribute(): int
-    {
-        return $this->likes->count();
     }
 }

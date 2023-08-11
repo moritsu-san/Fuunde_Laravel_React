@@ -39,7 +39,7 @@ class ThreadController extends Controller
      */
     public function index()
     {
-        $threads = $this->thread_service->getThreadsWithAnswers();
+        $threads = $this->thread_service->getThreads();
         return response()->json($threads);                                                                 
     }
 

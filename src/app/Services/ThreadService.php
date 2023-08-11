@@ -47,10 +47,10 @@ class ThreadService
         ];
     }
 
-    //いいね数順にソートされたanswersと共にPaginatedThreadsを取得
-    public function getThreadsWithAnswers()
+    //PaginatedThreadsを取得
+    public function getThreads()
     {
-        $threads = $this->thread_repository->getPaginatedThreadsWithAnswers();
+        $threads = $this->thread_repository->getPaginatedThreads();
         return $threads;
     }
 

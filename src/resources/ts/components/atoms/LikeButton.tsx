@@ -8,23 +8,28 @@ import axios from "axios";
 import { useMutation } from "@tanstack/react-query";
 
 type Props = {
+    mode: 'answer' | 'thread';
     id: number;
     defIsLiked: boolean;
     defLikesCount: number;
 };
 
-const LikeButton: FC<Props> = ({ id, defIsLiked, defLikesCount }) => {
+const LikeButton: FC<Props> = ({ mode, id, defIsLiked, defLikesCount }) => {
     const user = useCurrentUser();
+
     const [isLiked, setIsLiked] = useState(defIsLiked);
     const [likesCount, setLikesCount] = useState(defLikesCount);
 
+    const likeEndpoint = `/api/${mode}/${id}/like`;
+    const unlikeEndpoint = `/api/${mode}/${id}/like`;
+
     const like = async () => {
-        const { data } = await axios.put(`/api/thread/${id}/like`);
+        const { data } = await axios.put(likeEndpoint);
         return data;
     };
 
     const unlike = async () => {
-        const { data } = await axios.delete(`/api/thread/${id}/like`);
+        const { data } = await axios.delete(unlikeEndpoint);
         return data;
     };
 

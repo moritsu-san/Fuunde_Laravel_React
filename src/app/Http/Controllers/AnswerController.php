@@ -16,7 +16,7 @@ class AnswerController extends Controller
 
     public function __construct(AnswerService $answer_service)
     {
-        $this->middleware('auth')->except(['isLiked', 'countLikes']);
+        $this->middleware('auth')->except(['index', 'countLikes']);
         $this->answer_service = $answer_service;
     }
 
@@ -27,7 +27,8 @@ class AnswerController extends Controller
      */
     public function index()
     {
-        //
+        $answers = $this->answer_service->getAnswersWithThreadByTime();
+        return response()->json($answers);
     }
 
     /**

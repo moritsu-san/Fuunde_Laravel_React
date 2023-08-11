@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Answer;
+use App\Repositories\AnswerRepository;
 use App\Repositories\ThreadRepository;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -11,13 +12,22 @@ use Throwable;
 class AnswerService
 {
     protected $thread_repository;
+    protected $answer_repository;
 
 
     public function __construct(
-        ThreadRepository $thread_repository
+        ThreadRepository $thread_repository,
+        AnswerRepository $answer_repository
     )
     {
         $this->thread_repository = $thread_repository;
+        $this->answer_repository = $answer_repository;
+    }
+
+    public function getAnswersWithThreadByTime()
+    {
+        $answers = $this->answer_repository->getPagenatedAnswersWithThreadByTime();
+        return $answers;
     }
 
     public function createNewAnswer(string $thread_id, array $data)

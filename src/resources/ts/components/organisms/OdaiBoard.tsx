@@ -24,7 +24,7 @@ const OdaiBoard: FC<Props> = ({ data, isLoading, statusCode }) => {
                 {data?.map((data) => {
                     return (
                         <ListItem key={data.id} sx={{ width: 1, p: 0 }}>
-                            <ThreadCard data={data} hasAnswer={false}/>
+                            <ThreadCard data={data} />
                         </ListItem>
                     );
                 })}
