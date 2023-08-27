@@ -1,11 +1,11 @@
 import { Box } from "@mui/material";
 import useFetchThreadList from "../../hooks/fetch/useFetchThreadList";
-import MainHeader from "../../components/molecules/MainHeader";
 import { Route, Switch } from "react-router-dom";
 import NotFound from "./NotFound";
 import { Data } from "../../models/Thread";
 import { AxiosError } from "axios";
 import OdaiBoard from "../../components/organisms/OdaiBoard";
+import ThreadMainHeader from "../../components/molecules/ThreadMainHeader";
 
 const Odai = () => {
     const { data, isLoading, error } = useFetchThreadList();
@@ -13,7 +13,7 @@ const Odai = () => {
 
     return (
         <Box display="flex" flexDirection="column">
-            <MainHeader />
+            <ThreadMainHeader />
             <Switch>
                 <Route exact path="/odai/recent">
                     <OdaiBoard

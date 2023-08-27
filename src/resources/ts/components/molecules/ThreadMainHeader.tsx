@@ -2,7 +2,7 @@ import { Box, List, ListItem, ListItemButton, Typography } from "@mui/material";
 import { grey } from "@mui/material/colors";
 import { Link, useLocation } from "react-router-dom";
 
-const MainHeader = () => {
+const ThreadMainHeader = () => {
     const { pathname } = useLocation();
 
     return (
@@ -30,7 +30,7 @@ const MainHeader = () => {
                             component="h2"
                             sx={{ fontSize: "18px", fontWeight: "bold" }}
                         >
-                            アンサー
+                            お題
                         </Typography>
                     </Box>
                 </Box>
@@ -47,7 +47,7 @@ const MainHeader = () => {
                         <ListItemButton
                             disableRipple
                             component={Link}
-                            to={"/answer/recent"}
+                            to={"/odai/recent"}
                             sx={{
                                 display: "flex",
                                 justifyContent: "center",
@@ -67,7 +67,7 @@ const MainHeader = () => {
                                 <Box
                                     position="absolute"
                                     display={
-                                        pathname === "/answer/recent"
+                                        pathname === "/odai/recent"
                                             ? "inline-flex"
                                             : "none"
                                     }
@@ -83,7 +83,7 @@ const MainHeader = () => {
                         <ListItemButton
                             disableRipple
                             component={Link}
-                            to={"/answer/popular"}
+                            to={"/odai/popular"}
                             sx={{
                                 display: "flex",
                                 justifyContent: "center",
@@ -103,7 +103,7 @@ const MainHeader = () => {
                                 <Box
                                     position="absolute"
                                     display={
-                                        pathname === "/answer/popular"
+                                        pathname === "/odai/popular"
                                             ? "inline-flex"
                                             : "none"
                                     }
@@ -121,4 +121,4 @@ const MainHeader = () => {
     );
 };
 
-export default MainHeader;
+export default ThreadMainHeader;

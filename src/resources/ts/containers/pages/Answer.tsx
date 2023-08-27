@@ -1,5 +1,5 @@
 import { Box } from "@mui/material";
-import MainHeader from "../../components/molecules/MainHeader";
+import AnswerMainHeader from "../../components/molecules/AnswerMainHeader";
 import { Route, Switch } from "react-router-dom";
 import NotFound from "./NotFound";
 import { Data } from "../../models/Answer";
@@ -14,7 +14,7 @@ const Answer = () => {
 
     return (
         <Box display="flex" flexDirection="column">
-            <MainHeader />
+            <AnswerMainHeader />
             <Switch>
                 <Route exact path="/answer/recent">
                     <AnswerBoard

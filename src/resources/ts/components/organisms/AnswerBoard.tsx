@@ -11,7 +11,6 @@ type Props = {
 };
 
 const AnswerBoard: FC<Props> = ({ data, isLoading, statusCode }) => {
-    // isLoading = true;
     return (
         <>
             {statusCode && <Box>読み込めませんでした。({statusCode})</Box>}
