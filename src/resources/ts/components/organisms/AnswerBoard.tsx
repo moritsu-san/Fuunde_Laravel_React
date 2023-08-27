@@ -1,8 +1,8 @@
 import { Box, List, ListItem } from "@mui/material";
-import ThreadCardSkeleton from "../molecules/skeleton/ThreadCardSkeleton";
 import { Data } from "../../models/Answer";
 import { FC } from "react";
 import AnswerCard from "../molecules/AnswerCard";
+import AnswerCardSkeleton from "../molecules/skeleton/AnswerCardSkeleton";
 
 type Props = {
     data: Data[];
@@ -11,6 +11,7 @@ type Props = {
 };
 
 const AnswerBoard: FC<Props> = ({ data, isLoading, statusCode }) => {
+    // isLoading = true;
     return (
         <>
             {statusCode && <Box>読み込めませんでした。({statusCode})</Box>}
@@ -19,7 +20,7 @@ const AnswerBoard: FC<Props> = ({ data, isLoading, statusCode }) => {
                     width: "100%",
                 }}
             >
-                {isLoading && <ThreadCardSkeleton cardNum={10} />}
+                {isLoading && <AnswerCardSkeleton cardNum={10} />}
 
                 {data?.map((data) => {
                     return (

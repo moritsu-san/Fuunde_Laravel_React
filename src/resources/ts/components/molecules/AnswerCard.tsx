@@ -5,7 +5,6 @@ import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import { Link } from "react-router-dom";
 import { Data } from "../../models/Answer";
 import { cardAvatar } from "../../hooks/libs/cardAvatar";
-import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import LikeButton from "../atoms/LikeButton";
 import useCurrentUser from "../../hooks/user/useCurrentUser";
