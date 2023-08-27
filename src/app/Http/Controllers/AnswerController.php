@@ -25,9 +25,20 @@ class AnswerController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function indexByTime()
     {
         $answers = $this->answer_service->getAnswersWithThreadByTime();
+        return response()->json($answers);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function indexByLike()
+    {
+        $answers = $this->answer_service->getAnswersWithThreadByLike();
         return response()->json($answers);
     }
 

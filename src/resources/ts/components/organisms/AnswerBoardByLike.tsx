@@ -1,25 +1,24 @@
 import { Box, List, ListItem } from "@mui/material";
-import { Data } from "../../models/Answer";
 import { FC } from "react";
 import AnswerCard from "../molecules/AnswerCard";
 import AnswerCardSkeleton from "../molecules/skeleton/AnswerCardSkeleton";
+import { AxiosError } from "axios";
+import useFetchAnswerListByLike from "../../hooks/fetch/useFetchAnswerListByLike";
+import AnswerMainHeader from "../molecules/AnswerMainHeader";
 
-type Props = {
-    data: Data[];
-    isLoading: boolean;
-    statusCode: number | undefined;
-};
-
-const AnswerBoard: FC<Props> = ({ data, isLoading, statusCode }) => {
+const AnswerBoardByLike: FC = () => {
+    const { data, isFetching, error, refetch } = useFetchAnswerListByLike();
+    const statusCode = (error as AxiosError)?.response?.status;
     return (
-        <>
+        <Box display="flex" flexDirection="column">
+            <AnswerMainHeader refetch={refetch} />
             {statusCode && <Box>読み込めませんでした。({statusCode})</Box>}
             <List
                 sx={{
                     width: "100%",
                 }}
             >
-                {isLoading && <AnswerCardSkeleton cardNum={10} />}
+                {isFetching && <AnswerCardSkeleton cardNum={10} />}
 
                 {data?.map((data) => {
                     return (
@@ -29,8 +28,8 @@ const AnswerBoard: FC<Props> = ({ data, isLoading, statusCode }) => {
                     );
                 })}
             </List>
-        </>
+        </Box>
     );
 };
 
-export default AnswerBoard;
+export default AnswerBoardByLike;

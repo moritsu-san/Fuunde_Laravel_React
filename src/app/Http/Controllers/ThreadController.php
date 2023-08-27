@@ -37,9 +37,20 @@ class ThreadController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function indexByTime()
     {
-        $threads = $this->thread_service->getThreads();
+        $threads = $this->thread_service->getThreadsByTime();
+        return response()->json($threads);                                                                 
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function indexByLike()
+    {
+        $threads = $this->thread_service->getThreadsByLike();
         return response()->json($threads);                                                                 
     }
 

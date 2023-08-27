@@ -42,7 +42,8 @@ Route::get('/users/me', [UserController::class, 'show'])->name('user');
  * thread
  */
 Route::post('/postThread', [ThreadController::class, 'store']);
-Route::get('/getThreadsWithAnswers', [ThreadController::class, 'index']);
+Route::get('/getThreadsByTime', [ThreadController::class, 'indexByTime']);
+Route::get('/getThreadsByLike', [ThreadController::class, 'indexByLike']);
 Route::get('/threads/{id}', [ThreadController::class, 'shosai']);
 Route::put('/thread/{thread}/like', [ThreadController::class, 'like']);
 Route::delete('/thread/{thread}/like', [ThreadController::class, 'unlike']);
@@ -51,7 +52,8 @@ Route::delete('/thread/{thread}/like', [ThreadController::class, 'unlike']);
 /**
  * answer
  */
-Route::get('/getAnswersWithThread', [AnswerController::class, 'index']);
+Route::get('/getAnswersWithThreadByTime', [AnswerController::class, 'indexByTime']);
+Route::get('/getAnswersWithThreadByLike', [AnswerController::class, 'indexByLike']);
 Route::put('/answer/{answer}/like', [AnswerController::class, 'like']);
 Route::delete('/answer/{answer}/like', [AnswerController::class, 'unlike']);
 

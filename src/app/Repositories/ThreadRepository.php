@@ -31,9 +31,14 @@ class ThreadRepository
     }
 
     //PaginatedThreadsを返す
-    public function getPaginatedThreads()
+    public function getPaginatedThreadsByTime()
     {
-        return $this->thread->withCount('likes')->with(['user:id,name,username', 'likes'])->orderBy('latest_answer_time', 'desc')->limit(20)->get();
+        return $this->thread->withCount('likes')->with(['user:id,name,username', 'likes'])->orderBy('created_at', 'desc')->limit(20)->get();
+    }
+
+    public function getPaginatedThreadsByLike()
+    {
+        return $this->thread->withCount('likes')->with(['user:id,name,username', 'likes'])->orderBy('likes_count', 'desc')->limit(20)->get();
     }
 
       //いいね数順にソートされたanswersと共にThreadを返す

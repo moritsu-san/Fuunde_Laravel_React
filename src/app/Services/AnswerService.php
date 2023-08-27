@@ -30,6 +30,12 @@ class AnswerService
         return $answers;
     }
 
+    public function getAnswersWithThreadByLike()
+    {
+        $answers = $this->answer_repository->getPagenatedAnswersWithThreadByLike();
+        return $answers;
+    }
+
     public function createNewAnswer(string $thread_id, array $data)
     {
         DB::beginTransaction();

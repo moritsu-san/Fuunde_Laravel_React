@@ -1,9 +1,34 @@
 import { Box, List, ListItem, ListItemButton, Typography } from "@mui/material";
 import { grey } from "@mui/material/colors";
 import { Link, useLocation } from "react-router-dom";
+import { FC } from "react";
+import {
+    QueryObserverResult,
+    RefetchOptions,
+    RefetchQueryFilters,
+} from "@tanstack/react-query";
+import { Data } from "../../models/Answer";
 
-const AnswerMainHeader = () => {
+type Props = {
+    refetch: <TPageData>(
+        options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined
+    ) => Promise<QueryObserverResult<Data[], unknown>>;
+};
+
+const AnswerMainHeader: FC<Props> = ({ refetch }) => {
     const { pathname } = useLocation();
+
+    const handleRecentClick = () => {
+        if (pathname === "/answer/recent") {
+            refetch();
+        }
+    };
+
+    const handlePopularClick = () => {
+        if (pathname === "/answer/popular") {
+            refetch();
+        }
+    };
 
     return (
         <Box
@@ -13,7 +38,7 @@ const AnswerMainHeader = () => {
             top="-0.5px"
             bgcolor="rgba(255, 255, 255, 0.85)"
             zIndex="3"
-            sx={{ backdropFilter: "blur(8px)", cursor: "pointer" }}
+            sx={{ backdropFilter: "blur(8px)" }}
         >
             <Box zIndex="2">
                 <Box
@@ -46,6 +71,7 @@ const AnswerMainHeader = () => {
                     <ListItem key="1">
                         <ListItemButton
                             disableRipple
+                            onClick={handleRecentClick}
                             component={Link}
                             to={"/answer/recent"}
                             sx={{
@@ -82,6 +108,7 @@ const AnswerMainHeader = () => {
                     <ListItem key="2">
                         <ListItemButton
                             disableRipple
+                            onClick={handlePopularClick}
                             component={Link}
                             to={"/answer/popular"}
                             sx={{

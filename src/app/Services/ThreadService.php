@@ -48,9 +48,15 @@ class ThreadService
     }
 
     //PaginatedThreadsを取得
-    public function getThreads()
+    public function getThreadsByTime()
     {
-        $threads = $this->thread_repository->getPaginatedThreads();
+        $threads = $this->thread_repository->getPaginatedThreadsByTime();
+        return $threads;
+    }
+
+    public function getThreadsByLike()
+    {
+        $threads = $this->thread_repository->getPaginatedThreadsByLike();
         return $threads;
     }
 

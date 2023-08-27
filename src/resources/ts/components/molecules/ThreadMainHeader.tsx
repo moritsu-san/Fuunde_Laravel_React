@@ -1,9 +1,34 @@
 import { Box, List, ListItem, ListItemButton, Typography } from "@mui/material";
 import { grey } from "@mui/material/colors";
+import {
+    QueryObserverResult,
+    RefetchOptions,
+    RefetchQueryFilters,
+} from "@tanstack/react-query";
 import { Link, useLocation } from "react-router-dom";
+import { Data } from "../../models/Thread";
+import { FC } from "react";
 
-const ThreadMainHeader = () => {
+type Props = {
+    refetch: <TPageData>(
+        options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined
+    ) => Promise<QueryObserverResult<Data[], unknown>>;
+};
+
+const ThreadMainHeader: FC<Props> = ({ refetch }) => {
     const { pathname } = useLocation();
+
+    const handleRecentClick = () => {
+        if (pathname === "/odai/recent") {
+            refetch();
+        }
+    };
+
+    const handlePopularClick = () => {
+        if (pathname === "/odai/popular") {
+            refetch();
+        }
+    };
 
     return (
         <Box
@@ -46,6 +71,7 @@ const ThreadMainHeader = () => {
                     <ListItem key="1">
                         <ListItemButton
                             disableRipple
+                            onClick={handleRecentClick}
                             component={Link}
                             to={"/odai/recent"}
                             sx={{
@@ -82,6 +108,7 @@ const ThreadMainHeader = () => {
                     <ListItem key="2">
                         <ListItemButton
                             disableRipple
+                            onClick={handlePopularClick}
                             component={Link}
                             to={"/odai/popular"}
                             sx={{
