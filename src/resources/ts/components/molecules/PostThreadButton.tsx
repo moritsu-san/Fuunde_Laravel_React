@@ -42,7 +42,7 @@ const Transition = forwardRef(function Transition(
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const PostButton = () => {
+const PostThreadButton = () => {
     const {
         register,
         handleSubmit,
@@ -188,4 +188,4 @@ const PostButton = () => {
     );
 };
 
-export default PostButton;
+export default PostThreadButton;

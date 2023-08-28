@@ -2,10 +2,8 @@
 
 namespace App\Services;
 
-use App\Models\Answer;
 use App\Repositories\AnswerRepository;
 use App\Repositories\ThreadRepository;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Throwable;
 
@@ -36,21 +34,25 @@ class AnswerService
         return $answers;
     }
 
-    public function createNewAnswer(string $thread_id, array $data)
-    {
+    public function createAnswer(int $thread_id, string $body, int $user_id)
+    {   
+        $store_data = [
+            'body' => $body,
+            'user_id' => $user_id,     
+            'thread_id' => $thread_id,
+        ];
+
         DB::beginTransaction();
         try{
-            $thread = $this->thread_repository->findById($thread_id);
-            $thread->answers()->create($data);
+            $answer = $this->answer_repository->create($store_data);
             $this->thread_repository->updateTime($thread_id);
+            DB::commit();
+            return $answer;
         } catch (Throwable $error){
             DB::rollback();
             info($error->getMessage());
             throw $error;
         }
-        DB::commit();
-
-        return $thread;
     }
 
     public function convertUrl(string $answer)

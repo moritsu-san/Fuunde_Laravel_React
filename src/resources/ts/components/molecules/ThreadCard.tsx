@@ -1,14 +1,15 @@
-import { Avatar, Box, IconButton, Skeleton, Typography } from "@mui/material";
+import { Avatar, Box, IconButton, Tooltip, Typography } from "@mui/material";
 import { grey } from "@mui/material/colors";
 import { FC } from "react";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 import { Link } from "react-router-dom";
 import { Data } from "../../models/Thread";
 import { cardAvatar } from "../../hooks/libs/cardAvatar";
-import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import LikeButton from "../atoms/LikeButton";
 import useCurrentUser from "../../hooks/user/useCurrentUser";
+import PostAnswerButton from "./PostAnswerButton";
 
 type Props = {
     data: Data;
@@ -119,11 +120,21 @@ const ThreadCard: FC<Props> = ({ data }) => {
                             </Box>
                             <Box display="flex">
                                 <Box mr="auto">
-                                    <IconButton sx={{ p: 0 }}>
-                                        <ChatBubbleOutlineIcon
-                                            sx={{ width: "1.25rem" }}
-                                        />
-                                    </IconButton>
+                                    {user ? (
+                                        <PostAnswerButton data={data} />
+                                    ) : (
+                                        <Tooltip
+                                            title="ログインしてください"
+                                            placement="top"
+                                            arrow
+                                        >
+                                            <IconButton sx={{ p: 0 }}>
+                                                <ChatBubbleOutlineIcon
+                                                    sx={{ width: "1.25rem" }}
+                                                />
+                                            </IconButton>
+                                        </Tooltip>
+                                    )}
                                 </Box>
                                 <Box mr="50px">
                                     <LikeButton
@@ -134,11 +145,17 @@ const ThreadCard: FC<Props> = ({ data }) => {
                                     />
                                 </Box>
                                 <Box mr="20px">
-                                    <IconButton sx={{ p: 0 }}>
-                                        <BookmarkBorderIcon
-                                            sx={{ width: "1.25rem" }}
-                                        />
-                                    </IconButton>
+                                    <Tooltip
+                                        title="ログインしてください"
+                                        placement="top"
+                                        arrow
+                                    >
+                                        <IconButton sx={{ p: 0 }}>
+                                            <BookmarkBorderIcon
+                                                sx={{ width: "1.25rem" }}
+                                            />
+                                        </IconButton>
+                                    </Tooltip>
                                 </Box>
                             </Box>
                         </Box>

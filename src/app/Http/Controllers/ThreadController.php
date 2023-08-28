@@ -25,7 +25,7 @@ class ThreadController extends Controller
         SlackNotificationService $slack_notification_service
     )
     {
-        $this->middleware('auth')->except(['index', 'shosai']);
+        $this->middleware('auth')->except(['indexByTime', 'indexByLike', 'shosai']);
         $this->authorizeResource(Thread::class, 'thread');
         $this->thread_service = $thread_service;
         $this->thread_repository = $thread_repository;
@@ -63,11 +63,7 @@ class ThreadController extends Controller
     public function store(ThreadRequest $request)
     {
         try{
-            $validated = $request->validate([
-                'body' => 'required|max:30'
-            ]);
-
-            $body = $validated['body'];
+            $body = $request['body'];
             $user_id = Auth::id();
 
             $thread = $this->thread_service->createThread($body, $user_id);

@@ -19,6 +19,12 @@ class AnswerRepository
         return $this->answer->find($id);
     }
 
+    public function create(array $data)
+    {
+        return $this->answer->create($data);
+    }
+
+
     public function getPagenatedAnswersWithThreadByTime()
     {
         return $this->answer->withCount('likes')->with(['user:id,name,username', 'likes', 'thread' => function ($query) {

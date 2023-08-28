@@ -25,7 +25,7 @@ class ThreadRequest extends FormRequest
     public function rules()
     {
         return [
-            'body' => 'required|max:50'
+            'body' => 'required|max:30'
         ];
     }
 
@@ -33,7 +33,7 @@ class ThreadRequest extends FormRequest
     {
         return [
             'body.required' => 'お題を入力してください',
-            'body.max:50' => '50文字以下にしてください'
+            'body.max:30' => '30文字以下にしてください'
         ];
     }
 

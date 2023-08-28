@@ -29,7 +29,7 @@ import {
 } from "@mui/material";
 import { grey } from "@mui/material/colors";
 import { cardAvatar } from "../../hooks/libs/cardAvatar";
-import PostButton from "../molecules/PostButton";
+import PostThreadButton from "../molecules/PostThreadButton";
 
 type Props = {
     username?: string;
@@ -219,7 +219,7 @@ const Header: FC<Props> = ({
                             {username && (
                                 <ListItem>
                                     <Box width="90%" my="12px">
-                                        <PostButton />
+                                        <PostThreadButton />
                                     </Box>
                                 </ListItem>
                             )}

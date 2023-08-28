@@ -24,7 +24,7 @@ class AnswerRequest extends FormRequest
     public function rules()
     {
         return [
-            'body' => 'required'
+            'body' => 'required|max:30'
         ];
 
     }
@@ -32,8 +32,16 @@ class AnswerRequest extends FormRequest
     public function messages()
     {
         return [
-            'body.required' => 'アンサーを入力してください'
+            'body.required' => 'アンサーを入力してください',
+            'body.max:30' => '30文字以下にしてください'
         ];
 
+    }
+
+    public function attributes()
+    {
+        return [
+            'body' => 'アンサー',
+        ];
     }
 }

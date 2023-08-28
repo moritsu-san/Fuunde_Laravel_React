@@ -16,7 +16,7 @@ class AnswerController extends Controller
 
     public function __construct(AnswerService $answer_service)
     {
-        $this->middleware('auth')->except(['index', 'countLikes']);
+        $this->middleware('auth')->except(['indexByTime', 'indexByLike', 'countLikes']);
         $this->answer_service = $answer_service;
     }
 
@@ -51,15 +51,14 @@ class AnswerController extends Controller
     public function store(AnswerRequest $request, int $thread_id)
     {
         try {
-            $data = $request->validated();
-            $data['user_id'] = Auth::id();
-            $data['name'] = Auth::user()->name;
-            $this->answer_service->createNewAnswer($thread_id, $data);
+            $body = $request['body'];
+            $user_id = Auth::id();
+            $answer = $this->answer_service->createAnswer($thread_id, $body, $user_id);
         } catch (Throwable $error) {
-            return redirect()->route('threads.show', $thread_id)->with('error', 'アンサーの投稿に失敗しました...');
+            return response($error);
         }
 
-        return redirect()->route('threads.show', $thread_id)->with('success', 'アンサーを投稿しました!');
+        return response($answer, 201);
     }
 
     /**

@@ -1,4 +1,4 @@
-import { Box, IconButton } from "@mui/material";
+import { Box, IconButton, Tooltip } from "@mui/material";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { FC, useState } from "react";
@@ -8,7 +8,7 @@ import axios from "axios";
 import { useMutation } from "@tanstack/react-query";
 
 type Props = {
-    mode: 'answer' | 'thread';
+    mode: "answer" | "thread";
     id: number;
     defIsLiked: boolean;
     defLikesCount: number;
@@ -57,7 +57,6 @@ const LikeButton: FC<Props> = ({ mode, id, defIsLiked, defLikesCount }) => {
 
     const handleClick = () => {
         if (!user) {
-            alert("いいね機能はログイン中のみ使用できます");
             return;
         }
 
@@ -66,13 +65,18 @@ const LikeButton: FC<Props> = ({ mode, id, defIsLiked, defLikesCount }) => {
 
     return (
         <Box display="flex">
-            <IconButton onClick={handleClick} sx={{ p: 0 }}>
-                {isLiked ? (
-                    <FavoriteIcon sx={{ color: pink[500], width: "1.25rem" }} />
-                ) : (
-                    <FavoriteBorderIcon sx={{ width: "1.25rem" }} />
-                )}
-            </IconButton>
+            <Tooltip title="ログインしてください" placement="top" arrow>
+                <IconButton onClick={handleClick} sx={{ p: 0 }}>
+                    {isLiked ? (
+                        <FavoriteIcon
+                            sx={{ color: pink[500], width: "1.25rem" }}
+                        />
+                    ) : (
+                        <FavoriteBorderIcon sx={{ width: "1.25rem" }} />
+                    )}
+                </IconButton>
+            </Tooltip>
+
             <Box ml="8px">{likesCount}</Box>
         </Box>
     );

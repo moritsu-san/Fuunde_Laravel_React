@@ -52,6 +52,7 @@ Route::delete('/thread/{thread}/like', [ThreadController::class, 'unlike']);
 /**
  * answer
  */
+Route::post('/postAnswer/{thread_id}', [AnswerController::class, 'store']);
 Route::get('/getAnswersWithThreadByTime', [AnswerController::class, 'indexByTime']);
 Route::get('/getAnswersWithThreadByLike', [AnswerController::class, 'indexByLike']);
 Route::put('/answer/{answer}/like', [AnswerController::class, 'like']);
