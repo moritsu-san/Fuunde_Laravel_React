@@ -65,7 +65,11 @@ const LikeButton: FC<Props> = ({ mode, id, defIsLiked, defLikesCount }) => {
 
     return (
         <Box display="flex">
-            <Tooltip title="ログインしてください" placement="top" arrow>
+            <Tooltip
+                title={user ? "" : "ログインしてください"}
+                placement="top"
+                arrow
+            >
                 <IconButton onClick={handleClick} sx={{ p: 0 }}>
                     {isLiked ? (
                         <FavoriteIcon
