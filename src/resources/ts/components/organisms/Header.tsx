@@ -11,8 +11,8 @@ import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import SearchIcon from "@mui/icons-material/Search";
 import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
 import NotificationsIcon from "@mui/icons-material/Notifications";
-import Diversity1OutlinedIcon from "@mui/icons-material/Diversity1Outlined";
-import Diversity1Icon from "@mui/icons-material/Diversity1";
+import GroupAddOutlinedIcon from "@mui/icons-material/GroupAddOutlined";
+import GroupAddIcon from "@mui/icons-material/GroupAdd";
 import LoginIcon from "@mui/icons-material/Login";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
@@ -109,9 +109,13 @@ const Header: FC<Props> = ({
         {
             name: "新規登録",
             to: "/register",
-            defaultIcon: <Diversity1OutlinedIcon sx={{ fontSize: 28 }} />,
+            defaultIcon: (
+                <GroupAddOutlinedIcon sx={{ fontSize: 28, ml: "4px" }} />
+            ),
             activeIcon: (
-                <Diversity1Icon sx={{ color: grey[900], fontSize: 28 }} />
+                <GroupAddIcon
+                    sx={{ color: grey[900], fontSize: 28, ml: "4px" }}
+                />
             ),
         },
         {
@@ -181,71 +185,34 @@ const Header: FC<Props> = ({
                             {/* Navメニュー */}
                             {pages.map((page) => (
                                 <ListItem key={page.name}>
-                                    <ListItemButton
-                                        disableRipple
-                                        component={Link}
-                                        to={page.to}
+                                    <Tooltip
+                                        title={page.name}
+                                        placement="bottom"
+                                        arrow
+                                        PopperProps={{
+                                            sx: {
+                                                display: { xl: "none" },
+                                                mt: "-14px !important",
+                                                ml: "-12px !important",
+                                            },
+                                        }}
                                     >
-                                        <ListItemIcon sx={{ minWidth: "28px" }}>
-                                            {firstPath === page.to
-                                                ? page.activeIcon
-                                                : page.defaultIcon}
-                                        </ListItemIcon>
-                                        <ListItemText
-                                            primary={page.name}
-                                            primaryTypographyProps={
-                                                firstPath === page.to
-                                                    ? {
-                                                          display: {
-                                                              xs: "none",
-                                                              xl: "inline",
-                                                          },
-                                                          fontSize: "18px",
-                                                          fontWeight: 600,
-                                                      }
-                                                    : {
-                                                          display: {
-                                                              xs: "none",
-                                                              xl: "inline",
-                                                          },
-                                                          fontSize: "18px",
-                                                      }
-                                            }
-                                            sx={{ ml: "12px", mr: "8px" }}
-                                        />
-                                    </ListItemButton>
-                                </ListItem>
-                            ))}
-                            {username && (
-                                <ListItem>
-                                    <Box width="90%" my="12px">
-                                        <PostThreadButton />
-                                    </Box>
-                                </ListItem>
-                            )}
-                        </List>
-
-                        {/* 新規登録とログインのメニュー */}
-                        <List>
-                            {!username &&
-                                unAuthSettings.map((setting) => (
-                                    <ListItem key={setting.name}>
                                         <ListItemButton
                                             disableRipple
                                             component={Link}
-                                            to={setting.to}
+                                            to={page.to}
                                         >
                                             <ListItemIcon
                                                 sx={{ minWidth: "28px" }}
                                             >
-                                                {firstPath === setting.to
-                                                    ? setting.activeIcon
-                                                    : setting.defaultIcon}
+                                                {firstPath === page.to
+                                                    ? page.activeIcon
+                                                    : page.defaultIcon}
                                             </ListItemIcon>
                                             <ListItemText
-                                                primary={setting.name}
+                                                primary={page.name}
                                                 primaryTypographyProps={
-                                                    firstPath === setting.to
+                                                    firstPath === page.to
                                                         ? {
                                                               display: {
                                                                   xs: "none",
@@ -265,11 +232,90 @@ const Header: FC<Props> = ({
                                                 sx={{ ml: "12px", mr: "8px" }}
                                             />
                                         </ListItemButton>
+                                    </Tooltip>
+                                </ListItem>
+                            ))}
+                            {username && (
+                                <ListItem>
+                                    <Box width="90%" my="12px">
+                                        <PostThreadButton />
+                                    </Box>
+                                </ListItem>
+                            )}
+                        </List>
+
+                        {/* 新規登録とログインのメニュー */}
+                        <List>
+                            {!username &&
+                                unAuthSettings.map((setting) => (
+                                    <ListItem key={setting.name}>
+                                        <Tooltip
+                                            title={setting.name}
+                                            placement="top"
+                                            arrow
+                                            PopperProps={{
+                                                sx: {
+                                                    display: { xl: "none" },
+                                                    mb: "-14px !important",
+                                                    ml: "-12px !important",
+                                                },
+                                            }}
+                                        >
+                                            <ListItemButton
+                                                disableRipple
+                                                component={Link}
+                                                to={setting.to}
+                                            >
+                                                <ListItemIcon
+                                                    sx={{ minWidth: "28px" }}
+                                                >
+                                                    {firstPath === setting.to
+                                                        ? setting.activeIcon
+                                                        : setting.defaultIcon}
+                                                </ListItemIcon>
+                                                <ListItemText
+                                                    primary={setting.name}
+                                                    primaryTypographyProps={
+                                                        firstPath === setting.to
+                                                            ? {
+                                                                  display: {
+                                                                      xs: "none",
+                                                                      xl: "inline",
+                                                                  },
+                                                                  fontSize:
+                                                                      "18px",
+                                                                  fontWeight: 600,
+                                                              }
+                                                            : {
+                                                                  display: {
+                                                                      xs: "none",
+                                                                      xl: "inline",
+                                                                  },
+                                                                  fontSize:
+                                                                      "18px",
+                                                              }
+                                                    }
+                                                    sx={{
+                                                        ml: "12px",
+                                                        mr: "8px",
+                                                    }}
+                                                />
+                                            </ListItemButton>
+                                        </Tooltip>
                                     </ListItem>
                                 ))}
                             {/* Userアイコン */}
                             {username && (
-                                <Tooltip title="設定を開く">
+                                <Tooltip
+                                    title="設定を開く"
+                                    placement="top"
+                                    arrow
+                                    PopperProps={{
+                                        sx: {
+                                            ml: "-14px !important",
+                                        },
+                                    }}
+                                >
                                     <ListItem key="ユーザー">
                                         <ListItemButton
                                             onClick={handleOpenUserMenu}

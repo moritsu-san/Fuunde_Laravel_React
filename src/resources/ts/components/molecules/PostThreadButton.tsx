@@ -11,6 +11,7 @@ import {
     InputAdornment,
     InputLabel,
     Slide,
+    Tooltip,
 } from "@mui/material";
 import { TransitionProps } from "@mui/material/transitions";
 import { ReactElement, ReactNode, Ref, forwardRef, useState } from "react";
@@ -94,22 +95,32 @@ const PostThreadButton = () => {
                     fontWeight: "bold",
                 }}
             >
+                {" "}
                 お題を投稿
             </Button>
-            <Button
-                variant="contained"
-                onClick={handleClickOpen}
-                sx={{
-                    display: { xs: "block", xl: "none" },
-                    minWidth: "48px",
-                    minHeight: "48px",
-                    borderRadius: "50%",
-                    color: "white",
-                    ml: "4px",
+            <Tooltip
+                title="お題を投稿"
+                placement="bottom"
+                arrow
+                PopperProps={{
+                    sx: { display: { xl: "none" } },
                 }}
             >
-                <CreateIcon sx={{ fontSize: 20 }} />
-            </Button>
+                <Button
+                    variant="contained"
+                    onClick={handleClickOpen}
+                    sx={{
+                        display: { xs: "block", xl: "none" },
+                        minWidth: "48px",
+                        minHeight: "48px",
+                        borderRadius: "50%",
+                        color: "white",
+                        ml: "4px",
+                    }}
+                >
+                    <CreateIcon sx={{ fontSize: 20 }} />
+                </Button>
+            </Tooltip>
             <Dialog
                 open={open}
                 TransitionComponent={Transition}
