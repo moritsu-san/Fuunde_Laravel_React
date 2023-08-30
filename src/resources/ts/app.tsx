@@ -94,7 +94,7 @@ const AuthRoute: FC<Props> = ({ exact = false, path, children }) => {
 
 const App = () => {
     const queryClient = useQueryClient();
-    const { isLoading } = useGetUserQuery({
+    const { isLoading, isFetching } = useGetUserQuery({
         retry: 0,
         initialData: undefined,
         onError: () => {
