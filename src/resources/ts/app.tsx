@@ -196,7 +196,6 @@ const App = () => {
                             </Route>
                         </Switch>
                     </Box>
-
                     <SideBar />
                 </Box>
             </Box>

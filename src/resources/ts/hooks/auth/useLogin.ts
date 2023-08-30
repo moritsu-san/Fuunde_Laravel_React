@@ -10,8 +10,8 @@ const login = async (formData: LoginForm) => {
 const useLogin = () => {
     const queryClient = useQueryClient();
     return useMutation(login, {
-        onSuccess: (data) => {
-            queryClient.setQueryData(["user"], data);
+        onSuccess: () => {
+            queryClient.invalidateQueries(["user"]);
         },
     });
 };

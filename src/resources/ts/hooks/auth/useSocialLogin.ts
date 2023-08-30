@@ -9,7 +9,7 @@ import { User } from "../../models/User";
 
 const socialLogin = async (
     provider: Provider,
-    authParams: OAuthParams,
+    authParams: OAuthParams
 ): Promise<User> => {
     const { data } = await axios.post(
         `/api/login/${provider}/callback`,
@@ -25,11 +25,14 @@ const useSocailLogin = (): UseMutationResult<
     undefined
 > => {
     const queryClient = useQueryClient();
-    return useMutation(({ provider, authParams }) => socialLogin(provider, authParams), {
-        onSuccess: (data) => {
-            queryClient.setQueryData(["user"], data);
-        },
-    });
+    return useMutation(
+        ({ provider, authParams }) => socialLogin(provider, authParams),
+        {
+            onSuccess: () => {
+                queryClient.invalidateQueries(["user"]);
+            },
+        }
+    );
 };
 
 export default useSocailLogin;
