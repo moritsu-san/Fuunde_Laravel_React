@@ -1,7 +1,7 @@
 import { Box, IconButton, Tooltip } from "@mui/material";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { pink } from "@mui/material/colors";
 import useCurrentUser from "../../hooks/user/useCurrentUser";
 import axios from "axios";
@@ -15,10 +15,14 @@ type Props = {
 };
 
 const LikeButton: FC<Props> = ({ mode, id, defIsLiked, defLikesCount }) => {
-    const user = useCurrentUser();
-
     const [isLiked, setIsLiked] = useState(defIsLiked);
     const [likesCount, setLikesCount] = useState(defLikesCount);
+
+    useEffect(() => {
+        setIsLiked(defIsLiked);
+    }, [defIsLiked]);
+
+    const user = useCurrentUser();
 
     const likeEndpoint = `/api/${mode}/${id}/like`;
     const unlikeEndpoint = `/api/${mode}/${id}/like`;
