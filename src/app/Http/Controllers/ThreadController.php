@@ -25,8 +25,8 @@ class ThreadController extends Controller
         SlackNotificationService $slack_notification_service
     )
     {
-        $this->middleware('auth')->except(['indexByTime', 'indexByLike', 'shosai']);
-        $this->authorizeResource(Thread::class, 'thread');
+        // $this->middleware('auth')->except(['indexByTime', 'indexByLike']);
+        // $this->authorizeResource(Thread::class, 'thread');
         $this->thread_service = $thread_service;
         $this->thread_repository = $thread_repository;
         $this->slack_notification_service = $slack_notification_service;
@@ -75,31 +75,16 @@ class ThreadController extends Controller
         return response($thread, 201);
     }
 
-    /*今は使わないのでコメントアウト*/
-    // public function create()
-    // {
-    //     return view('threads.create');
-    // }
-
-
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int  $thread_id
      * @return \Illuminate\Http\Response
      */
-    // public function show()
-    // {
-    //     // $thread = $this->thread_service->getThreadWithAnswers($id);
-
-    //     // return $thread ?? abort(404);
-    // }
-
-    public function shosai(String $id)
+    public function show(int $thread_id)
     {
-        $thread = $this->thread_service->getThreadWithAnswers($id);
-
-        return $thread ?? abort(404);
+        $thread = $this->thread_service->getThreadWithAnswers($thread_id);
+        return $thread;
     }
 
     /**

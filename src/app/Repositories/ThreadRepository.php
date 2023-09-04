@@ -33,21 +33,21 @@ class ThreadRepository
     //PaginatedThreadsを返す
     public function getPaginatedThreadsByTime()
     {
-        return $this->thread->withCount('likes')->with(['user:id,name,username', 'likes'])->orderBy('created_at', 'desc')->limit(20)->get();
+        return $this->thread->withCount('likes')->with(['user:id,name,username', 'likes:id,name,username'])->orderBy('created_at', 'desc')->limit(20)->get();
     }
 
     public function getPaginatedThreadsByLike()
     {
-        return $this->thread->withCount('likes')->with(['user:id,name,username', 'likes'])->orderBy('likes_count', 'desc')->limit(20)->get();
+        return $this->thread->withCount('likes')->with(['user:id,name,username', 'likes:id,name,username'])->orderBy('likes_count', 'desc')->limit(20)->get();
     }
 
-      //いいね数順にソートされたanswersと共にThreadを返す
-      public function getThreadWithAnswers(int $thread_id)
-      {
-          return $this->thread->with(['answers' => function ($query) {
-              $query->withCount('likes')->orderBy('likes_count', 'desc')->get();
-          }])->find($thread_id);
-      }
+    //いいね数順にソートされたanswersと共にThreadを返す
+    public function getThreadWithAnswers(int $thread_id)
+    {
+        return $this->thread->withCount('likes')->with(['answers' => function ($query) {
+            $query->withCount('likes')->with(['user:id,name,username', 'likes:id,name,username'])->orderBy('likes_count', 'desc')->get();
+        }, 'user:id,name,username', 'likes:id,name,username'])->where('id', $thread_id)->firstOrFail();
+    }
 
     public function updateTime(int $id)
     {

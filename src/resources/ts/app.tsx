@@ -27,7 +27,7 @@ import Answer from "./containers/pages/Answer";
 import Register from "./containers/pages/Register";
 
 import useCurrentUser from "./hooks/user/useCurrentUser";
-import useGetUserQuery from "./hooks/user/useGetUserQuery";
+import useGetMe from "./hooks/user/useGetMe";
 import Loading from "./components/pages/Loading";
 import {
     Box,
@@ -48,6 +48,7 @@ import Notifications from "./containers/pages/Notifications";
 import { grey } from "@mui/material/colors";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import Odai from "./containers/pages/Odai";
+import Thread from "./containers/pages/Thread";
 
 const client = new QueryClient();
 
@@ -94,7 +95,7 @@ const AuthRoute: FC<Props> = ({ exact = false, path, children }) => {
 
 const App = () => {
     const queryClient = useQueryClient();
-    const { isLoading, isFetching } = useGetUserQuery({
+    const { isLoading, isFetching } = useGetMe({
         retry: 0,
         initialData: undefined,
         onError: () => {
@@ -185,11 +186,14 @@ const App = () => {
                             <AuthRoute exact path="/notifications">
                                 <Notifications />
                             </AuthRoute>
-                            <AuthRoute exact path="/:userName">
+                            <AuthRoute exact path="/setting">
+                                <Setting />
+                            </AuthRoute>
+                            <AuthRoute exact path="/user/:userName">
                                 <Account />
                             </AuthRoute>
-                            <AuthRoute path="/setting">
-                                <Setting />
+                            <AuthRoute exact path="/thread/:threadId">
+                                <Thread />
                             </AuthRoute>
                             <Route path="*">
                                 <NotFound />

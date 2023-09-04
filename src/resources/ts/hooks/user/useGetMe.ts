@@ -7,7 +7,7 @@ const getLoginUser = async (): Promise<User> => {
     return data;
 };
 
-const useGetUserQuery = (
+const useGetMe = (
     options?:
         | (Omit<
               UseQueryOptions<User, unknown, User, string[]>,
@@ -18,4 +18,4 @@ const useGetUserQuery = (
     return useQuery(["user"], getLoginUser, options);
 };
 
-export default useGetUserQuery;
+export default useGetMe;

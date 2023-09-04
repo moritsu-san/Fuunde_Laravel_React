@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
@@ -22,8 +22,16 @@ class UserController extends Controller
      *
      * @return \App\User|null
      */
-    public function show()
+    public function getLoginUser()
     {
         return Auth::user();
+    }
+
+    /**
+     * リクエストされたユーザーの情報を取得
+     */
+    public function show(string $username)
+    {
+        return User::where('username', $username)->firstOrFail();
     }
 }

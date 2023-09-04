@@ -36,7 +36,6 @@ Route::post('/login/{provider}/callback', [OAuthController::class, 'handleProvid
             ->where('provider', 'github')->name('oauth.callback');
 Route::post('/register/{provider}/callback', [OAuthController::class, 'handleRegisterCallback'])
             ->where('provider', 'github');
-Route::get('/users/me', [UserController::class, 'show'])->name('user');
 
 /**
  * thread
@@ -44,7 +43,7 @@ Route::get('/users/me', [UserController::class, 'show'])->name('user');
 Route::post('/postThread', [ThreadController::class, 'store']);
 Route::get('/getThreadsByTime', [ThreadController::class, 'indexByTime']);
 Route::get('/getThreadsByLike', [ThreadController::class, 'indexByLike']);
-Route::get('/threads/{id}', [ThreadController::class, 'shosai']);
+Route::get('/getThreadWithAnswers/{thread_id}', [ThreadController::class, 'show']);
 Route::put('/thread/{thread}/like', [ThreadController::class, 'like']);
 Route::delete('/thread/{thread}/like', [ThreadController::class, 'unlike']);
 
@@ -61,6 +60,8 @@ Route::delete('/answer/{answer}/like', [AnswerController::class, 'unlike']);
 Route::get('/isLiked/{answer}', [AnswerController::class, 'isLiked']);
 Route::get('/countLikes/{answer}', [AnswerController::class, 'countLikes']);
 
-
-
-
+/**
+ * user
+ */
+Route::get('/users/me', [UserController::class, 'getLoginUser']);
+Route::get('/getUser/{username}', [UserController::class, 'show']);
