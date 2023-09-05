@@ -36,7 +36,10 @@ const ThreadCard: FC<Props> = ({ data }) => {
                 <Box display="flex">
                     <>
                         <Box mr="12px" display="flex" flexDirection="column">
-                            <Box component={Link} to={`/${data.user.username}`}>
+                            <Box
+                                component={Link}
+                                to={`/user/${data.user.username}`}
+                            >
                                 <Avatar {...cardAvatar(data.user.name)} />
                             </Box>
                         </Box>
@@ -63,7 +66,7 @@ const ThreadCard: FC<Props> = ({ data }) => {
                                         <Box ml="4px">
                                             <Box
                                                 component={Link}
-                                                to={`/${data.user.username}`}
+                                                to={`/user/${data.user.username}`}
                                             >
                                                 <Typography
                                                     fontSize="15px"
@@ -87,7 +90,7 @@ const ThreadCard: FC<Props> = ({ data }) => {
                                         <Box>
                                             <Box
                                                 component={Link}
-                                                to={`/${data.user.username}`}
+                                                to={`/user/${data.user.username}`}
                                             >
                                                 <Box
                                                     component="time"
@@ -109,7 +112,12 @@ const ThreadCard: FC<Props> = ({ data }) => {
                                     </Box>
                                 </Box>
                             </Box>
-                            <Box pt="14px" pb={1}>
+                            <Box
+                                pt="14px"
+                                pb={1}
+                                component={Link}
+                                to={`/thread/${data.id}`}
+                            >
                                 <Typography
                                     variant="h6"
                                     textAlign="center"

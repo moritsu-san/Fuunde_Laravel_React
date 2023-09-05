@@ -36,7 +36,10 @@ const AnswerCard: FC<Props> = ({ data }) => {
                 <Box display="flex">
                     <>
                         <Box mr="12px" display="flex" flexDirection="column">
-                            <Box component={Link} to={`/${data.user.username}`}>
+                            <Box
+                                component={Link}
+                                to={`/user/${data.user.username}`}
+                            >
                                 <Avatar {...cardAvatar(data.user.name)} />
                             </Box>
                         </Box>
@@ -51,7 +54,7 @@ const AnswerCard: FC<Props> = ({ data }) => {
                                         <Box>
                                             <Box
                                                 component={Link}
-                                                to={`/${data.user.username}`}
+                                                to={`/user/${data.user.username}`}
                                             >
                                                 <Typography
                                                     fontSize="15px"
@@ -64,7 +67,7 @@ const AnswerCard: FC<Props> = ({ data }) => {
                                         <Box ml="4px">
                                             <Box
                                                 component={Link}
-                                                to={`/${data.user.username}`}
+                                                to={`/user/${data.user.username}`}
                                             >
                                                 <Typography
                                                     fontSize="15px"
@@ -88,7 +91,7 @@ const AnswerCard: FC<Props> = ({ data }) => {
                                         <Box>
                                             <Box
                                                 component={Link}
-                                                to={`/${data.user.username}`}
+                                                to={`/user/${data.user.username}`}
                                             >
                                                 <Box
                                                     component="time"
@@ -111,7 +114,12 @@ const AnswerCard: FC<Props> = ({ data }) => {
                                 </Box>
                             </Box>
                             {/* 本文 */}
-                            <Box pt="14px" pb={1}>
+                            <Box
+                                pt="14px"
+                                pb={1}
+                                component={Link}
+                                to={`/thread/${data.thread.id}`}
+                            >
                                 <Typography
                                     variant="h6"
                                     textAlign="center"
@@ -140,6 +148,8 @@ const AnswerCard: FC<Props> = ({ data }) => {
                                     borderColor={grey[300]}
                                     borderRadius="12px"
                                     sx={{ cursor: "pointer" }}
+                                    component={Link}
+                                    to={`/thread/${data.thread.id}`}
                                 >
                                     <Box mt="4px" mx="12px">
                                         <Box

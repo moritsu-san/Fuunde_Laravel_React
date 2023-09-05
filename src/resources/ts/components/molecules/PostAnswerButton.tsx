@@ -29,6 +29,7 @@ import { grey } from "@mui/material/colors";
 import { Data } from "../../models/Thread";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import { retweetAvatar } from "../../hooks/libs/retweetAvatar";
+import { Link } from "react-router-dom";
 
 const schema = z.object({
     body: z
@@ -132,6 +133,8 @@ const PostAnswerButton: FC<Props> = ({ data }) => {
                             border={1}
                             borderColor={grey[300]}
                             borderRadius="12px"
+                            component={Link}
+                            to={`/thread/${data.id}`}
                         >
                             <Box mt="4px" mx="12px">
                                 <Box
