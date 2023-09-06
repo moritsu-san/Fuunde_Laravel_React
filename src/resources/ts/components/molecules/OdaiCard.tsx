@@ -1,24 +1,25 @@
-import { FC } from "react";
-import useCurrentUser from "../../hooks/user/useCurrentUser";
-import { Data } from "../../models/Thread";
 import { Avatar, Box, IconButton, Tooltip, Typography } from "@mui/material";
-import { Link } from "react-router-dom";
-import { cardAvatar } from "../../hooks/libs/cardAvatar";
 import { grey } from "@mui/material/colors";
-import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
-import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
+import { FC } from "react";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
-import PostAnswerButton from "./PostAnswerButton";
+import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
+import { Link } from "react-router-dom";
+import { Data } from "../../models/Thread";
+import { cardAvatar } from "../../hooks/libs/cardAvatar";
+import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import LikeButton from "../atoms/LikeButton";
+import useCurrentUser from "../../hooks/user/useCurrentUser";
+import PostAnswerButton from "./PostAnswerButton";
 
 type Props = {
-    thread: Data;
+    data: Data;
 };
 
-const ThreadCard: FC<Props> = ({ thread }) => {
+const OdaiCard: FC<Props> = ({ data }) => {
     const user = useCurrentUser();
+
     const defIsLiked =
-        thread?.likes?.find((i) => i.username === user?.username) === undefined
+        data.likes?.find((i) => i.username === user?.username) === undefined
             ? false
             : true;
 
@@ -37,9 +38,9 @@ const ThreadCard: FC<Props> = ({ thread }) => {
                         <Box mr="12px" display="flex" flexDirection="column">
                             <Box
                                 component={Link}
-                                to={`/user/${thread.user.username}`}
+                                to={`/user/${data.user.username}`}
                             >
-                                <Avatar {...cardAvatar(thread.user.name)} />
+                                <Avatar {...cardAvatar(data.user.name)} />
                             </Box>
                         </Box>
                         <Box pb="8px" width={1}>
@@ -52,20 +53,20 @@ const ThreadCard: FC<Props> = ({ thread }) => {
                                         <Box>
                                             <Box
                                                 component={Link}
-                                                to={`/user/${thread.user.username}`}
+                                                to={`/user/${data.user.username}`}
                                             >
                                                 <Typography
                                                     fontSize="15px"
                                                     fontWeight="bold"
                                                 >
-                                                    {thread.user.name}
+                                                    {data.user.name}
                                                 </Typography>
                                             </Box>
                                         </Box>
                                         <Box ml="4px">
                                             <Box
                                                 component={Link}
-                                                to={`/user/${thread.user.username}`}
+                                                to={`/user/${data.user.username}`}
                                             >
                                                 <Typography
                                                     fontSize="15px"
@@ -73,7 +74,7 @@ const ThreadCard: FC<Props> = ({ thread }) => {
                                                         color: grey[600],
                                                     }}
                                                 >
-                                                    @{thread.user.username}
+                                                    @{data.user.username}
                                                 </Typography>
                                             </Box>
                                         </Box>
@@ -89,17 +90,17 @@ const ThreadCard: FC<Props> = ({ thread }) => {
                                         <Box>
                                             <Box
                                                 component={Link}
-                                                to={`/user/${thread.user.username}`}
+                                                to={`/user/${data.user.username}`}
                                             >
                                                 <Box
                                                     component="time"
-                                                    dateTime={thread.created_at}
+                                                    dateTime={data.created_at}
                                                     sx={{
                                                         color: grey[600],
                                                         fontSize: "15px",
                                                     }}
                                                 >
-                                                    {thread.diff_for_humans}
+                                                    {data.diff_for_humans}
                                                 </Box>
                                             </Box>
                                         </Box>
@@ -115,20 +116,20 @@ const ThreadCard: FC<Props> = ({ thread }) => {
                                 pt="14px"
                                 pb={1}
                                 component={Link}
-                                to={`/thread/${thread.id}`}
+                                to={`/thread/${data.id}`}
                             >
                                 <Typography
                                     variant="h6"
                                     textAlign="center"
                                     fontWeight="bold"
                                 >
-                                    {thread.body}
+                                    {data.body}
                                 </Typography>
                             </Box>
                             <Box display="flex">
                                 <Box mr="auto">
                                     {user ? (
-                                        <PostAnswerButton data={thread} />
+                                        <PostAnswerButton data={data} />
                                     ) : (
                                         <Tooltip
                                             title="ログインしてください"
@@ -137,9 +138,7 @@ const ThreadCard: FC<Props> = ({ thread }) => {
                                         >
                                             <IconButton sx={{ p: 0 }}>
                                                 <ChatBubbleOutlineIcon
-                                                    sx={{
-                                                        width: "1.25rem",
-                                                    }}
+                                                    sx={{ width: "1.25rem" }}
                                                 />
                                             </IconButton>
                                         </Tooltip>
@@ -148,9 +147,9 @@ const ThreadCard: FC<Props> = ({ thread }) => {
                                 <Box mr="50px">
                                     <LikeButton
                                         mode="thread"
-                                        id={thread.id}
+                                        id={data.id}
                                         defIsLiked={defIsLiked}
-                                        defLikesCount={thread.likes_count}
+                                        defLikesCount={data.likes_count}
                                     />
                                 </Box>
                                 <Box mr="20px">
@@ -161,9 +160,7 @@ const ThreadCard: FC<Props> = ({ thread }) => {
                                     >
                                         <IconButton sx={{ p: 0 }}>
                                             <BookmarkBorderIcon
-                                                sx={{
-                                                    width: "1.25rem",
-                                                }}
+                                                sx={{ width: "1.25rem" }}
                                             />
                                         </IconButton>
                                     </Tooltip>
@@ -177,4 +174,4 @@ const ThreadCard: FC<Props> = ({ thread }) => {
     );
 };
 
-export default ThreadCard;
+export default OdaiCard;

@@ -9,7 +9,7 @@ type Props = {
     cardNum: number;
 };
 
-const ThreadCardSkeleton: FC<Props> = ({ cardNum }) => {
+const OdaiCardSkeleton: FC<Props> = ({ cardNum }) => {
     return (
         <div>
             {Array(cardNum)
@@ -92,4 +92,4 @@ const ThreadCardSkeleton: FC<Props> = ({ cardNum }) => {
     );
 };
 
-export default ThreadCardSkeleton;
+export default OdaiCardSkeleton;
