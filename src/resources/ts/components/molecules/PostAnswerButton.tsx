@@ -30,6 +30,7 @@ import { Data } from "../../models/Thread";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import { retweetAvatar } from "../../hooks/libs/retweetAvatar";
 import { Link } from "react-router-dom";
+import SnackBar from "../atoms/SnackBar";
 
 const schema = z.object({
     body: z
@@ -72,6 +73,7 @@ const PostAnswerButton: FC<Props> = ({ data }) => {
         const postData = { formData, thread_id };
         mutate(postData, {
             onSuccess: () => {
+                setOpenSnackbar(true);
                 queryClient.invalidateQueries(["answers"]);
                 queryClient.invalidateQueries(["thread"]);
                 handleClose();
@@ -81,16 +83,17 @@ const PostAnswerButton: FC<Props> = ({ data }) => {
 
     const user = useCurrentUser();
 
-    const [open, setOpen] = useState(false);
+    const [openDialog, setOpenDialog] = useState(false);
+    const [openSnackbar, setOpenSnackbar] = useState(false);
 
     const handleClickOpen = () => {
-        setOpen(true);
+        setOpenDialog(true);
     };
 
     const handleClose = () => {
         resetForm();
         resetMutation();
-        setOpen(false);
+        setOpenDialog(false);
     };
 
     return (
@@ -104,7 +107,7 @@ const PostAnswerButton: FC<Props> = ({ data }) => {
                 <ChatBubbleOutlineIcon sx={{ width: "1.25rem" }} />
             </IconButton>
             <Dialog
-                open={open}
+                open={openDialog}
                 TransitionComponent={Transition}
                 keepMounted
                 onClose={handleClose}
@@ -283,6 +286,10 @@ const PostAnswerButton: FC<Props> = ({ data }) => {
                     </LoadingButton>
                 </Box>
             </Dialog>
+            <SnackBar
+                defOpen={openSnackbar}
+                message="アンサーを投稿しました!"
+            />
         </>
     );
 };

@@ -26,6 +26,7 @@ import { inputAvatar } from "../../hooks/libs/inputAvatar";
 import SendIcon from "@mui/icons-material/Send";
 import useCurrentUser from "../../hooks/user/useCurrentUser";
 import { LoadingButton } from "@mui/lab";
+import SnackBar from "../atoms/SnackBar";
 
 const schema = z.object({
     body: z
@@ -62,6 +63,7 @@ const PostThreadButton = () => {
     const handlePostThread: SubmitHandler<FieldValues> = (data) => {
         mutate(data, {
             onSuccess: () => {
+                setOpenSnackbar(true);
                 queryClient.invalidateQueries(["threads"]);
                 handleClose();
             },
@@ -70,16 +72,17 @@ const PostThreadButton = () => {
 
     const user = useCurrentUser();
 
-    const [open, setOpen] = useState(false);
+    const [openDialog, setOpenDialog] = useState(false);
+    const [openSnackbar, setOpenSnackbar] = useState(false);
 
     const handleClickOpen = () => {
-        setOpen(true);
+        setOpenDialog(true);
     };
 
     const handleClose = () => {
         resetForm();
         resetMutation();
-        setOpen(false);
+        setOpenDialog(false);
     };
 
     return (
@@ -122,7 +125,7 @@ const PostThreadButton = () => {
                 </Button>
             </Tooltip>
             <Dialog
-                open={open}
+                open={openDialog}
                 TransitionComponent={Transition}
                 keepMounted
                 onClose={handleClose}
@@ -195,6 +198,7 @@ const PostThreadButton = () => {
                     </LoadingButton>
                 </Box>
             </Dialog>
+            <SnackBar defOpen={openSnackbar} message="お題を投稿しました!" />
         </>
     );
 };
