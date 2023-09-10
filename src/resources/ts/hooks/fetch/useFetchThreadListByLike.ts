@@ -8,7 +8,7 @@ const fetchThreadListByLike = async () => {
 };
 
 const useFetchThreadListByLike = () => {
-    return useQuery<Data[]>(["threads"], fetchThreadListByLike);
+    return useQuery<Data[]>(["odais"], fetchThreadListByLike);
 };
 
 export default useFetchThreadListByLike;

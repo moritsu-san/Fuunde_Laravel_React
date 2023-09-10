@@ -8,7 +8,7 @@ const fetchThreadListByTime = async () => {
 };
 
 const useFetchThreadListByTime = () => {
-    return useQuery<Data[]>(["threads"], fetchThreadListByTime);
+    return useQuery<Data[]>(["odais"], fetchThreadListByTime);
 };
 
 export default useFetchThreadListByTime;

@@ -4,10 +4,8 @@ import {
     Box,
     FormControl,
     FormHelperText,
-    Input,
-    InputLabel,
+    OutlinedInput,
 } from "@mui/material";
-import SendIcon from "@mui/icons-material/Send";
 import * as z from "zod";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -19,7 +17,7 @@ import { FC, ReactNode } from "react";
 import { Link } from "react-router-dom";
 import useCurrentUser from "../../hooks/user/useCurrentUser";
 import { cardAvatar } from "../../hooks/libs/cardAvatar";
-import { User } from "../../models/User";
+import { grey } from "@mui/material/colors";
 
 type Props = {
     thread: Data;
@@ -45,7 +43,8 @@ const ThreadPostAnswer: FC<Props> = ({ thread }) => {
         resolver: zodResolver(schema),
     });
 
-    const { error, isLoading, mutate, reset: resetMutation } = usePostAnswer();
+    const { error, isLoading, mutate } = usePostAnswer();
+    const isTooBig = errors.body?.type === "too_big";
     const statusCode = (error as AxiosError)?.response?.status;
 
     const queryClient = useQueryClient();
@@ -56,19 +55,20 @@ const ThreadPostAnswer: FC<Props> = ({ thread }) => {
         mutate(postData, {
             onSuccess: () => {
                 resetForm();
-                // queryClient.invalidateQueries(["answers"]);
+                queryClient.invalidateQueries(["thread"]);
             },
         });
     };
 
     return (
         <Box
-            pt="4px"
+            pt={isTooBig || statusCode ? "4px" : "14px"}
             px={2}
-            pb="8px"
             display="flex"
             flexDirection="row"
             alignItems="stretch"
+            borderBottom={1}
+            borderColor={grey[300]}
         >
             <Box
                 component={Link}
@@ -77,6 +77,7 @@ const ThreadPostAnswer: FC<Props> = ({ thread }) => {
                 flexDirection="column"
                 justifyContent="center"
                 mr="12px"
+                mb="20px"
             >
                 <Avatar {...cardAvatar(user?.name as string)} />
             </Box>
@@ -95,14 +96,16 @@ const ThreadPostAnswer: FC<Props> = ({ thread }) => {
                     variant="standard"
                     fullWidth
                     margin="normal"
-                    error={errors.body ? true : false}
+                    error={isTooBig ? true : false}
                 >
-                    <Input
+                    <OutlinedInput
                         id="post-thread"
+                        placeholder="アンサーを入力"
                         multiline
                         inputProps={{
                             style: {
-                                fontSize: "24px",
+                                border: "none",
+                                fontSize: "16px",
                                 lineHeight: "30px",
                             },
                         }}
@@ -112,10 +115,8 @@ const ThreadPostAnswer: FC<Props> = ({ thread }) => {
                         id="post-thread-error-text"
                         sx={{ color: "error.main" }}
                     >
-                        {(errors.body?.message as ReactNode) || statusCode
-                            ? null
-                            : "　"}
-                        {errors.body?.message as ReactNode}
+                        {isTooBig || statusCode ? null : "　"}
+                        {isTooBig && (errors.body?.message as ReactNode)}
                         {statusCode &&
                             `エラーにより投稿できませんでした。(${statusCode})`}
                     </FormHelperText>
@@ -126,7 +127,7 @@ const ThreadPostAnswer: FC<Props> = ({ thread }) => {
                     disabled={!isValid}
                     type="submit"
                     variant="contained"
-                    sx={{ height: "40px", ml: "16px" }}
+                    sx={{ height: "40px", ml: "16px", mb: "20px" }}
                 >
                     投稿
                 </LoadingButton>

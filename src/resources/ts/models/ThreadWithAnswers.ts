@@ -1,4 +1,4 @@
-type answerData = {
+export type answerData = {
     id: number;
     body: string;
     thread_id: number;
@@ -17,7 +17,7 @@ type userData = {
     username: string;
 };
 
-type Data = {
+export type Data = {
     id: number;
     user_id: number;
     body: string;
@@ -29,5 +29,3 @@ type Data = {
     user: userData;
     likes: userData[];
 };
-
-export default Data;

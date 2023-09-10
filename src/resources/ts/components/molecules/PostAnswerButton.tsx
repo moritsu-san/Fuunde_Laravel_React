@@ -73,6 +73,7 @@ const PostAnswerButton: FC<Props> = ({ data }) => {
         mutate(postData, {
             onSuccess: () => {
                 queryClient.invalidateQueries(["answers"]);
+                queryClient.invalidateQueries(["thread"]);
                 handleClose();
             },
         });
