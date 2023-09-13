@@ -20,7 +20,8 @@ const LikeButton: FC<Props> = ({ mode, id, defIsLiked, defLikesCount }) => {
 
     useEffect(() => {
         setIsLiked(defIsLiked);
-    }, [defIsLiked]);
+        setLikesCount(defLikesCount);
+    }, [defIsLiked, defLikesCount]);
 
     const user = useCurrentUser();
 
