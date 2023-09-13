@@ -129,7 +129,10 @@ const OdaiCard: FC<Props> = ({ data }) => {
                             <Box display="flex">
                                 <Box mr="auto">
                                     {user ? (
-                                        <PostAnswerButton data={data} />
+                                        <PostAnswerButton
+                                            data={data}
+                                            toThreadPage={true}
+                                        />
                                     ) : (
                                         <Tooltip
                                             title="ログインしてください"

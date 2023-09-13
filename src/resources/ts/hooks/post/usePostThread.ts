@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { FieldValues } from "react-hook-form";
 
@@ -8,7 +8,13 @@ const postThread = async (formData: FieldValues) => {
 };
 
 const usePostThread = () => {
-    return useMutation(postThread);
+    const queryClient = useQueryClient();
+    return useMutation(postThread, {
+        onSuccess: () => {
+            queryClient.invalidateQueries(["threads"]);
+            queryClient.setQueryData(["openSnackbar"], "お題を投稿しました!");
+        },
+    });
 };
 
 export default usePostThread;

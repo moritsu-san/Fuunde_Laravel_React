@@ -1,18 +1,19 @@
-import { Alert, IconButton, Slide, SlideProps, Snackbar } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
+import { Alert, Slide, SlideProps, Snackbar } from "@mui/material";
 import { FC, useEffect, useState } from "react";
 import { JSX } from "react/jsx-runtime";
+import { useQueryClient } from "@tanstack/react-query";
 
 type Props = {
     defOpen: boolean;
-    message: string;
+    message: string | null;
 };
 
 function TransitionLeft(props: JSX.IntrinsicAttributes & SlideProps) {
     return <Slide {...props} direction="left" />;
 }
 
-const SnackBar: FC<Props> = ({ defOpen, message }) => {
+const SuccessSnackBar: FC<Props> = ({ defOpen, message }) => {
+    const queryClient = useQueryClient();
     const [open, setOpen] = useState(false);
 
     useEffect(() => {
@@ -21,18 +22,8 @@ const SnackBar: FC<Props> = ({ defOpen, message }) => {
 
     const handleClose = () => {
         setOpen(false);
+        queryClient.setQueryData(["openSnackbar"], null);
     };
-
-    // const action = (
-    //     <IconButton
-    //         size="small"
-    //         aria-label="close"
-    //         color="inherit"
-    //         onClick={handleClose}
-    //     >
-    //         <CloseIcon fontSize="small" />
-    //     </IconButton>
-    // );
 
     return (
         <Snackbar
@@ -54,4 +45,4 @@ const SnackBar: FC<Props> = ({ defOpen, message }) => {
     );
 };
 
-export default SnackBar;
+export default SuccessSnackBar;

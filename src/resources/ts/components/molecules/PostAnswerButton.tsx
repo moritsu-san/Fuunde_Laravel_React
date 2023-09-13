@@ -17,7 +17,6 @@ import { FC, ReactElement, ReactNode, Ref, forwardRef, useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import * as z from "zod";
 import { AxiosError } from "axios";
-import { useQueryClient } from "@tanstack/react-query";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 import CloseIcon from "@mui/icons-material/Close";
 import { inputAvatar } from "../../hooks/libs/inputAvatar";
@@ -29,8 +28,7 @@ import { grey } from "@mui/material/colors";
 import { Data } from "../../models/Thread";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import { retweetAvatar } from "../../hooks/libs/retweetAvatar";
-import { Link } from "react-router-dom";
-import SnackBar from "../atoms/SnackBar";
+import { Link, useHistory } from "react-router-dom";
 
 const schema = z.object({
     body: z
@@ -50,9 +48,12 @@ const Transition = forwardRef(function Transition(
 
 type Props = {
     data: Data;
+    toThreadPage: boolean;
 };
 
-const PostAnswerButton: FC<Props> = ({ data }) => {
+const PostAnswerButton: FC<Props> = ({ data, toThreadPage }) => {
+    const history = useHistory();
+
     const {
         register,
         handleSubmit,
@@ -66,17 +67,15 @@ const PostAnswerButton: FC<Props> = ({ data }) => {
     const { error, isLoading, mutate, reset: resetMutation } = usePostAnswer();
     const statusCode = (error as AxiosError)?.response?.status;
 
-    const queryClient = useQueryClient();
-
     const handlePostAnswer: SubmitHandler<FieldValues> = (formData) => {
         const thread_id = data.id;
         const postData = { formData, thread_id };
         mutate(postData, {
-            onSuccess: () => {
-                setOpenSnackbar(true);
-                queryClient.invalidateQueries(["answers"]);
-                queryClient.invalidateQueries(["thread"]);
+            onSuccess: (data) => {
                 handleClose();
+                if (toThreadPage) {
+                    history.push(`/thread/${data.thread_id}`);
+                }
             },
         });
     };
@@ -84,7 +83,6 @@ const PostAnswerButton: FC<Props> = ({ data }) => {
     const user = useCurrentUser();
 
     const [openDialog, setOpenDialog] = useState(false);
-    const [openSnackbar, setOpenSnackbar] = useState(false);
 
     const handleClickOpen = () => {
         setOpenDialog(true);
@@ -286,10 +284,6 @@ const PostAnswerButton: FC<Props> = ({ data }) => {
                     </LoadingButton>
                 </Box>
             </Dialog>
-            <SnackBar
-                defOpen={openSnackbar}
-                message="アンサーを投稿しました!"
-            />
         </>
     );
 };

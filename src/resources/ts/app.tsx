@@ -12,11 +12,7 @@ import {
     Route,
     Switch,
 } from "react-router-dom";
-import {
-    QueryClient,
-    QueryClientProvider,
-    useQueryClient,
-} from "@tanstack/react-query";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 import Axios from "axios";
 Axios.defaults.baseURL = "http://localhost:3000/";
@@ -49,6 +45,8 @@ import { grey } from "@mui/material/colors";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import Odai from "./containers/pages/Odai";
 import Thread from "./containers/pages/Thread";
+import SuccessSnackBar from "./components/atoms/SuccessSnackBar";
+import useOpenSuccessSnackbar from "./hooks/snackbar/useOpenSuccessSnackbar";
 
 const client = new QueryClient();
 
@@ -94,16 +92,11 @@ const AuthRoute: FC<Props> = ({ exact = false, path, children }) => {
 };
 
 const App = () => {
-    const queryClient = useQueryClient();
-    const { isLoading, isFetching } = useGetMe({
-        retry: 0,
-        initialData: undefined,
-        onError: () => {
-            queryClient.setQueryData(["user"], null);
-        },
-    });
-
     const sh = window.screen.height;
+
+    const { data } = useOpenSuccessSnackbar();
+
+    const { isLoading, isFetching } = useGetMe();
 
     if (isLoading) {
         return <Loading />;
@@ -203,6 +196,7 @@ const App = () => {
                     <SideBar />
                 </Box>
             </Box>
+            <SuccessSnackBar defOpen={Boolean(data)} message={data} />
         </Container>
     );
 };

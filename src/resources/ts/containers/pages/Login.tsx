@@ -8,6 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { LoginForm } from "../../models/LoginForm";
 import useOAuthUrl from "../../hooks/auth/useOAuthUrl";
 import { Provider } from "../../models/OAuth";
+import { useQueryClient } from "@tanstack/react-query";
 
 const schema = z.object({
     email: z.string().email({ message: "メールアドレス形式ではありません。" }),
@@ -30,7 +31,7 @@ const EnhancedLogin = () => {
     const history = useHistory();
     const location = useLocation();
     const { from } = (location.state as { from: string }) || {
-        from: { pathname: "/" },
+        from: "/",
     };
 
     const { error, isLoading: loginIsLoading, mutate } = useLogin();
@@ -46,10 +47,12 @@ const EnhancedLogin = () => {
     const socialLoginStatusCode = (socialLoginError as AxiosError)?.response
         ?.status;
 
-    const handleLogin: SubmitHandler<LoginForm> = (data, event?) => {
-        event?.preventDefault();
+    const queryClient = useQueryClient();
+
+    const handleLogin: SubmitHandler<LoginForm> = (data) => {
         mutate(data, {
             onSuccess: () => {
+                queryClient.setQueryData(["openSnackbar"], 'ログインしました!');
                 history.replace(from);
             },
         });
@@ -60,19 +63,21 @@ const EnhancedLogin = () => {
     };
 
     return (
-        <Login
-            register={register}
-            handleSubmit={handleSubmit}
-            isValid={isValid}
-            errors={errors}
-            resEmailErrors={resEmailErrors}
-            handleLogin={handleLogin}
-            statusCode={statusCode}
-            socialLoginStatusCode={socialLoginStatusCode}
-            loginIsLoading={loginIsLoading}
-            socialLoginIsLoading={socialLoginIsLoading}
-            handleSocialLoginRequest={handleSocialLoginRequest}
-        />
+        <>
+            <Login
+                register={register}
+                handleSubmit={handleSubmit}
+                isValid={isValid}
+                errors={errors}
+                resEmailErrors={resEmailErrors}
+                handleLogin={handleLogin}
+                statusCode={statusCode}
+                socialLoginStatusCode={socialLoginStatusCode}
+                loginIsLoading={loginIsLoading}
+                socialLoginIsLoading={socialLoginIsLoading}
+                handleSocialLoginRequest={handleSocialLoginRequest}
+            />
+        </>
     );
 };
 

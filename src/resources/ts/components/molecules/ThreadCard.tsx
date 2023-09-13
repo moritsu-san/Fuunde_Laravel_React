@@ -128,7 +128,10 @@ const ThreadCard: FC<Props> = ({ thread }) => {
                             <Box display="flex">
                                 <Box mr="auto">
                                     {user ? (
-                                        <PostAnswerButton data={thread} />
+                                        <PostAnswerButton
+                                            data={thread}
+                                            toThreadPage={false}
+                                        />
                                     ) : (
                                         <Tooltip
                                             title="ログインしてください"

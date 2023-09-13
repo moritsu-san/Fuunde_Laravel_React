@@ -19,14 +19,13 @@ import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import * as z from "zod";
 import usePostThread from "../../hooks/post/usePostThread";
 import { AxiosError } from "axios";
-import { useQueryClient } from "@tanstack/react-query";
 import CreateIcon from "@mui/icons-material/Create";
 import CloseIcon from "@mui/icons-material/Close";
 import { inputAvatar } from "../../hooks/libs/inputAvatar";
 import SendIcon from "@mui/icons-material/Send";
 import useCurrentUser from "../../hooks/user/useCurrentUser";
 import { LoadingButton } from "@mui/lab";
-import SnackBar from "../atoms/SnackBar";
+import { useHistory } from "react-router-dom";
 
 const schema = z.object({
     body: z
@@ -45,6 +44,8 @@ const Transition = forwardRef(function Transition(
 });
 
 const PostThreadButton = () => {
+    const history = useHistory();
+
     const {
         register,
         handleSubmit,
@@ -58,14 +59,11 @@ const PostThreadButton = () => {
     const { error, isLoading, mutate, reset: resetMutation } = usePostThread();
     const statusCode = (error as AxiosError)?.response?.status;
 
-    const queryClient = useQueryClient();
-
     const handlePostThread: SubmitHandler<FieldValues> = (data) => {
         mutate(data, {
-            onSuccess: () => {
-                setOpenSnackbar(true);
-                queryClient.invalidateQueries(["threads"]);
+            onSuccess: (data) => {
                 handleClose();
+                history.push(`/thread/${data.id}`);
             },
         });
     };
@@ -73,7 +71,6 @@ const PostThreadButton = () => {
     const user = useCurrentUser();
 
     const [openDialog, setOpenDialog] = useState(false);
-    const [openSnackbar, setOpenSnackbar] = useState(false);
 
     const handleClickOpen = () => {
         setOpenDialog(true);
@@ -198,7 +195,6 @@ const PostThreadButton = () => {
                     </LoadingButton>
                 </Box>
             </Dialog>
-            <SnackBar defOpen={openSnackbar} message="お題を投稿しました!" />
         </>
     );
 };

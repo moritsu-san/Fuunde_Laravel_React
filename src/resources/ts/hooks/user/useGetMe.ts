@@ -1,4 +1,4 @@
-import { UseQueryOptions, useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { User } from "../../models/User";
 import axios from "axios";
 
@@ -7,15 +7,15 @@ const getLoginUser = async (): Promise<User> => {
     return data;
 };
 
-const useGetMe = (
-    options?:
-        | (Omit<
-              UseQueryOptions<User, unknown, User, string[]>,
-              "initialData" | "queryFn" | "queryKey"
-          > & { initialData?: (() => undefined) | undefined })
-        | undefined
-) => {
-    return useQuery(["user"], getLoginUser, options);
+const useGetMe = () => {
+    const queryClient = useQueryClient();
+    return useQuery(["user"], getLoginUser, {
+        retry: 0,
+        initialData: undefined,
+        onError: () => {
+            queryClient.setQueryData(["user"], null);
+        },
+    });
 };
 
 export default useGetMe;
