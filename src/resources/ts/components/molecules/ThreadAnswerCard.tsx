@@ -93,7 +93,7 @@ const ThreadAnswerCard: FC<Props> = ({ data }) => {
                                             >
                                                 <Box
                                                     component="time"
-                                                    dateTime={data.created_at}
+                                                    dateTime={data.created_at.toString()}
                                                     sx={{
                                                         color: grey[600],
                                                         fontSize: "15px",
@@ -129,7 +129,7 @@ const ThreadAnswerCard: FC<Props> = ({ data }) => {
                                 <Box mr="auto"></Box>
                                 <Box mr="50px">
                                     <LikeButton
-                                        mode="thread"
+                                        mode="answer"
                                         id={data.id}
                                         defIsLiked={defIsLiked}
                                         defLikesCount={data.likes_count}

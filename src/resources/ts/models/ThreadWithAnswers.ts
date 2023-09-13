@@ -3,8 +3,8 @@ export type answerData = {
     body: string;
     thread_id: number;
     user_id: number;
-    created_at: string;
-    updated_at: string;
+    created_at: Date;
+    updated_at: Date;
     likes_count: number;
     diff_for_humans: string;
     user: userData;
@@ -21,8 +21,8 @@ export type Data = {
     id: number;
     user_id: number;
     body: string;
-    created_at: string;
-    updated_at: string;
+    created_at: Date;
+    updated_at: Date;
     likes_count: number;
     diff_for_humans: string;
     answers: answerData[];

@@ -10,6 +10,7 @@ import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import PostAnswerButton from "./PostAnswerButton";
 import LikeButton from "../atoms/LikeButton";
+import { format } from "date-fns";
 
 type Props = {
     thread: Data;
@@ -23,7 +24,7 @@ const ThreadCard: FC<Props> = ({ thread }) => {
             : true;
 
     return (
-        <Box width={1} borderBottom={1} borderColor={grey[300]}>
+        <Box width={1}>
             <Box
                 component="article"
                 width={1}
@@ -34,7 +35,12 @@ const ThreadCard: FC<Props> = ({ thread }) => {
             >
                 <Box display="flex" flexDirection="column">
                     <>
-                        <Box display="flex" flexDirection="row" mb="4px">
+                        <Box
+                            display="flex"
+                            flexDirection="row"
+                            my="8px"
+                            width={1}
+                        >
                             <Box mr="12px">
                                 <Box
                                     component={Link}
@@ -47,6 +53,7 @@ const ThreadCard: FC<Props> = ({ thread }) => {
                                 display="flex"
                                 flexDirection="row"
                                 justifyContent="space-between"
+                                width={1}
                             >
                                 <Box display="flex" flexDirection="column">
                                     <Box>
@@ -57,6 +64,7 @@ const ThreadCard: FC<Props> = ({ thread }) => {
                                             <Typography
                                                 fontSize="15px"
                                                 fontWeight="bold"
+                                                lineHeight="20px"
                                             >
                                                 {thread.user.name}
                                             </Typography>
@@ -70,6 +78,7 @@ const ThreadCard: FC<Props> = ({ thread }) => {
                                         >
                                             <Typography
                                                 fontSize="15px"
+                                                lineHeight="20px"
                                                 sx={{
                                                     color: grey[600],
                                                 }}
@@ -79,18 +88,17 @@ const ThreadCard: FC<Props> = ({ thread }) => {
                                         </Box>
                                     </Box>
                                 </Box>
-                                <Box>
+                                <Box
+                                    display="flex"
+                                    flexDirection="column"
+                                    justifyContent="center"
+                                >
                                     <MoreHorizIcon sx={{ color: grey[500] }} />
                                 </Box>
                             </Box>
                         </Box>
-                        <Box>
-                            <Box
-                                pt="14px"
-                                pb={1}
-                                component={Link}
-                                to={`/thread/${thread.id}`}
-                            >
+                        <Box pt="14px" pb={1}>
+                            <Box component={Link} to={`/thread/${thread.id}`}>
                                 <Typography
                                     variant="h6"
                                     textAlign="center"
@@ -100,8 +108,75 @@ const ThreadCard: FC<Props> = ({ thread }) => {
                                 </Typography>
                             </Box>
                         </Box>
-                        <Box display="flex" flexDirection="row" my="16px">
-                            <Box component="time" dateTime={thread.created_at}></Box>
+                        <Box
+                            display="flex"
+                            flexDirection="row"
+                            my="16px"
+                            px="6px"
+                        >
+                            <Box
+                                component="time"
+                                dateTime={thread.created_at.toString()}
+                                color={grey[600]}
+                            >
+                                {format(
+                                    new Date(thread.created_at),
+                                    "yyyy年M月d日 HH:mm"
+                                )}
+                            </Box>
+                        </Box>
+                        <Box
+                            height="48px"
+                            px="4px"
+                            display="flex"
+                            flexDirection="row"
+                            borderTop={1}
+                            borderBottom={1}
+                            borderColor={grey[300]}
+                        >
+                            <Box
+                                mr="auto"
+                                display="flex"
+                                flexDirection="column"
+                                justifyContent="center"
+                            >
+                                <PostAnswerButton
+                                    data={thread}
+                                    toThreadPage={false}
+                                />
+                            </Box>
+                            <Box
+                                mr="50px"
+                                display="flex"
+                                flexDirection="column"
+                                justifyContent="center"
+                            >
+                                <LikeButton
+                                    mode="thread"
+                                    id={thread.id}
+                                    defIsLiked={defIsLiked}
+                                    defLikesCount={thread.likes_count}
+                                />
+                            </Box>
+                            <Box
+                                display="flex"
+                                flexDirection="column"
+                                justifyContent="center"
+                            >
+                                <Tooltip
+                                    title="ログインしてください"
+                                    placement="top"
+                                    arrow
+                                >
+                                    <IconButton sx={{ p: 0 }}>
+                                        <BookmarkBorderIcon
+                                            sx={{
+                                                width: "22.5px",
+                                            }}
+                                        />
+                                    </IconButton>
+                                </Tooltip>
+                            </Box>
                         </Box>
 
                         {/* <Box display="flex">

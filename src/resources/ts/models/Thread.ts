@@ -9,9 +9,9 @@ export type Data = {
     user_id: number;
     body: string;
     likes_count: number;
-    created_at: string;
+    created_at: Date;
     diff_for_humans: string;
-    updated_at: string;
+    updated_at: Date;
     user: userData;
     likes: userData[];
 };

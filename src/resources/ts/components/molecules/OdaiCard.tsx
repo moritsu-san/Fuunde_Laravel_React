@@ -94,7 +94,7 @@ const OdaiCard: FC<Props> = ({ data }) => {
                                             >
                                                 <Box
                                                     component="time"
-                                                    dateTime={data.created_at}
+                                                    dateTime={data.created_at.toString()}
                                                     sx={{
                                                         color: grey[600],
                                                         fontSize: "15px",

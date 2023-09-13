@@ -8,9 +8,9 @@ type threadData = {
     id: number;
     body: string;
     user_id: number;
-    created_at: string;
+    created_at: Date;
     diff_for_humans: string;
-    updated_at: string;
+    updated_at: Date;
     likes_count: number;
     user: userData;
 };
@@ -21,9 +21,9 @@ export type Data = {
     thread_id:number;
     body: string;
     likes_count: number;
-    created_at: string;
+    created_at: Date;
     diff_for_humans: string;
-    updated_at: string;
+    updated_at: Date;
     user: userData;
     thread: threadData;
     likes: userData[];

@@ -95,7 +95,7 @@ const AnswerCard: FC<Props> = ({ data }) => {
                                             >
                                                 <Box
                                                     component="time"
-                                                    dateTime={data.created_at}
+                                                    dateTime={data.created_at.toString()}
                                                     sx={{
                                                         color: grey[600],
                                                         fontSize: "15px",
@@ -214,10 +214,7 @@ const AnswerCard: FC<Props> = ({ data }) => {
                                                     <Box>
                                                         <Box
                                                             component="time"
-                                                            dateTime={
-                                                                data.thread
-                                                                    .created_at
-                                                            }
+                                                            dateTime={data.thread.created_at.toString()}
                                                             sx={{
                                                                 color: grey[600],
                                                                 fontSize:

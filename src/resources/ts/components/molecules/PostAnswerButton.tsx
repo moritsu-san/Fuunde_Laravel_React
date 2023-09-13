@@ -195,7 +195,7 @@ const PostAnswerButton: FC<Props> = ({ data, toThreadPage }) => {
                                             <Box>
                                                 <Box
                                                     component="time"
-                                                    dateTime={data.created_at}
+                                                    dateTime={data.created_at.toString()}
                                                     sx={{
                                                         color: grey[600],
                                                         fontSize: "12px",
