@@ -28,8 +28,12 @@ const useSocailLogin = (): UseMutationResult<
     return useMutation(
         ({ provider, authParams }) => socialLogin(provider, authParams),
         {
-            onSuccess: () => {
+            onSuccess: (data, variables) => {
                 queryClient.invalidateQueries(["user"]);
+                queryClient.setQueryData(
+                    ["openSnackbar"],
+                    `${variables.provider}でログインしました!`
+                );
             },
         }
     );

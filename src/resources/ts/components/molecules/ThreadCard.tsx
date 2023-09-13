@@ -32,85 +32,59 @@ const ThreadCard: FC<Props> = ({ thread }) => {
                 px={2}
                 sx={{ cursor: "pointer" }}
             >
-                <Box display="flex">
+                <Box display="flex" flexDirection="column">
                     <>
-                        <Box mr="12px" display="flex" flexDirection="column">
-                            <Box
-                                component={Link}
-                                to={`/user/${thread.user.username}`}
-                            >
-                                <Avatar {...cardAvatar(thread.user.name)} />
-                            </Box>
-                        </Box>
-                        <Box pb="8px" width={1}>
-                            <Box mb="2px">
+                        <Box display="flex" flexDirection="row" mb="4px">
+                            <Box mr="12px">
                                 <Box
-                                    display="flex"
-                                    justifyContent="space-between"
+                                    component={Link}
+                                    to={`/user/${thread.user.username}`}
                                 >
-                                    <Box display="flex" alignItems="baseline">
-                                        <Box>
-                                            <Box
-                                                component={Link}
-                                                to={`/user/${thread.user.username}`}
-                                            >
-                                                <Typography
-                                                    fontSize="15px"
-                                                    fontWeight="bold"
-                                                >
-                                                    {thread.user.name}
-                                                </Typography>
-                                            </Box>
-                                        </Box>
-                                        <Box ml="4px">
-                                            <Box
-                                                component={Link}
-                                                to={`/user/${thread.user.username}`}
-                                            >
-                                                <Typography
-                                                    fontSize="15px"
-                                                    sx={{
-                                                        color: grey[600],
-                                                    }}
-                                                >
-                                                    @{thread.user.username}
-                                                </Typography>
-                                            </Box>
-                                        </Box>
-                                        <Box
-                                            component="span"
-                                            fontSize="15px"
-                                            fontWeight="bold"
-                                            color={grey[600]}
-                                            px="4px"
-                                        >
-                                            ·
-                                        </Box>
-                                        <Box>
-                                            <Box
-                                                component={Link}
-                                                to={`/user/${thread.user.username}`}
-                                            >
-                                                <Box
-                                                    component="time"
-                                                    dateTime={thread.created_at}
-                                                    sx={{
-                                                        color: grey[600],
-                                                        fontSize: "15px",
-                                                    }}
-                                                >
-                                                    {thread.diff_for_humans}
-                                                </Box>
-                                            </Box>
-                                        </Box>
-                                    </Box>
-                                    <Box>
-                                        <MoreHorizIcon
-                                            sx={{ color: grey[500] }}
-                                        />
-                                    </Box>
+                                    <Avatar {...cardAvatar(thread.user.name)} />
                                 </Box>
                             </Box>
+                            <Box
+                                display="flex"
+                                flexDirection="row"
+                                justifyContent="space-between"
+                            >
+                                <Box display="flex" flexDirection="column">
+                                    <Box>
+                                        <Box
+                                            component={Link}
+                                            to={`/user/${thread.user.username}`}
+                                        >
+                                            <Typography
+                                                fontSize="15px"
+                                                fontWeight="bold"
+                                            >
+                                                {thread.user.name}
+                                            </Typography>
+                                        </Box>
+                                    </Box>
+
+                                    <Box>
+                                        <Box
+                                            component={Link}
+                                            to={`/user/${thread.user.username}`}
+                                        >
+                                            <Typography
+                                                fontSize="15px"
+                                                sx={{
+                                                    color: grey[600],
+                                                }}
+                                            >
+                                                @{thread.user.username}
+                                            </Typography>
+                                        </Box>
+                                    </Box>
+                                </Box>
+                                <Box>
+                                    <MoreHorizIcon sx={{ color: grey[500] }} />
+                                </Box>
+                            </Box>
+                        </Box>
+                        <Box>
                             <Box
                                 pt="14px"
                                 pb={1}
@@ -125,7 +99,12 @@ const ThreadCard: FC<Props> = ({ thread }) => {
                                     {thread.body}
                                 </Typography>
                             </Box>
-                            <Box display="flex">
+                        </Box>
+                        <Box display="flex" flexDirection="row" my="16px">
+                            <Box component="time" dateTime={thread.created_at}></Box>
+                        </Box>
+
+                        {/* <Box display="flex">
                                 <Box mr="auto">
                                     {user ? (
                                         <PostAnswerButton
@@ -171,8 +150,7 @@ const ThreadCard: FC<Props> = ({ thread }) => {
                                         </IconButton>
                                     </Tooltip>
                                 </Box>
-                            </Box>
-                        </Box>
+                            </Box> */}
                     </>
                 </Box>
             </Box>

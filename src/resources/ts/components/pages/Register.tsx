@@ -32,7 +32,7 @@ type Props = {
     handleSubmit: UseFormHandleSubmit<RegisterForm, undefined>;
     isValid: boolean;
     errors: FieldErrors<RegisterForm>;
-    resNameErrors?: Array<string>;
+    resUsernameErrors?: Array<string>;
     resEmailErrors?: Array<string>;
     handleRegister: SubmitHandler<RegisterForm>;
     statusCode?: number | undefined;
@@ -47,7 +47,7 @@ const Register: FC<Props> = ({
     handleSubmit,
     isValid,
     errors,
-    resNameErrors,
+    resUsernameErrors,
     resEmailErrors,
     handleRegister,
     statusCode,
@@ -88,9 +88,12 @@ const Register: FC<Props> = ({
                         <TextField
                             margin="normal"
                             fullWidth
-                            color={errors.username && "error"}
+                            color={
+                                (errors.username || resUsernameErrors) &&
+                                "error"
+                            }
                             id="username"
-                            label="@ユーザーネーム(一意)"
+                            label="ユーザーネーム(一意)"
                             placeholder="@"
                             autoFocus
                             {...register("username")}
@@ -98,7 +101,7 @@ const Register: FC<Props> = ({
                         <Typography variant="subtitle2" color="error">
                             {errors.username?.message}
                         </Typography>
-                        {resNameErrors && (
+                        {resUsernameErrors && (
                             <Typography variant="subtitle2" color="error">
                                 このユーザーネームはすでに存在します。
                             </Typography>
@@ -107,7 +110,7 @@ const Register: FC<Props> = ({
                             margin="normal"
                             fullWidth
                             color={errors.name && "error"}
-                            id="nick_name"
+                            id="name"
                             label="ニックネーム(表示される名前)"
                             {...register("name")}
                         />
@@ -117,7 +120,7 @@ const Register: FC<Props> = ({
                         <TextField
                             margin="normal"
                             fullWidth
-                            color={errors.email && "error"}
+                            color={(errors.email || resEmailErrors) && "error"}
                             id="email"
                             label="メールアドレス"
                             autoComplete="email"

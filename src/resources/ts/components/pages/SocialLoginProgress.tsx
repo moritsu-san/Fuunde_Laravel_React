@@ -23,7 +23,7 @@ import { Provider } from "../../models/OAuth";
 import useSocialRegister from "../../hooks/auth/useSocialRegister";
 
 const registerSchema = z.object({
-    name: z
+    username: z
         .string()
         .min(1, { message: "入力してください。" })
         .max(15, { message: "15文字以下にしてください。" })
@@ -33,8 +33,8 @@ const registerSchema = z.object({
 });
 
 type PostData = {
+    username: string;
     name: string;
-    nick_name: string;
     email: string;
     provider_user_id: string;
 };
@@ -44,7 +44,7 @@ type Props = {
     statusCode?: number;
     openForm: boolean;
     provider: Provider;
-    nick_name?: string;
+    name?: string;
     email?: string;
     provider_user_id?: string;
 };
@@ -54,7 +54,7 @@ const Content: FC<Props> = ({
     statusCode,
     openForm,
     provider,
-    nick_name,
+    name,
     email,
     provider_user_id,
 }) => {
@@ -71,13 +71,12 @@ const Content: FC<Props> = ({
     });
 
     const { error, isLoading, mutate: socialRegister } = useSocialRegister();
-    const resNameErrors = error?.response?.data?.errors?.name;
+    const resUsernameErrors = error?.response?.data?.errors?.username;
 
-    const handleSocialLogin = (data: any, event?: any) => {
-        event?.preventDefault();
+    const handleSocialLogin = (data: any) => {
         const postData = {
-            name: data.name,
-            nick_name: nick_name,
+            username: data.username,
+            name: name,
             email: email,
             provider_user_id: provider_user_id,
         };
@@ -94,6 +93,9 @@ const Content: FC<Props> = ({
     if (openForm) {
         return (
             <>
+                <Typography color="error">
+                    ユーザーネームの登録が必要です
+                </Typography>
                 <Box
                     component="form"
                     onSubmit={handleSubmit(handleSocialLogin)}
@@ -103,17 +105,19 @@ const Content: FC<Props> = ({
                     <TextField
                         margin="normal"
                         fullWidth
-                        color={errors.name && "error"}
-                        id="name"
-                        label="@ユーザーネーム(一意)"
+                        color={
+                            (errors.username || resUsernameErrors) && "error"
+                        }
+                        id="username"
+                        label="ユーザーネーム(一意)"
                         placeholder="@"
                         autoFocus
-                        {...register("name")}
+                        {...register("username")}
                     />
                     <Typography variant="subtitle2" color="error">
-                        {errors.name?.message as string | undefined}
+                        {errors.username?.message as string | undefined}
                     </Typography>
-                    {resNameErrors && (
+                    {resUsernameErrors && (
                         <Typography variant="subtitle2" color="error">
                             このユーザーネームはすでに存在します。
                         </Typography>
@@ -179,7 +183,7 @@ const Content: FC<Props> = ({
 
     return (
         <Box textAlign="center">
-            <CircularProgress color="secondary" />
+            <CircularProgress />
         </Box>
     );
 };
@@ -189,38 +193,36 @@ const SocialLoginProgress: FC<Props> = ({
     statusCode,
     openForm,
     provider,
-    nick_name,
+    name,
     email,
     provider_user_id,
 }) => {
     return (
-            <main>
-                <Container maxWidth="xs">
-                    <Card
-                        sx={{ mt: 8, border: 1, borderColor: "primary.light" }}
-                    >
-                        <CardHeader
-                            title={
-                                oAuthError || statusCode === 500
-                                    ? "ソーシャルログイン処理失敗"
-                                    : "ソーシャルログイン処理中"
-                            }
-                            sx={{ textAlign: "center", mt: 1 }}
+        <main>
+            <Container maxWidth="xs">
+                <Card sx={{ mt: 8, border: 1, borderColor: "primary.light" }}>
+                    <CardHeader
+                        title={
+                            oAuthError || statusCode === 500
+                                ? "ソーシャルログイン処理失敗"
+                                : "ソーシャルログイン処理中"
+                        }
+                        sx={{ textAlign: "center", mt: 1 }}
+                    />
+                    <CardContent>
+                        <Content
+                            oAuthError={oAuthError}
+                            statusCode={statusCode}
+                            openForm={openForm}
+                            provider={provider}
+                            name={name}
+                            email={email}
+                            provider_user_id={provider_user_id}
                         />
-                        <CardContent>
-                            <Content
-                                oAuthError={oAuthError}
-                                statusCode={statusCode}
-                                openForm={openForm}
-                                provider={provider}
-                                nick_name={nick_name}
-                                email={email}
-                                provider_user_id={provider_user_id}
-                            />
-                        </CardContent>
-                    </Card>
-                </Container>
-            </main>
+                    </CardContent>
+                </Card>
+            </Container>
+        </main>
     );
 };
 

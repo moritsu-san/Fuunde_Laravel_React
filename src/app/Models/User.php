@@ -112,6 +112,7 @@ class User extends Authenticatable
                 return $existingUser;
             });
         } else {
+            // 同一のメールアドレスユーザもいない場合は、nameやemailのオブジェクトを$userとして返して、ユーザにusernameを決めさせる
             $providerUserName = $providerUser->getName() ? $providerUser->getName() : $providerUser->getNickname();
             return (object) [
                 'name' => $providerUserName,

@@ -7,8 +7,8 @@ import axios, { AxiosError } from "axios";
 import { Provider } from "../../models/OAuth";
 
 type PostData = {
+    username: string;
     name: string;
-    nick_name: string;
     email: string;
     provider_user_id: string;
 };
@@ -31,8 +31,12 @@ const useSocialRegister = (): UseMutationResult<
     return useMutation(
         ({ provider, postData }) => register(provider, postData),
         {
-            onSuccess: (data) => {
+            onSuccess: (data, variables) => {
                 queryClient.setQueryData(["user"], data);
+                queryClient.setQueryData(
+                    ["openSnackbar"],
+                    `${variables.provider}でログインしました!`
+                );
             },
         }
     );

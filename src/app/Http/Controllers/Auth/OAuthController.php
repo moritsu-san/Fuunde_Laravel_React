@@ -40,6 +40,7 @@ class OAuthController extends Controller
         
         $authUser = User::socialFindOrCreate($providerUser, $provider);
 
+        // $authUserにprovider_user_idプロパティがあれば、ユーザにusernameを入力させUserデータベースに保存する
         if (property_exists( $authUser, 'provider_user_id' )) {
             return response()->json($authUser, 422);
         }
@@ -52,13 +53,13 @@ class OAuthController extends Controller
 
     public function handleRegisterCallback(string $provider, Request $request) {
         $request->validate([
-            'name' => ['required', 'max:15', 'unique:users']
+            'username' => ['required', 'max:15', 'unique:users']
         ]);
         //アカウントがない場合は、ユーザ情報 + 認証プロバイダー情報を登録
         $user = DB::transaction(function () use ( $provider, $request) {
             $user = User::create([
+                'username' => $request->input('username'),
                 'name' => $request->input('name'),
-                'nick_name' => $request->input('nick_name'),
                 'auth_type' => 'SOCIAL',
                 'email' => $request->input('email'),
             ]);
@@ -68,6 +69,8 @@ class OAuthController extends Controller
             ]);
             return $user;
         });
+
+        Auth::login($user, true);
 
         return $user;
     }

@@ -28,7 +28,8 @@ const EnhancedRegister = () => {
 
     const { error, isLoading: registerIsLoading, mutate } = useRegister();
     const statusCode = (error as AxiosError)?.response?.status;
-    const resNameErrors = (error as AxiosError)?.response?.data?.errors?.name;
+    const resUsernameErrors = (error as AxiosError)?.response?.data?.errors
+        ?.username;
     const resEmailErrors = (error as AxiosError)?.response?.data?.errors?.email;
 
     const {
@@ -40,8 +41,7 @@ const EnhancedRegister = () => {
     const socialLoginStatusCode = (socialLoginError as AxiosError)?.response
         ?.status;
 
-    const handleRegister: SubmitHandler<RegisterForm> = (data, event?) => {
-        event?.preventDefault();
+    const handleRegister: SubmitHandler<RegisterForm> = (data) => {
         mutate(data, {
             onSuccess: () => {
                 history.replace(from);
@@ -59,7 +59,7 @@ const EnhancedRegister = () => {
             handleSubmit={handleSubmit}
             isValid={isValid}
             errors={errors}
-            resNameErrors={resNameErrors}
+            resUsernameErrors={resUsernameErrors}
             resEmailErrors={resEmailErrors}
             handleRegister={handleRegister}
             statusCode={statusCode}

@@ -19,7 +19,7 @@ const EnhancedSocialLoginProgress: FC = () => {
     const statusCode = error?.response?.status;
 
     const [openForm, setOpenForm] = useState(false);
-    const [nick_name, setName] = useState("");
+    const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [provider_user_id, setProviderUserId] = useState("");
 
@@ -36,7 +36,7 @@ const EnhancedSocialLoginProgress: FC = () => {
                 },
                 onError: (error) => {
                     if (error?.response?.status === 422) {
-                        setName(error?.response?.data?.nick_name);
+                        setName(error?.response?.data?.name);
                         setEmail(error?.response?.data?.email);
                         setProviderUserId(
                             error?.response?.data?.provider_user_id
@@ -54,7 +54,7 @@ const EnhancedSocialLoginProgress: FC = () => {
             statusCode={statusCode}
             openForm={openForm}
             provider={provider}
-            nick_name={nick_name}
+            name={name}
             email={email}
             provider_user_id={provider_user_id}
         />
