@@ -127,7 +127,7 @@ const ThreadCard: FC<Props> = ({ thread }) => {
                         </Box>
                         <Box
                             height="48px"
-                            px="4px"
+                            px="8px"
                             display="flex"
                             flexDirection="row"
                             borderTop={1}
@@ -152,6 +152,7 @@ const ThreadCard: FC<Props> = ({ thread }) => {
                                 justifyContent="center"
                             >
                                 <LikeButton
+                                    isThreadCard={true}
                                     mode="thread"
                                     id={thread.id}
                                     defIsLiked={defIsLiked}
@@ -171,7 +172,7 @@ const ThreadCard: FC<Props> = ({ thread }) => {
                                     <IconButton sx={{ p: 0 }}>
                                         <BookmarkBorderIcon
                                             sx={{
-                                                width: "22.5px",
+                                                width: "1.5rem",
                                             }}
                                         />
                                     </IconButton>

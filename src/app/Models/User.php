@@ -9,7 +9,6 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use App\Mail\BareMail;
 use App\Notifications\PasswordResetNotification;
-use App\Models\Answer;
 use App\Models\IdentityProvider;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -37,14 +36,14 @@ class User extends Authenticatable
      *
      * @var array
      */
-    protected $visible = [
-        'id',
-        'name',
-        'username',
-        'email',
-        'auth_type',
-        
-    ];
+    protected $visible = [];
+
+    /**
+     * Undocumented variable
+     *
+     * @var array
+     */
+    protected $hidden = ['pivot'];
 
     /**
      * The attributes that should be cast.
@@ -58,9 +57,29 @@ class User extends Authenticatable
     /**
      * Undocumented function
      *
+     * @return HasMany
+     */
+    public function threads(): HasMany
+    {
+        return $this->hasMany('App\Models\Thread');
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return HasMany
+     */
+    public function answers(): HasMany
+    {
+        return $this->hasMany('App\Models\Answer');
+    }
+
+    /**
+     * Undocumented function
+     *
      * @return \Illuminate\Database\Eloquent\Relations\belongsToMany
      */
-    public function threads(): BelongsToMany
+    public function like_threads(): BelongsToMany
     {
         return $this->belongsToMany('App\Models\Thread');
     }
@@ -70,7 +89,7 @@ class User extends Authenticatable
      *
      * @return \Illuminate\Database\Eloquent\Relations\belongsToMany
      */
-    public function answers(): BelongsToMany
+    public function like_answers(): BelongsToMany
     {
         return $this->belongsToMany('App\Models\Answer');
     }

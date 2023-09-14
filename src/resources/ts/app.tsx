@@ -182,7 +182,7 @@ const App = () => {
                             <AuthRoute exact path="/setting">
                                 <Setting />
                             </AuthRoute>
-                            <AuthRoute exact path="/user/:userName">
+                            <AuthRoute path="/user/:username">
                                 <Account />
                             </AuthRoute>
                             <AuthRoute exact path="/thread/:threadId">

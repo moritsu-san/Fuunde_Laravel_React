@@ -250,6 +250,7 @@ const AnswerCard: FC<Props> = ({ data }) => {
                                 <Box mr="auto"></Box>
                                 <Box mr="50px">
                                     <LikeButton
+                                        isThreadCard={false}
                                         mode="answer"
                                         id={data.id}
                                         defIsLiked={defIsLiked}

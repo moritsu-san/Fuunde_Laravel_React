@@ -43,6 +43,17 @@ class AnswerController extends Controller
     }
 
     /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function indexUserByTime(int $user_id)
+    {
+        $answers = $this->answer_service->getUserAnswersWithThreadByTime($user_id);
+        return $answers;
+    }
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request

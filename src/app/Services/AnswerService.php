@@ -34,6 +34,12 @@ class AnswerService
         return $answers;
     }
 
+    public function getUserAnswersWithThreadByTime(int $user_id)
+    {
+        $answers = $this->answer_repository->getPagenatedUserAnswersWithThreadByTime($user_id);
+        return $answers;
+    }
+
     public function createAnswer(int $thread_id, string $body, int $user_id)
     {   
         $store_data = [

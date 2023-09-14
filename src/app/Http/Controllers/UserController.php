@@ -2,19 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
+use App\Services\UserService;
 use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
-{
+{   
+    protected $user_service;
+
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(UserService $user_service)
     {
-        // $this->middleware('auth');
+        $this->middleware('auth');
+        $this->user_service = $user_service;
     }
 
     /**
@@ -24,14 +27,15 @@ class UserController extends Controller
      */
     public function getLoginUser()
     {
-        return Auth::user();
+        return Auth::user()->only(['id', 'username', 'name', 'auth_type', 'email']);
     }
 
     /**
      * リクエストされたユーザーの情報を取得
      */
-    public function show(string $username)
-    {
-        return User::where('username', $username)->firstOrFail();
+    public function getAccountInfo(string $username)
+    {   
+        $account_info = $this->user_service->getAccountInfo($username);
+        return $account_info;
     }
 }

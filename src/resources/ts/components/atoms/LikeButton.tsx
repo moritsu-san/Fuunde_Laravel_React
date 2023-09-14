@@ -8,13 +8,20 @@ import axios from "axios";
 import { useMutation } from "@tanstack/react-query";
 
 type Props = {
+    isThreadCard: boolean;
     mode: "answer" | "thread";
     id: number;
     defIsLiked: boolean;
     defLikesCount: number;
 };
 
-const LikeButton: FC<Props> = ({ mode, id, defIsLiked, defLikesCount }) => {
+const LikeButton: FC<Props> = ({
+    isThreadCard,
+    mode,
+    id,
+    defIsLiked,
+    defLikesCount,
+}) => {
     const [isLiked, setIsLiked] = useState(defIsLiked);
     const [likesCount, setLikesCount] = useState(defLikesCount);
 
@@ -75,13 +82,18 @@ const LikeButton: FC<Props> = ({ mode, id, defIsLiked, defLikesCount }) => {
                 placement="top"
                 arrow
             >
-                <IconButton onClick={handleClick} sx={{ p: 0 }}>
+                <IconButton onClick={handleClick} sx={{ p: 0 }} disableRipple>
                     {isLiked ? (
                         <FavoriteIcon
-                            sx={{ color: pink[500], width: "1.25rem" }}
+                            sx={{
+                                color: pink[500],
+                                width: isThreadCard ? "1.5rem" : "1.25rem",
+                            }}
                         />
                     ) : (
-                        <FavoriteBorderIcon sx={{ width: "1.25rem" }} />
+                        <FavoriteBorderIcon
+                            sx={{ width: isThreadCard ? "1.5rem" : "1.25rem" }}
+                        />
                     )}
                 </IconButton>
             </Tooltip>

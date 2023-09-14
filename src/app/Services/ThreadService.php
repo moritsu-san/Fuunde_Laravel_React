@@ -60,6 +60,12 @@ class ThreadService
         return $threads;
     }
 
+    public function getUserThreadsByTime(int $user_id)
+    {
+        $threads = $this->thread_repository->getPaginatedUserThreadsByTime($user_id);
+        return $threads;
+    }
+
     public function getThreadWithAnswers(int $thread_id)
     {
         $thread = $this->thread_repository->getThreadWithAnswers($thread_id);

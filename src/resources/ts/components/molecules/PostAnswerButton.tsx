@@ -101,8 +101,11 @@ const PostAnswerButton: FC<Props> = ({ data, toThreadPage }) => {
                 sx={{
                     p: 0,
                 }}
+                disableRipple
             >
-                <ChatBubbleOutlineIcon sx={{ width: "1.25rem" }} />
+                <ChatBubbleOutlineIcon
+                    sx={{ width: toThreadPage ? "1.25rem" : "1.5rem" }}
+                />
             </IconButton>
             <Dialog
                 open={openDialog}

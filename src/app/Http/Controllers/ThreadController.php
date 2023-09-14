@@ -9,7 +9,6 @@ use App\Services\ThreadService;
 use App\Repositories\ThreadRepository;
 use App\Services\SlackNotificationService;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 use Throwable;
 
 class ThreadController extends Controller
@@ -25,7 +24,7 @@ class ThreadController extends Controller
         SlackNotificationService $slack_notification_service
     )
     {
-        // $this->middleware('auth')->except(['indexByTime', 'indexByLike']);
+        $this->middleware('auth')->except(['indexByTime', 'indexByLike']);
         // $this->authorizeResource(Thread::class, 'thread');
         $this->thread_service = $thread_service;
         $this->thread_repository = $thread_repository;
@@ -40,7 +39,7 @@ class ThreadController extends Controller
     public function indexByTime()
     {
         $threads = $this->thread_service->getThreadsByTime();
-        return response()->json($threads);                                                                 
+        return $threads;                                                                 
     }
 
     /**
@@ -51,7 +50,18 @@ class ThreadController extends Controller
     public function indexByLike()
     {
         $threads = $this->thread_service->getThreadsByLike();
-        return response()->json($threads);                                                                 
+        return $threads;                                                                 
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function indexUserByTime(int $user_id)
+    {
+        $threads = $this->thread_service->getUserThreadsByTime($user_id);
+        return $threads;                                                                 
     }
 
     /**

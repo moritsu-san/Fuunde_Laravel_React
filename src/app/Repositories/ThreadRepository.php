@@ -3,16 +3,19 @@
 namespace App\Repositories;
 
 use App\Models\Thread;
+use App\Models\User;
 use Carbon\Carbon;
 
 class ThreadRepository
 {
 
     protected $thread;
+    protected $user;
 
-    public function __construct(Thread $thread)
+    public function __construct(Thread $thread, User $user)
     {
         $this->thread = $thread;
+        $this->user = $user;
     }
 
     public function findById(int $id)
@@ -39,6 +42,15 @@ class ThreadRepository
     public function getPaginatedThreadsByLike()
     {
         return $this->thread->withCount('likes')->with(['user:id,name,username', 'likes:id,name,username'])->orderBy('likes_count', 'desc')->limit(20)->get();
+    }
+
+    public function getPaginatedUserThreadsByTime(int $user_id)
+    {   
+        $user = $this->user->where('id', $user_id)->firstOrFail();
+        if (!$user) {
+            return $user;
+        }
+        return $user->threads()->withCount('likes')->with(['user:id,name,username', 'likes:id,name,username'])->orderBy('created_at', 'desc')->limit(20)->get();
     }
 
     //いいね数順にソートされたanswersと共にThreadを返す

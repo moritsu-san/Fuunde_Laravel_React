@@ -149,6 +149,7 @@ const OdaiCard: FC<Props> = ({ data }) => {
                                 </Box>
                                 <Box mr="50px">
                                     <LikeButton
+                                        isThreadCard={false}
                                         mode="thread"
                                         id={data.id}
                                         defIsLiked={defIsLiked}
