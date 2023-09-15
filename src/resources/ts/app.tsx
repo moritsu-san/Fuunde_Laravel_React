@@ -18,7 +18,7 @@ import Axios from "axios";
 Axios.defaults.baseURL = "http://localhost:3000/";
 
 import Login from "./containers/pages/Login";
-import NotFound from "./containers/pages/NotFound";
+import NotFound from "./components/pages/NotFound";
 import Answer from "./containers/pages/Answer";
 import Register from "./containers/pages/Register";
 

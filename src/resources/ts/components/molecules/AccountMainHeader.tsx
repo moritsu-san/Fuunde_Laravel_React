@@ -47,7 +47,7 @@ const AccountMainHeader: FC<Props> = ({ name }) => {
                             component="h2"
                             sx={{ fontSize: "18px", fontWeight: "bold" }}
                         >
-                            {name}
+                            {name ? name : "プロフィール"}
                         </Typography>
                     </Box>
                 </Box>

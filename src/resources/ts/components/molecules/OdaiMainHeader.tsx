@@ -98,7 +98,7 @@ const OdaiMainHeader: FC<Props> = ({ refetch }) => {
                                             : "none"
                                     }
                                     bottom="0px"
-                                    width="100%"
+                                    width="calc(100% + 8px)"
                                     height="4px"
                                     bgcolor="primary.main"
                                 ></Box>
@@ -135,7 +135,7 @@ const OdaiMainHeader: FC<Props> = ({ refetch }) => {
                                             : "none"
                                     }
                                     bottom="0px"
-                                    width="100%"
+                                    width="calc(100% + 8px)"
                                     height="4px"
                                     bgcolor="primary.main"
                                 ></Box>

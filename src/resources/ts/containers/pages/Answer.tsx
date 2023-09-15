@@ -1,5 +1,5 @@
 import { Route, Switch } from "react-router-dom";
-import NotFound from "./NotFound";
+import NotFound from "../../components/pages/NotFound";
 import AnswerBoardByTime from "../../components/organisms/AnswerBoardByTime";
 import AnswerBoardByLike from "../../components/organisms/AnswerBoardByLike";
 

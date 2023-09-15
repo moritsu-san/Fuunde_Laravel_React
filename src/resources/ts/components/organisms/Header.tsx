@@ -58,7 +58,7 @@ const Header: FC<Props> = ({
     };
 
     const authSettings = [
-        { name: "アカウント", to: `/${username}` },
+        { name: "アカウント", to: `/user/${username}` },
         { name: "設定", to: "/setting" },
     ];
 

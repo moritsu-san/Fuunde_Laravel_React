@@ -86,7 +86,7 @@ const LikeButton: FC<Props> = ({
                     {isLiked ? (
                         <FavoriteIcon
                             sx={{
-                                color: pink[500],
+                                color: pink[300],
                                 width: isThreadCard ? "1.5rem" : "1.25rem",
                             }}
                         />

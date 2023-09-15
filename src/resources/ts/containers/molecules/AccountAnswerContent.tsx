@@ -11,27 +11,39 @@ type Props = {
 };
 
 const AccountAnswerContent: FC<Props> = ({ user }) => {
-    const { data, isLoading, error } = useFetchUserAnswerListByTime(user.id);
+    const { data, isFetching, error } = useFetchUserAnswerListByTime(user.id);
     const statusCode = (error as AxiosError)?.response?.status;
-    return statusCode ? (
-        <Box>読み込めませんでした。({statusCode})</Box>
-    ) : (
-        <List
-            sx={{
-                width: "100%",
-            }}
-        >
-            {isLoading && <AnswerCardSkeleton cardNum={10} />}
-
-            {data?.map((data) => {
-                return (
-                    <ListItem key={data.id} sx={{ width: 1, p: 0 }}>
-                        <AnswerCard data={data} />
-                    </ListItem>
-                );
-            })}
-        </List>
-    );
+    if (isFetching) {
+        return (
+            <List
+                sx={{
+                    width: "100%",
+                }}
+            >
+                <AnswerCardSkeleton cardNum={10} />\
+            </List>
+        );
+    } else if (statusCode) {
+        return <Box>読み込めませんでした。({statusCode})</Box>;
+    } else if (data?.length) {
+        return (
+            <List
+                sx={{
+                    width: "100%",
+                }}
+            >
+                {data?.map((data) => {
+                    return (
+                        <ListItem key={data.id} sx={{ width: 1, p: 0 }}>
+                            <AnswerCard data={data} />
+                        </ListItem>
+                    );
+                })}
+            </List>
+        );
+    } else {
+        return <Box>アンサーの投稿がまだありません。</Box>;
+    }
 };
 
 export default AccountAnswerContent;

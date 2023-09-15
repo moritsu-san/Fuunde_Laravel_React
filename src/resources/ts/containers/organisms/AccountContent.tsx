@@ -1,27 +1,27 @@
 import { FC } from "react";
 import { AccountInfo as Data } from "../../models/User";
-import { CircularProgress } from "@mui/material";
 import AccountInfo from "../../components/organisms/AccountInfo";
-import { Route, Switch } from "react-router-dom";
-import NotFound from "../pages/NotFound";
+import { Route, Switch, useParams } from "react-router-dom";
 import AccountAnswerContent from "../molecules/AccountAnswerContent";
 import AccountOdaiContent from "../molecules/AccountOdaiContent";
+import AccountInfoHeader from "../../components/molecules/AccountInfoHeader";
+import AccountNotFound from "../../components/organisms/AccountNotFound";
+import AccountPageNotFound from "../../components/organisms/AccountPageNotFound";
 
 type Props = {
     data?: Data;
-    isLoading: boolean;
     statusCode?: number;
 };
 
-const AccountContent: FC<Props> = ({ data, isLoading, statusCode }) => {
-    if (isLoading) {
-        return <CircularProgress />;
-    } else if (statusCode === 404) {
-        return <h1>アカウントが存在しません</h1>;
+const AccountContent: FC<Props> = ({ data, statusCode }) => {
+    const { username } = useParams<{ username: string }>();
+    if (statusCode === 404) {
+        return <AccountNotFound username={username} />;
     } else if (data) {
         return (
             <>
                 <AccountInfo user={data} />
+                <AccountInfoHeader username={data.username} />
                 <Switch>
                     <Route exact path={`/user/${data.username}`}>
                         <AccountAnswerContent user={data} />
@@ -30,7 +30,7 @@ const AccountContent: FC<Props> = ({ data, isLoading, statusCode }) => {
                         <AccountOdaiContent user={data} />
                     </Route>
                     <Route path="*">
-                        <NotFound />
+                        <AccountPageNotFound username={data.username} />
                     </Route>
                 </Switch>
             </>

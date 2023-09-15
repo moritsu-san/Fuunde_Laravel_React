@@ -1,4 +1,5 @@
 import { Box } from "@mui/material";
+import { Link } from "react-router-dom";
 
 const SideBar = () => {
     return (
@@ -29,7 +30,11 @@ const SideBar = () => {
                                     mb="12px"
                                     border={1}
                                     sx={{ width: { lg: "290px", xl: "350px" } }}
-                                ></Box>
+                                >
+                                    <Link to="/thread/4">
+                                        ヒョウモントカゲモドキ
+                                    </Link>
+                                </Box>
                             </Box>
                         </Box>
                     </Box>

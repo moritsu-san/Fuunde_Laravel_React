@@ -11,7 +11,7 @@ const fetchAccountInfo = async (username: string) => {
     return data;
 };
 
-const useFetchAccountInfo = (username: string) => {
+const useFetchMyAccountInfo = (username: string) => {
     console.log(username);
     return useQuery<AccountInfo>(
         ["account"],
@@ -23,4 +23,4 @@ const useFetchAccountInfo = (username: string) => {
     );
 };
 
-export default useFetchAccountInfo;
+export default useFetchMyAccountInfo;
