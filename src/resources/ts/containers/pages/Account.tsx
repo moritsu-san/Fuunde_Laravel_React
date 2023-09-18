@@ -1,15 +1,35 @@
 import { useParams } from "react-router-dom";
-import { AxiosError } from "axios";
+import axios, { AxiosError } from "axios";
 import { Box, CircularProgress } from "@mui/material";
 import AccountMainHeader from "../../components/molecules/AccountMainHeader";
-import useFetchAccountInfo from "../../hooks/fetch/useFetchAcoountInfo";
 import AccountContent from "../organisms/AccountContent";
+import { useEffect, useState } from "react";
+import { AccountInfo } from "../../models/User";
 
 const EnhancedAccount = () => {
     const { username } = useParams<{ username: string }>();
-    console.log(username);
-    const { data, isFetching, error } = useFetchAccountInfo(username);
-    const statusCode = (error as AxiosError)?.response?.status;
+    const [data, setData] = useState<AccountInfo>();
+    const [error, setError] = useState();
+    const statusCode = (error as unknown as AxiosError)?.response?.status;
+    const [isFetching, setIsFetching] = useState(false);
+
+    const fetchAccountInfo = async () => {
+        setIsFetching(true);
+        await axios
+            .get<AccountInfo>(`/api/getAccountInfo/${username}`)
+            .then((res) => {
+                setData(res.data);
+                setIsFetching(false);
+            })
+            .catch((error) => {
+                setError(error);
+                setIsFetching(false);
+            });
+    };
+
+    useEffect(() => {
+        fetchAccountInfo();
+    }, [username]);
 
     return isFetching ? (
         <CircularProgress />

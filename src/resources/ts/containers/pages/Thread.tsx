@@ -1,24 +1,43 @@
-import { AxiosError } from "axios";
+import axios, { AxiosError } from "axios";
 import { useParams } from "react-router-dom";
 import Thread from "../../components/pages/Thread";
-import { Box } from "@mui/material";
+import { Box, CircularProgress } from "@mui/material";
 import ThreadMainHeader from "../../components/molecules/ThreadMainHeader";
-import useFetchThreadWithAnswers from "../../hooks/fetch/useFetchThreadWithAnswers";
+import { useEffect, useState } from "react";
+import { Data } from "../../models/ThreadWithAnswers";
 
 const EnhancedThread = () => {
     const { threadId } = useParams<{ threadId: string }>();
-    const { data, isLoading, error, refetch } =
-        useFetchThreadWithAnswers(threadId);
-    const statusCode = (error as AxiosError)?.response?.status;
+    const [data, setData] = useState<Data>();
+    const [error, setError] = useState();
+    const statusCode = (error as unknown as AxiosError)?.response?.status;
+    const [isFetching, setIsFetching] = useState(false);
 
-    return (
+    const fetchThreadWithAnswers = async () => {
+        setIsFetching(true);
+        await axios
+            .get<Data>(`/api/getThreadWithAnswers/${threadId}`)
+            .then((res) => {
+                setData(res.data);
+                setIsFetching(false);
+            })
+            .catch((error) => {
+                setError(error);
+                setIsFetching(false);
+            });
+        return data;
+    };
+
+    useEffect(() => {
+        fetchThreadWithAnswers();
+    }, [threadId]);
+
+    return isFetching ? (
+        <CircularProgress />
+    ) : (
         <Box display="flex" flexDirection="column">
             <ThreadMainHeader />
-            <Thread
-                thread={data}
-                isLoading={isLoading}
-                statusCode={statusCode}
-            />
+            <Thread thread={data} statusCode={statusCode} />
         </Box>
     );
 };
