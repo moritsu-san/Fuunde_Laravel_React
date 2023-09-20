@@ -1,7 +1,7 @@
 import { Route, Switch } from "react-router-dom";
 import NotFound from "../../components/pages/NotFound";
-import OdaiBoardByTime from "../../components/organisms/OdaiBoardByTime";
-import OdaiBoardByLike from "../../components/organisms/OdaiBoardByLike";
+import OdaiBoardByTime from "../organisms/OdaiBoardByTime";
+import OdaiBoardByLike from "../organisms/OdaiBoardByLike";
 
 const Odai = () => {
     return (

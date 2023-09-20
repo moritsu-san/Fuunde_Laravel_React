@@ -32,7 +32,14 @@ const EnhancedAccount = () => {
     }, [username]);
 
     return isFetching ? (
-        <CircularProgress />
+        <Box
+            display="flex"
+            flexDirection="row"
+            justifyContent="center"
+            py="20px"
+        >
+            <CircularProgress size={30} />
+        </Box>
     ) : (
         <Box display="flex" flexDirection="column">
             <AccountMainHeader name={data?.name} />

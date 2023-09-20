@@ -4,7 +4,10 @@ import { Data } from "../../models/Thread";
 
 const fetchThreadListByTime = async () => {
     const { data } = await axios.get<Data[]>("/api/getThreadsByTime");
-    return data;
+    if (typeof data === "object") {
+        return data;
+    }
+    return [];
 };
 
 const useFetchThreadListByTime = () => {

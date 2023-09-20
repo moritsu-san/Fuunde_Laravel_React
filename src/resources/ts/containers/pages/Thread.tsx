@@ -18,7 +18,9 @@ const EnhancedThread = () => {
         await axios
             .get<Data>(`/api/getThreadWithAnswers/${threadId}`)
             .then((res) => {
-                setData(res.data);
+                if ("body" in res.data) {
+                    setData(res.data);
+                }
                 setIsFetching(false);
             })
             .catch((error) => {
@@ -33,7 +35,14 @@ const EnhancedThread = () => {
     }, [threadId]);
 
     return isFetching ? (
-        <CircularProgress />
+        <Box
+            display="flex"
+            flexDirection="row"
+            justifyContent="center"
+            py="20px"
+        >
+            <CircularProgress size={30} />
+        </Box>
     ) : (
         <Box display="flex" flexDirection="column">
             <ThreadMainHeader />
