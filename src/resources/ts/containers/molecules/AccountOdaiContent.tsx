@@ -1,10 +1,12 @@
 import { FC } from "react";
 import { AccountInfo } from "../../models/User";
-import { Box, List, ListItem } from "@mui/material";
+import { List, ListItem } from "@mui/material";
 import { AxiosError } from "axios";
 import useFetchUserOdaiListByTime from "../../hooks/fetch/useFetchUserOdaiListByTime";
 import OdaiCardSkeleton from "../../components/molecules/skeleton/OdaiCardSkeleton";
 import OdaiCard from "../../components/molecules/OdaiCard";
+import Retry from "../../components/atoms/Retry";
+import PostNotFound from "../../components/atoms/PostNotFound";
 
 type Props = {
     user: AccountInfo;
@@ -23,8 +25,8 @@ const AccountOdaiContent: FC<Props> = ({ user }) => {
                 <OdaiCardSkeleton cardNum={10} />
             </List>
         );
-    } else if (statusCode) {
-        return <Box>読み込めませんでした。({statusCode})</Box>;
+    } else if (statusCode || typeof data === "string") {
+        return <Retry />;
     } else if (data?.length) {
         return (
             <List
@@ -42,7 +44,7 @@ const AccountOdaiContent: FC<Props> = ({ user }) => {
             </List>
         );
     } else {
-        return <Box>お題の投稿がまだありません。</Box>;
+        return <PostNotFound />;
     }
 };
 

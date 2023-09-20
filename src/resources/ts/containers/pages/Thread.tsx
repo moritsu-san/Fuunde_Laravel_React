@@ -32,7 +32,7 @@ const EnhancedThread = () => {
 
     useEffect(() => {
         fetchThreadWithAnswers();
-    }, [threadId]);
+    }, []);
 
     return isFetching ? (
         <Box

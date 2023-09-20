@@ -13,6 +13,7 @@ const AccountNotFound: FC<Props> = ({ username }) => {
             flexDirection="column"
             alignItems="center"
             pt="120px"
+            px="30px"
         >
             <Box
                 pt="40px"

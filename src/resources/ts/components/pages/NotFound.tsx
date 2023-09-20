@@ -8,6 +8,7 @@ const NotFound = () => {
             flexDirection="column"
             alignItems="center"
             pt="120px"
+            px="30px"
         >
             <Box py="40px">
                 <Typography>

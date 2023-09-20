@@ -1,10 +1,12 @@
 import { FC } from "react";
 import useFetchUserAnswerListByTime from "../../hooks/fetch/useFetchUserAnswerListByTime";
 import { AccountInfo } from "../../models/User";
-import { Box, List, ListItem } from "@mui/material";
+import { List, ListItem } from "@mui/material";
 import AnswerCardSkeleton from "../../components/molecules/skeleton/AnswerCardSkeleton";
 import AnswerCard from "../../components/molecules/AnswerCard";
 import { AxiosError } from "axios";
+import Retry from "../../components/atoms/Retry";
+import PostNotFound from "../../components/atoms/PostNotFound";
 
 type Props = {
     user: AccountInfo;
@@ -23,8 +25,8 @@ const AccountAnswerContent: FC<Props> = ({ user }) => {
                 <AnswerCardSkeleton cardNum={10} />\
             </List>
         );
-    } else if (statusCode) {
-        return <Box>読み込めませんでした。({statusCode})</Box>;
+    } else if (statusCode || typeof data === "string") {
+        return <Retry />;
     } else if (data?.length) {
         return (
             <List
@@ -42,7 +44,7 @@ const AccountAnswerContent: FC<Props> = ({ user }) => {
             </List>
         );
     } else {
-        return <Box>アンサーの投稿がまだありません。</Box>;
+        return <PostNotFound />;
     }
 };
 

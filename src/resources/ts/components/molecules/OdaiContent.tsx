@@ -3,6 +3,7 @@ import OdaiCardSkeleton from "./skeleton/OdaiCardSkeleton";
 import { FC } from "react";
 import { Data } from "../../models/Thread";
 import OdaiCard from "./OdaiCard";
+import Retry from "../atoms/Retry";
 
 type Props = {
     isFetching: boolean;
@@ -28,7 +29,7 @@ const OdaiContent: FC<Props> = ({ isFetching, data, statusCode }) => {
             </Box>
         );
     } else {
-        return <Box>Retry({statusCode})</Box>;
+        return <Retry />;
     }
 };
 

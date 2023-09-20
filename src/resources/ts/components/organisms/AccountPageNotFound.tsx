@@ -13,6 +13,7 @@ const AccountPageNotFound: FC<Props> = ({ username }) => {
             flexDirection="column"
             alignItems="center"
             pt="40px"
+            px="30px"
         >
             <Box pt="40px">
                 <Typography>このページは存在しません。</Typography>

@@ -7,6 +7,7 @@ import AccountOdaiContent from "../molecules/AccountOdaiContent";
 import AccountInfoHeader from "../../components/molecules/AccountInfoHeader";
 import AccountNotFound from "../../components/organisms/AccountNotFound";
 import AccountPageNotFound from "../../components/organisms/AccountPageNotFound";
+import Retry from "../../components/atoms/Retry";
 
 type Props = {
     data?: Data;
@@ -36,7 +37,7 @@ const AccountContent: FC<Props> = ({ data, statusCode }) => {
             </>
         );
     } else {
-        return <h1>ReTry</h1>;
+        return <Retry />;
     }
 };
 

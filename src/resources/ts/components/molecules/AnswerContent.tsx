@@ -3,6 +3,7 @@ import { FC } from "react";
 import { Data } from "../../models/Answer";
 import AnswerCardSkeleton from "./skeleton/AnswerCardSkeleton";
 import AnswerCard from "./AnswerCard";
+import Retry from "../atoms/Retry";
 
 type Props = {
     isFetching: boolean;
@@ -28,7 +29,7 @@ const AnswerContent: FC<Props> = ({ isFetching, data, statusCode }) => {
             </Box>
         );
     } else {
-        return <Box>Retry({statusCode})</Box>;
+        return <Retry />;
     }
 };
 
