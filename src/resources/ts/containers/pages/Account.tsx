@@ -10,20 +10,15 @@ const EnhancedAccount = () => {
     const { username } = useParams<{ username: string }>();
     const [data, setData] = useState<AccountInfo>();
     const [error, setError] = useState();
-    const statusCode = (error as unknown as AxiosError)?.response?.status;
-    const [isFetching, setIsFetching] = useState(false);
 
     const fetchAccountInfo = async () => {
-        setIsFetching(true);
         await axios
             .get<AccountInfo>(`/api/getAccountInfo/${username}`)
             .then((res) => {
                 setData(res.data);
-                setIsFetching(false);
             })
             .catch((error) => {
                 setError(error);
-                setIsFetching(false);
             });
     };
 
@@ -31,19 +26,23 @@ const EnhancedAccount = () => {
         fetchAccountInfo();
     }, [username]);
 
-    return isFetching ? (
-        <Box
-            display="flex"
-            flexDirection="row"
-            justifyContent="center"
-            py="20px"
-        >
-            <CircularProgress size={30} />
-        </Box>
-    ) : (
+    if (data === undefined && !error) {
+        return (
+            <Box
+                display="flex"
+                flexDirection="row"
+                justifyContent="center"
+                py="20px"
+            >
+                <CircularProgress size={30} />
+            </Box>
+        );
+    }
+
+    return (
         <Box display="flex" flexDirection="column">
             <AccountMainHeader name={data?.name} />
-            <AccountContent data={data} statusCode={statusCode} />
+            <AccountContent data={data} error={error} />
         </Box>
     );
 };
