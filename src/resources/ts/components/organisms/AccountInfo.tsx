@@ -2,7 +2,7 @@ import { FC } from "react";
 import { AccountInfo } from "../../models/User";
 import { Avatar, Box, Button, Typography } from "@mui/material";
 import { cardAvatar } from "../../hooks/libs/cardAvatar";
-import { grey, orange, pink } from "@mui/material/colors";
+import { grey } from "@mui/material/colors";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { format } from "date-fns";

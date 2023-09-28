@@ -1,20 +1,22 @@
 import { FC } from "react";
 import { AccountInfo } from "../../models/User";
 import { List, ListItem } from "@mui/material";
-import { AxiosError } from "axios";
 import useFetchUserOdaiListByTime from "../../hooks/fetch/useFetchUserOdaiListByTime";
 import OdaiCardSkeleton from "../../components/molecules/skeleton/OdaiCardSkeleton";
 import OdaiCard from "../../components/molecules/OdaiCard";
-import Retry from "../../components/atoms/Retry";
 import PostNotFound from "../../components/atoms/PostNotFound";
+import NotConnectionQuery from "../../components/atoms/NotConnectionQuery";
+import RetryQuery from "../../components/atoms/RetryQuery";
 
 type Props = {
     user: AccountInfo;
 };
 
 const AccountOdaiContent: FC<Props> = ({ user }) => {
-    const { data, isFetching, error } = useFetchUserOdaiListByTime(user.id);
-    const statusCode = (error as AxiosError)?.response?.status;
+    const { data, isFetching, isPaused, refetch } = useFetchUserOdaiListByTime(
+        user.id
+    );
+
     if (isFetching) {
         return (
             <List
@@ -25,9 +27,9 @@ const AccountOdaiContent: FC<Props> = ({ user }) => {
                 <OdaiCardSkeleton cardNum={10} />
             </List>
         );
-    } else if (statusCode || typeof data === "string") {
-        return <Retry />;
-    } else if (data?.length) {
+    }
+
+    if (data && typeof data !== "string" && data?.length !== 0) {
         return (
             <List
                 sx={{
@@ -43,8 +45,12 @@ const AccountOdaiContent: FC<Props> = ({ user }) => {
                 })}
             </List>
         );
-    } else {
+    } else if (data?.length === 0) {
         return <PostNotFound />;
+    } else if (isPaused) {
+        return <NotConnectionQuery refetch={refetch} />;
+    } else {
+        return <RetryQuery refetch={refetch} />;
     }
 };
 

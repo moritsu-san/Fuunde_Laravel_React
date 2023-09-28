@@ -4,17 +4,18 @@ import { AccountInfo } from "../../models/User";
 import { List, ListItem } from "@mui/material";
 import AnswerCardSkeleton from "../../components/molecules/skeleton/AnswerCardSkeleton";
 import AnswerCard from "../../components/molecules/AnswerCard";
-import { AxiosError } from "axios";
-import Retry from "../../components/atoms/Retry";
 import PostNotFound from "../../components/atoms/PostNotFound";
+import RetryQuery from "../../components/atoms/RetryQuery";
+import NotConnectionQuery from "../../components/atoms/NotConnectionQuery";
 
 type Props = {
     user: AccountInfo;
 };
 
 const AccountAnswerContent: FC<Props> = ({ user }) => {
-    const { data, isFetching, error } = useFetchUserAnswerListByTime(user.id);
-    const statusCode = (error as AxiosError)?.response?.status;
+    const { data, isFetching, isPaused, refetch } =
+        useFetchUserAnswerListByTime(user.id);
+
     if (isFetching) {
         return (
             <List
@@ -25,9 +26,9 @@ const AccountAnswerContent: FC<Props> = ({ user }) => {
                 <AnswerCardSkeleton cardNum={10} />\
             </List>
         );
-    } else if (statusCode || typeof data === "string") {
-        return <Retry />;
-    } else if (data?.length) {
+    }
+
+    if (data && typeof data !== "string" && data?.length !== 0) {
         return (
             <List
                 sx={{
@@ -43,8 +44,12 @@ const AccountAnswerContent: FC<Props> = ({ user }) => {
                 })}
             </List>
         );
-    } else {
+    } else if (data?.length === 0) {
         return <PostNotFound />;
+    } else if (isPaused) {
+        return <NotConnectionQuery refetch={refetch} />;
+    } else {
+        return <RetryQuery refetch={refetch} />;
     }
 };
 

@@ -10,8 +10,10 @@ const fetchUserAnswerListByTime = async (userId: number) => {
 };
 
 const useFetchUserAnswerListByTime = (userId: number) => {
-    return useQuery<Data[]>(["user_answers"], () =>
-        fetchUserAnswerListByTime(userId)
+    return useQuery<Data[]>(
+        ["user_answers"],
+        () => fetchUserAnswerListByTime(userId),
+        { retry: 1 }
     );
 };
 

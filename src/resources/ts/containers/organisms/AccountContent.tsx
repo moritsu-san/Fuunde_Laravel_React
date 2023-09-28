@@ -8,17 +8,27 @@ import AccountInfoHeader from "../../components/molecules/AccountInfoHeader";
 import AccountNotFound from "../../components/organisms/AccountNotFound";
 import AccountPageNotFound from "../../components/organisms/AccountPageNotFound";
 import Retry from "../../components/atoms/Retry";
+import { AxiosError } from "axios";
+import NotConnection from "../../components/atoms/NotConnection";
 
 type Props = {
     data?: Data;
-    statusCode?: number;
+    error?: Error;
 };
 
-const AccountContent: FC<Props> = ({ data, statusCode }) => {
+const AccountContent: FC<Props> = ({ data, error }) => {
     const { username } = useParams<{ username: string }>();
+    const statusCode = (error as unknown as AxiosError)?.response?.status;
+    const networkError =
+        (error as unknown as AxiosError)?.message === "Network Error"
+            ? true
+            : false;
+
     if (statusCode === 404) {
         return <AccountNotFound username={username} />;
-    } else if (data) {
+    } else if (networkError) {
+        return <NotConnection />;
+    } else if (data && typeof data !== "string") {
         return (
             <>
                 <AccountInfo user={data} />
