@@ -4,14 +4,11 @@ import { Data } from "../../models/Answer";
 
 const fetchAnswerListByLike = async () => {
     const { data } = await axios.get<Data[]>("/api/getAnswersWithThreadByLike");
-    if (typeof data === "object") {
-        return data;
-    }
-    return [];
+    return data;
 };
 
 const useFetchAnswerListByLike = () => {
-    return useQuery<Data[]>(["answers"], fetchAnswerListByLike);
+    return useQuery<Data[]>(["answersByLike"], fetchAnswerListByLike);
 };
 
 export default useFetchAnswerListByLike;

@@ -1,18 +1,14 @@
 import { Box, List, ListItem, ListItemButton, Typography } from "@mui/material";
 import { grey } from "@mui/material/colors";
-import {
-    QueryObserverResult,
-    RefetchOptions,
-    RefetchQueryFilters,
-} from "@tanstack/react-query";
+import { UseQueryResult } from "@tanstack/react-query";
 import { Link, useLocation } from "react-router-dom";
-import { Data } from "../../models/Thread";
 import { FC } from "react";
 
 type Props = {
-    refetch: <TPageData>(
-        options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined
-    ) => Promise<QueryObserverResult<Data[], unknown>>;
+    refetch: (options?: {
+        throwOnError: boolean;
+        cancelRefetch: boolean;
+    }) => Promise<UseQueryResult>;
 };
 
 const OdaiMainHeader: FC<Props> = ({ refetch }) => {

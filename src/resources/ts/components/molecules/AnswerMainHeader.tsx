@@ -2,17 +2,13 @@ import { Box, List, ListItem, ListItemButton, Typography } from "@mui/material";
 import { grey } from "@mui/material/colors";
 import { Link, useLocation } from "react-router-dom";
 import { FC } from "react";
-import {
-    QueryObserverResult,
-    RefetchOptions,
-    RefetchQueryFilters,
-} from "@tanstack/react-query";
-import { Data } from "../../models/Answer";
+import { UseQueryResult } from "@tanstack/react-query";
 
 type Props = {
-    refetch: <TPageData>(
-        options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined
-    ) => Promise<QueryObserverResult<Data[], unknown>>;
+    refetch: (options?: {
+        throwOnError: boolean;
+        cancelRefetch: boolean;
+    }) => Promise<UseQueryResult>;
 };
 
 const AnswerMainHeader: FC<Props> = ({ refetch }) => {

@@ -1,13 +1,11 @@
 import { Box, List } from "@mui/material";
 import { FC } from "react";
 import useFetchAnswerListByTime from "../../hooks/fetch/useFetchAnswerListByTime";
-import { AxiosError } from "axios";
 import AnswerMainHeader from "../../components/molecules/AnswerMainHeader";
 import AnswerContent from "../../components/molecules/AnswerContent";
 
 const AnswerBoardByTime: FC = () => {
-    const { data, isFetching, error, refetch } = useFetchAnswerListByTime();
-    const statusCode = (error as AxiosError)?.response?.status;
+    const { data, isFetching, isPaused, refetch } = useFetchAnswerListByTime();
     return (
         <Box display="flex" flexDirection="column">
             <AnswerMainHeader refetch={refetch} />
@@ -19,7 +17,8 @@ const AnswerBoardByTime: FC = () => {
                 <AnswerContent
                     isFetching={isFetching}
                     data={data}
-                    statusCode={statusCode}
+                    isPaused={isPaused}
+                    refetch={refetch}
                 />
             </List>
         </Box>

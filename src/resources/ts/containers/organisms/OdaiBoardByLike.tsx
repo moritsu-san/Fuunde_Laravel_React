@@ -1,13 +1,11 @@
 import { Box, List } from "@mui/material";
 import { FC } from "react";
 import OdaiMainHeader from "../../components/molecules/OdaiMainHeader";
-import useFetchThreadListByLike from "../../hooks/fetch/useFetchThreadListByLike";
-import { AxiosError } from "axios";
+import useFetchOdaiListByLike from "../../hooks/fetch/useFetchOdaiListByLike";
 import OdaiContent from "../../components/molecules/OdaiContent";
 
 const OdaiBoardByLike: FC = () => {
-    const { data, isFetching, error, refetch } = useFetchThreadListByLike();
-    const statusCode = (error as AxiosError)?.response?.status;
+    const { data, isFetching, isPaused, refetch } = useFetchOdaiListByLike();
     return (
         <Box display="flex" flexDirection="column">
             <OdaiMainHeader refetch={refetch} />
@@ -19,7 +17,8 @@ const OdaiBoardByLike: FC = () => {
                 <OdaiContent
                     isFetching={isFetching}
                     data={data}
-                    statusCode={statusCode}
+                    isPaused={isPaused}
+                    refetch={refetch}
                 />
             </List>
         </Box>

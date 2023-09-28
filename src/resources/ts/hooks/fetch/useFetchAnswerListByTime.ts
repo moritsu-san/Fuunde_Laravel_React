@@ -4,14 +4,11 @@ import { Data } from "../../models/Answer";
 
 const fetchAnswerListByTime = async () => {
     const { data } = await axios.get<Data[]>("/api/getAnswersWithThreadByTime");
-    if (typeof data === "object") {
-        return data;
-    }
-    return [];
+    return data;
 };
 
 const useFetchAnswerListByTime = () => {
-    return useQuery<Data[]>(["answers"], fetchAnswerListByTime);
+    return useQuery<Data[]>(["answersByTime"], fetchAnswerListByTime);
 };
 
 export default useFetchAnswerListByTime;

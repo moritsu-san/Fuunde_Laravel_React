@@ -3,20 +3,26 @@ import OdaiCardSkeleton from "./skeleton/OdaiCardSkeleton";
 import { FC } from "react";
 import { Data } from "../../models/Thread";
 import OdaiCard from "./OdaiCard";
-import Retry from "../atoms/Retry";
+import { UseQueryResult } from "@tanstack/react-query";
+import NotConnectionQuery from "../atoms/NotConnectionQuery";
+import RetryQuery from "../atoms/RetryQuery";
 
 type Props = {
     isFetching: boolean;
     data?: Data[];
-    statusCode?: number;
+    isPaused: boolean;
+    refetch: (options?: {
+        throwOnError: boolean;
+        cancelRefetch: boolean;
+    }) => Promise<UseQueryResult>;
 };
 
-const OdaiContent: FC<Props> = ({ isFetching, data, statusCode }) => {
-    const isData = (data?.length as number) >= 1;
-
+const OdaiContent: FC<Props> = ({ isFetching, data, isPaused, refetch }) => {
     if (isFetching) {
         return <OdaiCardSkeleton cardNum={10} />;
-    } else if (isData) {
+    }
+
+    if (data && typeof data !== "string") {
         return (
             <Box>
                 {data?.map((data) => {
@@ -28,8 +34,10 @@ const OdaiContent: FC<Props> = ({ isFetching, data, statusCode }) => {
                 })}
             </Box>
         );
+    } else if (isPaused) {
+        return <NotConnectionQuery refetch={refetch} />;
     } else {
-        return <Retry />;
+        return <RetryQuery refetch={refetch} />;
     }
 };
 
