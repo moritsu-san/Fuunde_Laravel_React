@@ -45,6 +45,7 @@ const ThreadPostAnswer: FC<Props> = ({ thread }) => {
     const { error, isLoading, mutate } = usePostAnswer();
     const isTooBig = errors.body?.type === "too_big";
     const statusCode = (error as AxiosError)?.response?.status;
+    const isPaused = (error as AxiosError)?.message === "Network Error";
 
     const handlePostAnswer: SubmitHandler<FieldValues> = (formData) => {
         const thread_id = thread.id;
@@ -111,10 +112,12 @@ const ThreadPostAnswer: FC<Props> = ({ thread }) => {
                         id="post-thread-error-text"
                         sx={{ color: "error.main" }}
                     >
-                        {isTooBig || statusCode ? null : "　"}
+                        {isTooBig || statusCode || isPaused ? null : "　"}
                         {isTooBig && (errors.body?.message as ReactNode)}
                         {statusCode &&
                             `エラーにより投稿できませんでした。(${statusCode})`}
+                        {isPaused &&
+                            "インターネットに接続されておらず、投稿できません。"}
                     </FormHelperText>
                 </FormControl>
                 {/* 送信ボタン */}

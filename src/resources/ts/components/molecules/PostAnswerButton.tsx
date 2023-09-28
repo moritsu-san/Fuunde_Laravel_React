@@ -66,6 +66,7 @@ const PostAnswerButton: FC<Props> = ({ data, toThreadPage }) => {
 
     const { error, isLoading, mutate, reset: resetMutation } = usePostAnswer();
     const statusCode = (error as AxiosError)?.response?.status;
+    const isPaused = (error as AxiosError)?.message === "Network Error";
 
     const handlePostAnswer: SubmitHandler<FieldValues> = (formData) => {
         const thread_id = data.id;
@@ -265,12 +266,16 @@ const PostAnswerButton: FC<Props> = ({ data, toThreadPage }) => {
                             id="post-thread-error-text"
                             sx={{ color: "error.main" }}
                         >
-                            {(errors.body?.message as ReactNode) || statusCode
+                            {(errors.body?.message as ReactNode) ||
+                            statusCode ||
+                            isPaused
                                 ? null
                                 : "　"}
                             {errors.body?.message as ReactNode}
                             {statusCode &&
                                 `エラーにより投稿できませんでした。(${statusCode})`}
+                            {isPaused &&
+                                "インターネットに接続されておらず、投稿できません。"}
                         </FormHelperText>
                     </FormControl>
                     {/* 送信ボタン */}

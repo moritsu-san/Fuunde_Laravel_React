@@ -11,9 +11,9 @@ const usePostThread = () => {
     const queryClient = useQueryClient();
     return useMutation(postThread, {
         onSuccess: () => {
-            queryClient.invalidateQueries(["threads"]);
             queryClient.setQueryData(["openSnackbar"], "お題を投稿しました!");
         },
+        networkMode: "offlineFirst",
     });
 };
 
