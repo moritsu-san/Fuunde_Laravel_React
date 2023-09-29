@@ -13,6 +13,7 @@ const useLogout = () => {
         onSuccess: () => {
             queryClient.resetQueries(["user"]);
         },
+        networkMode: "offlineFirst",
     });
 };
 

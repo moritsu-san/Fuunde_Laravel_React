@@ -38,6 +38,7 @@ const useSocialRegister = (): UseMutationResult<
                     `${variables.provider}でログインしました!`
                 );
             },
+            networkMode: "offlineFirst",
         }
     );
 };

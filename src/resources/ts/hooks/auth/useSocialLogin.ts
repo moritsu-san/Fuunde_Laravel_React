@@ -35,6 +35,7 @@ const useSocailLogin = (): UseMutationResult<
                     `${variables.provider}でログインしました!`
                 );
             },
+            networkMode: "offlineFirst",
         }
     );
 };

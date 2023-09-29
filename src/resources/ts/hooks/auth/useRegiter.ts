@@ -17,6 +17,7 @@ const useRegister = () => {
                 "ユーザ登録が完了しログインしました!"
             );
         },
+        networkMode: "offlineFirst",
     });
 };
 

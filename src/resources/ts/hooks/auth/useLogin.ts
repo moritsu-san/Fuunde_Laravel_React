@@ -13,6 +13,7 @@ const useLogin = () => {
         onSuccess: () => {
             queryClient.invalidateQueries(["user"]);
         },
+        networkMode: "offlineFirst",
     });
 };
 
