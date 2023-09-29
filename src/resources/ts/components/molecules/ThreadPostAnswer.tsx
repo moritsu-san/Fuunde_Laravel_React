@@ -25,8 +25,13 @@ type Props = {
 const schema = z.object({
     body: z
         .string()
-        .min(1, { message: "入力してください。" })
-        .max(30, { message: "30文字以下にしてください。" }),
+        .refine((val) => val.trim().length, "入力してください。")
+        .refine(
+            (val) => val.length <= 30,
+            (val) => ({
+                message: `30文字以下にしてください。(${val.length}文字) `,
+            })
+        ),
 });
 
 const ThreadPostAnswer: FC<Props> = ({ thread }) => {
@@ -43,9 +48,9 @@ const ThreadPostAnswer: FC<Props> = ({ thread }) => {
     });
 
     const { error, isLoading, mutate } = usePostAnswer();
-    const isTooBig = errors.body?.type === "too_big";
     const statusCode = (error as AxiosError)?.response?.status;
     const isPaused = (error as AxiosError)?.message === "Network Error";
+    const isFrontError = (errors?.body?.message as string)?.indexOf("30") === 0;
 
     const handlePostAnswer: SubmitHandler<FieldValues> = (formData) => {
         const thread_id = thread.id;
@@ -59,7 +64,7 @@ const ThreadPostAnswer: FC<Props> = ({ thread }) => {
 
     return (
         <Box
-            pt={isTooBig || statusCode ? "4px" : "14px"}
+            pt={isFrontError || statusCode || isPaused ? "4px" : "14px"}
             px={2}
             display="flex"
             flexDirection="row"
@@ -93,7 +98,7 @@ const ThreadPostAnswer: FC<Props> = ({ thread }) => {
                     variant="standard"
                     fullWidth
                     margin="normal"
-                    error={isTooBig ? true : false}
+                    error={isFrontError}
                 >
                     <OutlinedInput
                         id="post-thread"
@@ -105,6 +110,7 @@ const ThreadPostAnswer: FC<Props> = ({ thread }) => {
                                 fontSize: "16px",
                                 lineHeight: "30px",
                             },
+                            maxLength: 100,
                         }}
                         {...register("body")}
                     />
@@ -112,8 +118,8 @@ const ThreadPostAnswer: FC<Props> = ({ thread }) => {
                         id="post-thread-error-text"
                         sx={{ color: "error.main" }}
                     >
-                        {isTooBig || statusCode || isPaused ? null : "　"}
-                        {isTooBig && (errors.body?.message as ReactNode)}
+                        {isFrontError || statusCode || isPaused ? null : "　"}
+                        {isFrontError && (errors.body?.message as ReactNode)}
                         {statusCode &&
                             `エラーにより投稿できませんでした。(${statusCode})`}
                         {isPaused &&

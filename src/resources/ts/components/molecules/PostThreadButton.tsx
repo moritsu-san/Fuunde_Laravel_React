@@ -30,8 +30,13 @@ import { useHistory } from "react-router-dom";
 const schema = z.object({
     body: z
         .string()
-        .min(1, { message: "入力してください。" })
-        .max(30, { message: "30文字以下にしてください。" }),
+        .refine((val) => val.trim().length, "入力してください。")
+        .refine(
+            (val) => val.length <= 30,
+            (val) => ({
+                message: `30文字以下にしてください。(${val.length}文字) `,
+            })
+        ),
 });
 
 const Transition = forwardRef(function Transition(
@@ -59,6 +64,7 @@ const PostThreadButton = () => {
     const { error, isLoading, mutate, reset: resetMutation } = usePostThread();
     const statusCode = (error as AxiosError)?.response?.status;
     const isPaused = (error as AxiosError)?.message === "Network Error";
+    const isFrontError = (errors?.body?.message as string)?.indexOf("30") === 0;
 
     const handlePostThread: SubmitHandler<FieldValues> = (data) => {
         mutate(data, {
@@ -149,7 +155,7 @@ const PostThreadButton = () => {
                         variant="standard"
                         fullWidth
                         margin="normal"
-                        error={errors.body ? true : false}
+                        error={isFrontError}
                     >
                         <InputLabel htmlFor="post-thread">お題</InputLabel>
                         <Input
@@ -160,6 +166,7 @@ const PostThreadButton = () => {
                                     fontSize: "24px",
                                     lineHeight: "30px",
                                 },
+                                maxLength: 100,
                             }}
                             startAdornment={
                                 <InputAdornment position="start">
@@ -174,12 +181,11 @@ const PostThreadButton = () => {
                             id="post-thread-error-text"
                             sx={{ color: "error.main" }}
                         >
-                            {(errors.body?.message as ReactNode) ||
-                            statusCode ||
-                            isPaused
+                            {isFrontError || statusCode || isPaused
                                 ? null
                                 : "　"}
-                            {errors.body?.message as ReactNode}
+                            {isFrontError &&
+                                (errors.body?.message as ReactNode)}
                             {statusCode &&
                                 `エラーにより投稿できませんでした。(${statusCode})`}
                             {isPaused &&
