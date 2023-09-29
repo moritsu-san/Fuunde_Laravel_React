@@ -73,7 +73,7 @@ class ThreadController extends Controller
     public function store(ThreadRequest $request)
     {
         try{
-            $body = $request['body'];
+            $body = preg_replace("/(^\s+)|(\s+$)/u", "", $request->body);
             $user_id = Auth::id();
 
             $thread = $this->thread_service->createThread($body, $user_id);

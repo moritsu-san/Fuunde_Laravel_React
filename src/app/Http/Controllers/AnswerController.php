@@ -62,7 +62,7 @@ class AnswerController extends Controller
     public function store(AnswerRequest $request, int $thread_id)
     {
         try {
-            $body = $request['body'];
+            $body = preg_replace("/(^\s+)|(\s+$)/u", "", $request->body);
             $user_id = Auth::id();
             $answer = $this->answer_service->createAnswer($thread_id, $body, $user_id);
         } catch (Throwable $error) {
