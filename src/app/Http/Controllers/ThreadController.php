@@ -24,7 +24,7 @@ class ThreadController extends Controller
         SlackNotificationService $slack_notification_service
     )
     {
-        $this->middleware('auth')->except(['indexByTime', 'indexByLike']);
+        // $this->middleware('auth')->except(['indexByTime', 'indexByLike', 'search']);
         // $this->authorizeResource(Thread::class, 'thread');
         $this->thread_service = $thread_service;
         $this->thread_repository = $thread_repository;
@@ -139,6 +139,17 @@ class ThreadController extends Controller
             return redirect()->route('answer.recent')->with('error', 'お題の削除に失敗しました...');
         }
         return redirect()->route('answer.recent')->with('success', 'お題を削除しました!');
+    }
+
+    public function search(Request $request) 
+    {
+        $keyword = preg_replace("/(^\s+)|(\s+$)/u", "", $request->keyword);
+        $query = Thread::query();
+        if(!empty($keyword)) {
+            $query->where('body', 'LIKE', "{$keyword}%")->orWhere('body', 'LIKE', "%{$keyword}%");
+        }
+        $threads = $query->withCount('likes')->with(['user:id,name,username', 'likes:id,name,username'])->orderBy('created_at', 'desc')->limit(20)->get();
+        return $threads;
     }
 
     public function like(Request $request, Thread $thread)

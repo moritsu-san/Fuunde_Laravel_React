@@ -39,7 +39,7 @@ import Account from "./containers/pages/Account";
 import Header from "./containers/organisms/Header";
 import SideBar from "./containers/organisms/SideBar";
 import Setting from "./containers/pages/Setting";
-import Explore from "./containers/pages/Explore";
+import Explore from "./components/atoms/SearchBox";
 import Notifications from "./containers/pages/Notifications";
 import { grey } from "@mui/material/colors";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
@@ -47,6 +47,7 @@ import Odai from "./containers/pages/Odai";
 import Thread from "./containers/pages/Thread";
 import SuccessSnackBar from "./components/atoms/SuccessSnackBar";
 import useOpenSuccessSnackbar from "./hooks/snackbar/useOpenSuccessSnackbar";
+import SearchThread from "./containers/pages/SearchThread";
 
 const client = new QueryClient();
 
@@ -175,6 +176,9 @@ const App = () => {
                             </UnAuthRoute>
                             <AuthRoute exact path="/explore">
                                 <Explore />
+                            </AuthRoute>
+                            <AuthRoute exact path="/search/thread">
+                                <SearchThread />
                             </AuthRoute>
                             <AuthRoute exact path="/notifications">
                                 <Notifications />

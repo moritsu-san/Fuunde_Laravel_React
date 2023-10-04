@@ -47,6 +47,7 @@ Route::get('/getThreadsByTime/{user_id}', [ThreadController::class, 'indexUserBy
 Route::get('/getThreadWithAnswers/{thread_id}', [ThreadController::class, 'show']);
 Route::put('/thread/{thread}/like', [ThreadController::class, 'like']);
 Route::delete('/thread/{thread}/like', [ThreadController::class, 'unlike']);
+Route::post('/searchThread', [ThreadController::class, 'search']);
 
 
 /**
