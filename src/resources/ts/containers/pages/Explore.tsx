@@ -1,11 +1,19 @@
 import { Box } from "@mui/material";
-import SearchMainHeader from "../../components/molecules/SearchMainHeader";
+import ExploreMainHeader from "../../components/molecules/ExploreMainHeader";
+import useFetchOdaiListByLike from "../../hooks/fetch/useFetchOdaiListByLike";
+import ExploreContent from "../../components/molecules/ExploreContent";
 
 const Explore = () => {
+    const { data, isFetching, isPaused, refetch } = useFetchOdaiListByLike();
     return (
         <Box display="flex" flexDirection="column">
-            <SearchMainHeader />
-            <Box>検索してください</Box>
+            <ExploreMainHeader />
+            <ExploreContent
+                isFetching={isFetching}
+                data={data}
+                isPaused={isPaused}
+                refetch={refetch}
+            />
         </Box>
     );
 };

@@ -78,9 +78,10 @@ class AnswerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(int $thread_id)
     {
-        //
+        $answers = $this->answer_service->getAnswer($thread_id);
+        return $answers;
     }
 
     /**
@@ -103,6 +104,19 @@ class AnswerController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function search(Request $request) 
+    {
+        $keyword = preg_replace("/(^\s+)|(\s+$)/u", "", $request->trimedKeyword);
+        $query = Answer::query();
+        if(!empty($keyword)) {
+            $query->where('body', 'LIKE', "{$keyword}%")->orWhere('body', 'LIKE', "%{$keyword}%");
+        }
+        $answers = $query->withCount('likes')->with(['user:id,name,username', 'likes:id,name,username', 'thread' => function ($query) {
+            $query->with(['user:id,name,username'])->withCount('likes')->get();
+        }])->orderBy('created_at', 'desc')->limit(20)->get();
+        return $answers;
     }
 
     public function isLiked(Answer $answer)

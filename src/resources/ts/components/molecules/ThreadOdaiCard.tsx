@@ -16,7 +16,7 @@ type Props = {
     thread: Data;
 };
 
-const ThreadCard: FC<Props> = ({ thread }) => {
+const ThreadOdaiCard: FC<Props> = ({ thread }) => {
     const user = useCurrentUser();
     const defIsLiked =
         thread?.likes?.find((i) => i.username === user?.username) === undefined
@@ -234,4 +234,4 @@ const ThreadCard: FC<Props> = ({ thread }) => {
     );
 };
 
-export default ThreadCard;
+export default ThreadOdaiCard;

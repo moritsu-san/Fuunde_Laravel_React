@@ -1,27 +1,33 @@
-import { Box, CircularProgress, List, ListItem } from "@mui/material";
-import { Data } from "../../models/ThreadWithAnswers";
+import { Box, CircularProgress } from "@mui/material";
 import { FC } from "react";
-import ThreadCard from "../molecules/ThreadCard";
+import ThreadOdaiCard from "../molecules/ThreadOdaiCard";
 import ThreadPostAnswer from "../molecules/ThreadPostAnswer";
-import ThreadAnswerCard from "../molecules/ThreadAnswerCard";
-import Retry from "../atoms/Retry";
-import { AxiosError } from "axios";
 import NotFound from "./NotFound";
-import NotConnection from "../atoms/NotConnection";
+import { UseQueryResult } from "@tanstack/react-query";
+import NotConnectionQuery from "../atoms/NotConnectionQuery";
+import RetryQuery from "../atoms/RetryQuery";
+import { Data } from "../../models/Thread";
+import ThreadAnswerList from "../molecules/ThreadAnswerList";
 
 type Props = {
-    thread?: Data;
-    error?: Error;
+    isFetching: boolean;
+    data?: Data;
+    isPaused: boolean;
+    refetch: (options?: {
+        throwOnError: boolean;
+        cancelRefetch: boolean;
+    }) => Promise<UseQueryResult>;
+    statuscode?: number;
 };
 
-const Thread: FC<Props> = ({ thread, error }) => {
-    const statusCode = (error as unknown as AxiosError)?.response?.status;
-    const networkError =
-        (error as unknown as AxiosError)?.message === "Network Error"
-            ? true
-            : false;
-
-    if (thread === undefined && !error) {
+const Thread: FC<Props> = ({
+    isFetching,
+    data,
+    isPaused,
+    refetch,
+    statuscode,
+}) => {
+    if (isFetching) {
         return (
             <Box
                 display="flex"
@@ -34,32 +40,20 @@ const Thread: FC<Props> = ({ thread, error }) => {
         );
     }
 
-    if (statusCode === 404) {
-        return <NotFound />;
-    } else if (networkError) {
-        return <NotConnection />;
-    } else if (thread && typeof thread !== "string") {
+    if (data && typeof data !== "string") {
         return (
             <Box display="flex" flexDirection="column">
-                <ThreadCard thread={thread} />
-                <ThreadPostAnswer thread={thread} />
-                <List
-                    sx={{
-                        width: "100%",
-                    }}
-                >
-                    {thread.answers?.map((data) => {
-                        return (
-                            <ListItem key={data.id} sx={{ width: 1, p: 0 }}>
-                                <ThreadAnswerCard data={data} />
-                            </ListItem>
-                        );
-                    })}
-                </List>
+                <ThreadOdaiCard thread={data} />
+                <ThreadPostAnswer thread={data} />
+                <ThreadAnswerList threadId={data.id} />
             </Box>
         );
+    } else if (statuscode === 404) {
+        return <NotFound />;
+    } else if (isPaused) {
+        return <NotConnectionQuery refetch={refetch} />;
     } else {
-        return <Retry />;
+        return <RetryQuery refetch={refetch} />;
     }
 };
 

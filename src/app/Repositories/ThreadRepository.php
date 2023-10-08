@@ -33,6 +33,16 @@ class ThreadRepository
         $this->findById($id)->fill(['body' => $body])->save();
     }
 
+    public function getThread(int $thread_id)
+    {
+        return $this->thread->where('id', $thread_id)->withCount('likes')->with(['user:id,name,username', 'likes:id,name,username'])->firstOrFail();
+    }
+
+    public function getAnswer(int $thread_id)
+    {
+        return $this->findById($thread_id)->answers()->withCount('likes')->with(['user:id,name,username', 'likes:id,name,username'])->orderBy('likes_count', 'desc')->limit(20)->get();
+    }
+
     //PaginatedThreadsを返す
     public function getPaginatedThreadsByTime()
     {

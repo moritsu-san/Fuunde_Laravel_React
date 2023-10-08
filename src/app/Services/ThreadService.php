@@ -37,14 +37,10 @@ class ThreadService
         }
     }
 
-    public function getThreadData(string $user_id, string $name, string $body)
+    public function getThread(int $thread_id)
     {
-        return [
-            'user_id' => $user_id,
-            'name' => $name,
-            'body' => $body,
-            'latest_answer_time' => Carbon::now()
-        ];
+        $thread = $this->thread_repository->getThread($thread_id);
+        return $thread;
     }
 
     //PaginatedThreadsを取得

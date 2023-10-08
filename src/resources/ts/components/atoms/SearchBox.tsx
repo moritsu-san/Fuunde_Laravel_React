@@ -22,13 +22,18 @@ const schema = z.object({
 
 type Props = {
     defKeyword?: string;
+    isAnswer?: boolean;
 };
 
-const SearchBox: FC<Props> = ({ defKeyword }) => {
+const SearchBox: FC<Props> = ({ defKeyword, isAnswer }) => {
     const history = useHistory();
     const [isFocused, setIsFocused] = useState(false);
     const handleClick: SubmitHandler<FieldValues> = ({ keyword }) => {
-        history.push(`/search/thread?keyword=${keyword}`);
+        if (isAnswer) {
+            history.push(`/search/thread?keyword=${keyword}&mode=answer`);
+        } else {
+            history.push(`/search/thread?keyword=${keyword}`);
+        }
     };
 
     const {
@@ -66,6 +71,7 @@ const SearchBox: FC<Props> = ({ defKeyword }) => {
             border={1}
             borderColor={isFocused ? "primary.main" : grey[300]}
             borderRadius={2}
+            bgcolor={isFocused ? "white" : grey[300]}
         >
             <IconButton
                 type="submit"

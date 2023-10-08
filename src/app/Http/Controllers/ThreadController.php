@@ -93,7 +93,7 @@ class ThreadController extends Controller
      */
     public function show(int $thread_id)
     {
-        $thread = $this->thread_service->getThreadWithAnswers($thread_id);
+        $thread = $this->thread_service->getThread($thread_id);
         return $thread;
     }
 
@@ -143,7 +143,7 @@ class ThreadController extends Controller
 
     public function search(Request $request) 
     {
-        $keyword = preg_replace("/(^\s+)|(\s+$)/u", "", $request->keyword);
+        $keyword = preg_replace("/(^\s+)|(\s+$)/u", "", $request->trimedKeyword);
         $query = Thread::query();
         if(!empty($keyword)) {
             $query->where('body', 'LIKE', "{$keyword}%")->orWhere('body', 'LIKE', "%{$keyword}%");

@@ -22,6 +22,12 @@ class AnswerService
         $this->answer_repository = $answer_repository;
     }
 
+    public function getAnswer(int $thread_id)
+    {
+        $answers = $this->thread_repository->getAnswer($thread_id);
+        return $answers;
+    }
+
     public function getAnswersWithThreadByTime()
     {
         $answers = $this->answer_repository->getPagenatedAnswersWithThreadByTime();

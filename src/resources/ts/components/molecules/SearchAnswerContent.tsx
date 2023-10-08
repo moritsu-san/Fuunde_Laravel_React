@@ -1,21 +1,24 @@
-import { FC } from "react";
-import useFetchUserAnswerListByTime from "../../hooks/fetch/useFetchUserAnswerListByTime";
-import { AccountInfo } from "../../models/User";
 import { List, ListItem } from "@mui/material";
-import AnswerCardSkeleton from "../../components/molecules/skeleton/AnswerCardSkeleton";
-import AnswerCard from "../../components/molecules/AnswerCard";
-import PostNotFound from "../../components/atoms/PostNotFound";
-import RetryQuery from "../../components/atoms/RetryQuery";
-import NotConnectionQuery from "../../components/atoms/NotConnectionQuery";
+import { FC } from "react";
+import { UseQueryResult } from "@tanstack/react-query";
+import NotConnectionQuery from "../atoms/NotConnectionQuery";
+import RetryQuery from "../atoms/RetryQuery";
+import PostNotFound from "../atoms/PostNotFound";
+import AnswerCardSkeleton from "./skeleton/AnswerCardSkeleton";
+import { Data } from "../../models/Answer";
+import AnswerCard from "./AnswerCard";
 
 type Props = {
-    user: AccountInfo;
+    isFetching: boolean;
+    data?: Data[];
+    isPaused: boolean;
+    refetch: (options?: {
+        throwOnError: boolean;
+        cancelRefetch: boolean;
+    }) => Promise<UseQueryResult>;
 };
 
-const AccountAnswerContent: FC<Props> = ({ user }) => {
-    const { data, isFetching, isPaused, refetch } =
-        useFetchUserAnswerListByTime(user.id);
-
+const SearchAnswerContent: FC<Props> = ({ isFetching, data, isPaused, refetch }) => {
     if (isFetching) {
         return (
             <List
@@ -53,4 +56,4 @@ const AccountAnswerContent: FC<Props> = ({ user }) => {
     }
 };
 
-export default AccountAnswerContent;
+export default SearchAnswerContent;

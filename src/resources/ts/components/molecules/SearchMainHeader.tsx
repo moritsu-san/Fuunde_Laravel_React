@@ -7,10 +7,12 @@ import SearchBox from "../atoms/SearchBox";
 
 type Props = {
     keyword?: string;
+    isAnswer?: boolean;
 };
 
-const SearchMainHeader: FC<Props> = ({ keyword }) => {
+const SearchMainHeader: FC<Props> = ({ keyword, isAnswer }) => {
     const history = useHistory();
+
     return (
         <Box
             display="flex"
@@ -28,8 +30,8 @@ const SearchMainHeader: FC<Props> = ({ keyword }) => {
                     alignItems="center"
                     width="100%"
                     height="53px"
-                    px="4px"
-                    pt="4px"
+                    px="16px"
+                    pt="16px"
                     sx={{ maxWidth: { sm: "600px" } }}
                 >
                     <Box position="absolute" left="0">
@@ -43,7 +45,7 @@ const SearchMainHeader: FC<Props> = ({ keyword }) => {
                         </IconButton>
                     </Box>
                     <Box display="flex" alignItems="flex-start">
-                        <SearchBox defKeyword={keyword} />
+                        <SearchBox defKeyword={keyword} isAnswer={isAnswer} />
                     </Box>
                     <Box></Box>
                 </Box>
@@ -60,7 +62,7 @@ const SearchMainHeader: FC<Props> = ({ keyword }) => {
                         <ListItemButton
                             disableRipple
                             component={Link}
-                            to={"/answer/recent"}
+                            to={`/search/thread?keyword=${keyword}`}
                             sx={{
                                 display: "flex",
                                 justifyContent: "center",
@@ -76,6 +78,14 @@ const SearchMainHeader: FC<Props> = ({ keyword }) => {
                                 fontWeight="bold"
                             >
                                 <Box component="span">お題</Box>
+                                <Box
+                                    position="absolute"
+                                    display={!isAnswer ? "inline-flex" : "none"}
+                                    bottom="0px"
+                                    width="calc(100% + 8px)"
+                                    height="4px"
+                                    bgcolor="primary.main"
+                                ></Box>
                             </Box>
                         </ListItemButton>
                     </ListItem>
@@ -83,7 +93,7 @@ const SearchMainHeader: FC<Props> = ({ keyword }) => {
                         <ListItemButton
                             disableRipple
                             component={Link}
-                            to={"/answer/popular"}
+                            to={`/search/thread?keyword=${keyword}&mode=answer`}
                             sx={{
                                 display: "flex",
                                 justifyContent: "center",
@@ -99,6 +109,14 @@ const SearchMainHeader: FC<Props> = ({ keyword }) => {
                                 fontWeight="bold"
                             >
                                 <Box component="span">アンサー</Box>
+                                <Box
+                                    position="absolute"
+                                    display={isAnswer ? "inline-flex" : "none"}
+                                    bottom="0px"
+                                    width="calc(100% + 8px)"
+                                    height="4px"
+                                    bgcolor="primary.main"
+                                ></Box>
                             </Box>
                         </ListItemButton>
                     </ListItem>

@@ -13,6 +13,7 @@ const usePostAnswer = () => {
     const queryClient = useQueryClient();
     return useMutation(postAnswer, {
         onSuccess: () => {
+            queryClient.invalidateQueries(["thread_answer"]);
             queryClient.setQueryData(
                 ["openSnackbar"],
                 "アンサーを投稿しました!"

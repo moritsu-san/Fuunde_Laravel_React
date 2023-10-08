@@ -1,20 +1,19 @@
-import { FC } from "react";
-import useFetchUserAnswerListByTime from "../../hooks/fetch/useFetchUserAnswerListByTime";
-import { AccountInfo } from "../../models/User";
 import { List, ListItem } from "@mui/material";
-import AnswerCardSkeleton from "../../components/molecules/skeleton/AnswerCardSkeleton";
-import AnswerCard from "../../components/molecules/AnswerCard";
-import PostNotFound from "../../components/atoms/PostNotFound";
-import RetryQuery from "../../components/atoms/RetryQuery";
-import NotConnectionQuery from "../../components/atoms/NotConnectionQuery";
+import { FC } from "react";
+import useFetchThreadAnswer from "../../hooks/fetch/useFetchThreadAnswer";
+import OdaiCardSkeleton from "./skeleton/OdaiCardSkeleton";
+import ThreadAnswerCard from "./ThreadAnswerCard";
+import PostNotFound from "../atoms/PostNotFound";
+import NotConnectionQuery from "../atoms/NotConnectionQuery";
+import RetryQuery from "../atoms/RetryQuery";
 
 type Props = {
-    user: AccountInfo;
+    threadId: number;
 };
 
-const AccountAnswerContent: FC<Props> = ({ user }) => {
+const ThreadAnswerList: FC<Props> = ({ threadId }) => {
     const { data, isFetching, isPaused, refetch } =
-        useFetchUserAnswerListByTime(user.id);
+        useFetchThreadAnswer(threadId);
 
     if (isFetching) {
         return (
@@ -23,7 +22,7 @@ const AccountAnswerContent: FC<Props> = ({ user }) => {
                     width: "100%",
                 }}
             >
-                <AnswerCardSkeleton cardNum={10} />
+                <OdaiCardSkeleton cardNum={10} />
             </List>
         );
     }
@@ -38,7 +37,7 @@ const AccountAnswerContent: FC<Props> = ({ user }) => {
                 {data?.map((data) => {
                     return (
                         <ListItem key={data.id} sx={{ width: 1, p: 0 }}>
-                            <AnswerCard data={data} />
+                            <ThreadAnswerCard data={data} />
                         </ListItem>
                     );
                 })}
@@ -53,4 +52,4 @@ const AccountAnswerContent: FC<Props> = ({ user }) => {
     }
 };
 
-export default AccountAnswerContent;
+export default ThreadAnswerList;

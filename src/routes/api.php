@@ -7,6 +7,7 @@ use App\Http\Controllers\ThreadController;
 use App\Http\Controllers\AnswerController;       
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\Auth\OAuthController;
+use App\Models\Answer;
 
 /*
 |--------------------------------------------------------------------------
@@ -44,11 +45,10 @@ Route::post('/postThread', [ThreadController::class, 'store']);
 Route::get('/getThreadsByTime', [ThreadController::class, 'indexByTime']);
 Route::get('/getThreadsByLike', [ThreadController::class, 'indexByLike']);
 Route::get('/getThreadsByTime/{user_id}', [ThreadController::class, 'indexUserByTime']);
-Route::get('/getThreadWithAnswers/{thread_id}', [ThreadController::class, 'show']);
+Route::get('/getThread/{thread_id}', [ThreadController::class, 'show']);
 Route::put('/thread/{thread}/like', [ThreadController::class, 'like']);
 Route::delete('/thread/{thread}/like', [ThreadController::class, 'unlike']);
 Route::post('/searchThread', [ThreadController::class, 'search']);
-
 
 /**
  * answer
@@ -57,8 +57,10 @@ Route::post('/postAnswer/{thread_id}', [AnswerController::class, 'store']);
 Route::get('/getAnswersWithThreadByTime', [AnswerController::class, 'indexByTime']);
 Route::get('/getAnswersWithThreadByLike', [AnswerController::class, 'indexByLike']);
 Route::get('/getAnswersWithThreadByTime/{user_id}', [AnswerController::class, 'indexUserByTime']);
+Route::get('/getAnswer/{thread_id}', [AnswerController::class, 'show']);
 Route::put('/answer/{answer}/like', [AnswerController::class, 'like']);
 Route::delete('/answer/{answer}/like', [AnswerController::class, 'unlike']);
+Route::post('/searchAnswer', [AnswerController::class, 'search']);
 
 Route::get('/isLiked/{answer}', [AnswerController::class, 'isLiked']);
 Route::get('/countLikes/{answer}', [AnswerController::class, 'countLikes']);

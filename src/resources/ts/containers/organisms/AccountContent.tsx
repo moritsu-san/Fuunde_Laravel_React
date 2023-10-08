@@ -7,28 +7,45 @@ import AccountOdaiContent from "../molecules/AccountOdaiContent";
 import AccountInfoHeader from "../../components/molecules/AccountInfoHeader";
 import AccountNotFound from "../../components/organisms/AccountNotFound";
 import AccountPageNotFound from "../../components/organisms/AccountPageNotFound";
-import Retry from "../../components/atoms/Retry";
-import { AxiosError } from "axios";
-import NotConnection from "../../components/atoms/NotConnection";
+import { UseQueryResult } from "@tanstack/react-query";
+import { Box, CircularProgress } from "@mui/material";
+import NotConnectionQuery from "../../components/atoms/NotConnectionQuery";
+import RetryQuery from "../../components/atoms/RetryQuery";
 
 type Props = {
+    isFetching: boolean;
     data?: Data;
-    error?: Error;
+    isPaused: boolean;
+    refetch: (options?: {
+        throwOnError: boolean;
+        cancelRefetch: boolean;
+    }) => Promise<UseQueryResult>;
+    statuscode?: number;
 };
 
-const AccountContent: FC<Props> = ({ data, error }) => {
+const AccountContent: FC<Props> = ({
+    isFetching,
+    data,
+    isPaused,
+    refetch,
+    statuscode,
+}) => {
     const { username } = useParams<{ username: string }>();
-    const statusCode = (error as unknown as AxiosError)?.response?.status;
-    const networkError =
-        (error as unknown as AxiosError)?.message === "Network Error"
-            ? true
-            : false;
 
-    if (statusCode === 404) {
-        return <AccountNotFound username={username} />;
-    } else if (networkError) {
-        return <NotConnection />;
-    } else if (data && typeof data !== "string") {
+    if (isFetching) {
+        return (
+            <Box
+                display="flex"
+                flexDirection="row"
+                justifyContent="center"
+                py="20px"
+            >
+                <CircularProgress size={30} />
+            </Box>
+        );
+    }
+
+    if (data && typeof data !== "string") {
         return (
             <>
                 <AccountInfo user={data} />
@@ -46,8 +63,12 @@ const AccountContent: FC<Props> = ({ data, error }) => {
                 </Switch>
             </>
         );
+    } else if (statuscode === 404) {
+        return <AccountNotFound username={username} />;
+    } else if (isPaused) {
+        return <NotConnectionQuery refetch={refetch} />;
     } else {
-        return <Retry />;
+        return <RetryQuery refetch={refetch} />;
     }
 };
 
