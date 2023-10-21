@@ -7,14 +7,14 @@ jobs:
       - checkout
       - run: sudo composer self-update --1
       - run: 
-          neme: Install Composer
+          name: Install Composer
           command: composer install -n --prefer-dist
           working_directory: src
       - run: 
-          neme: npm CI
+          name: npm CI
           command: npm ci
           working_directory: src
       - run: 
-          neme: npm run dev
+          name: npm run dev
           command: npm run dev
           working_directory: src
