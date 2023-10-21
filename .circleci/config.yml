@@ -5,7 +5,8 @@ jobs:
       - image: circleci/php:7.3-node-browsers
     steps:
       - checkout
-      - run: sudo composer self-update --2
+      - run: sudo composer self-update
+      - run: sudo composer --version
       - run: 
           name: Install Composer
           command: composer install -n --prefer-dist
