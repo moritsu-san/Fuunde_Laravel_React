@@ -55,9 +55,9 @@ jobs:
       - restore_cache:
           key: composer-no-dev-v1-{{ checksum "src/composer.lock" }}
       - run: 
-        name: Install Composer --no-dev
-        command: composer install -n --no-dev --prefer-dist
-        working_directory: src
+          name: Install Composer --no-dev
+          command: composer install -n --no-dev --prefer-dist
+          working_directory: src
       - save_cache:
           key: composer-no-dev-v1-{{ checksum "src/composer.lock" }}
           paths:
@@ -66,8 +66,8 @@ jobs:
       - npm-ci
       - save-cache-npm
       - run:
-        command: npm run prod
-        working_directory: src
+          command: npm run prod
+          working_directory: src
       - run:
           name: archive artifacts
           command: zip -ryq funnde-src.zip ./src
@@ -101,4 +101,3 @@ workflows:
             branches:
               only:
                 - main
-                
