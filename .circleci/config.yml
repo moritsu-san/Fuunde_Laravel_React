@@ -70,7 +70,7 @@ jobs:
           working_directory: src
       - run:
           name: archive artifacts
-          command: zip -ryq funnde-src.zip ./src
+          command: zip -ryq funnde-src.zip .
           working_directory: src
       - aws-cli/install
       - run:
