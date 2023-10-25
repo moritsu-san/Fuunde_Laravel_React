@@ -15,7 +15,7 @@ import {
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 import Axios from "axios";
-Axios.defaults.baseURL = "http://localhost:3000/";
+Axios.defaults.baseURL = "http://57.180.93.107/";
 
 import Login from "./containers/pages/Login";
 import NotFound from "./components/pages/NotFound";
