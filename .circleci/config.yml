@@ -6,14 +6,29 @@ jobs:
     steps:
       - checkout
       - run: sudo composer --version
+      - restore_cache:
+          key: composer-v1-{{ checksum "src/composer.lock" }}
       - run: 
           name: Install Composer
           command: composer install -n --prefer-dist
           working_directory: src
+      - save_cache:
+          key: composer-v1-{{ checksum "src/composer.lock" }}
+          paths:
+            - vendor
+      - restore_cache:
+          key: npm-v1-{{ checksum "src/package-lock.json" }}
       - run: 
           name: npm CI
-          command: npm ci
+          command:  |
+            if [ ! -d node_modules ]; then
+              npm ci
+            fi 
           working_directory: src
+      - save_cache:
+          key: npm-v1-{{ checksum "src/package-lock.json" }}
+          paths:
+            - node_modules
       - run: 
           name: npm run dev
           command: npm run dev
