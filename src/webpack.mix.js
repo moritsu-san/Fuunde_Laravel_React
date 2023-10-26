@@ -1,5 +1,4 @@
-const mix = require('laravel-mix');
-const tailwindcss = require('tailwindcss');
+const mix = require("laravel-mix");
 
 /*
  |--------------------------------------------------------------------------
@@ -12,37 +11,19 @@ const tailwindcss = require('tailwindcss');
  |
  */
 
-// mix.js('resources/js/app.js', 'public/js').vue()
-//     .postCss('resources/css/app.css', 'public/css', [
-//         // require('postcss-import'),
-//         require('tailwindcss'),
-//         // require('autoprefixer'),
-//     ])
-//     // .sass('resources/sass/app.scss', 'public/css')
-//     .browserSync({
-//         files: ['./resources/views/**/*', './public/**/*'],
-//         proxy: {
-//             target: 'web'
-//         },
-//         open: true,
-//         reloadOnRestart: true,
-//     })
-//     .version();
+mix.webpackConfig({
+    watchOptions: {
+        ignored: /node_modules/,
+    },
+});
 
-mix.ts('resources/ts/app.tsx', 'public/js')
-.postCss('resources/css/app.css', 'public/css', [
-    // require('postcss-import'),
-    require('tailwindcss'),
-    // require('autoprefixer'),
-])
+mix.ts("resources/ts/app.tsx", "public/js")
 .browserSync({
-    files: ['./resources/views/**/*', './public/**/*'],
+    files: ["./resources/views/**/*", "./public/**/*"],
     proxy: {
-        target: 'web'
+        target: "web",
     },
     open: true,
     reloadOnRestart: true,
 })
 .version();
-
-    

@@ -4,7 +4,6 @@ import { FC } from "react";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import { Link } from "react-router-dom";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
-import { Data } from "../../models/Answer";
 import useCurrentUser from "../../hooks/user/useCurrentUser";
 import { cardAvatar } from "../../hooks/libs/cardAvatar";
 import LikeButton from "../atoms/LikeButton";
@@ -114,8 +113,6 @@ const ThreadAnswerCard: FC<Props> = ({ data }) => {
                             <Box
                                 pt="14px"
                                 pb={1}
-                                component={Link}
-                                to={`/thread/${data.id}`}
                             >
                                 <Typography
                                     variant="h6"
