@@ -14,7 +14,7 @@ class CreateThreadUserTable extends Migration
     public function up()
     {
         Schema::create('thread_user', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->id();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('thread_id');
             $table->timestamps();

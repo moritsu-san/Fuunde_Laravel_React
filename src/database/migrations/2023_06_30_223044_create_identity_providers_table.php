@@ -19,8 +19,8 @@ class CreateIdentityProvidersTable extends Migration
             $table->string('provider_user_id')->comment('プロバイダーユーザID');
             $table->primary(['provider_name', 'provider_user_id']); // 複合キー
             $table->unique(['user_id', 'provider_name']); // 複合ユニーク
-            $table->dateTime('created_at')->nullable()->comment('作成日時');
-            $table->dateTime('updated_at')->nullable()->comment('更新日時');
+            $table->dateTime('created_at')->nullable();
+            $table->dateTime('updated_at')->nullable();
         });
     }
 
