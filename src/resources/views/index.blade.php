@@ -8,9 +8,8 @@
     <title>Home / 踏んで</title>
 
     <!-- Styles -->
+    <link href="{{ mix('css/destyle.css') }}" rel="stylesheet">
     <link href="{{ mix('css/app.css') }}" rel="stylesheet">
-    <link href="{{ mix('css/style.css') }}" rel="stylesheet">
-    {{-- <link href="/css/app.css" rel="stylesheet"> --}}
 </head>
 <body>
     <div id="app">
