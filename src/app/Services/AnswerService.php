@@ -57,7 +57,6 @@ class AnswerService
         DB::beginTransaction();
         try{
             $answer = $this->answer_repository->create($store_data);
-            $this->thread_repository->updateTime($thread_id);
             DB::commit();
             return $answer;
         } catch (Throwable $error){
