@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Support\Facades\Auth;
 
 class Thread extends Model
 {
@@ -26,7 +25,7 @@ class Thread extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'user_id', 'body', 'is_user_checked', 'latest_answer_time'
+        'user_id', 'body'
     ];
 
     protected $appends = ['diff_for_humans'];
@@ -37,7 +36,7 @@ class Thread extends Model
      * @var array
      */
 
-    protected $hidden = ['latest_answer_time'];
+    protected $hidden = [];
     
     /**
      * diff_for_humans
