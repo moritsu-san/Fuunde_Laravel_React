@@ -18,7 +18,8 @@ mix.webpackConfig({
 });
 
 mix.ts("resources/ts/app.tsx", "public/js")
-    .postCss("resources/css/app.css", "public/css", [])
+    .postCss("resources/css/app.css", "public/css")
+    .postCss("resources/css/destyle.css", "public/css")
     .browserSync({
         files: ["./resources/views/**/*", "./public/**/*"],
         proxy: {
