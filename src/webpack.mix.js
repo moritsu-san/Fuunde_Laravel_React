@@ -18,12 +18,13 @@ mix.webpackConfig({
 });
 
 mix.ts("resources/ts/app.tsx", "public/js")
-.browserSync({
-    files: ["./resources/views/**/*", "./public/**/*"],
-    proxy: {
-        target: "web",
-    },
-    open: true,
-    reloadOnRestart: true,
-})
-.version();
+    .postCss("resources/css/app.css", "public/css", [])
+    .browserSync({
+        files: ["./resources/views/**/*", "./public/**/*"],
+        proxy: {
+            target: "web",
+        },
+        open: true,
+        reloadOnRestart: true,
+    })
+    .version();
