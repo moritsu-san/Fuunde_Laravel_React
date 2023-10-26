@@ -22,7 +22,6 @@ class ThreadService
         $store_data = [
             'body' => $body,
             'user_id' => $user_id,     
-            'latest_answer_time' => Carbon::now()
         ];
 
         DB::beginTransaction();

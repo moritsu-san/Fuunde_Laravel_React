@@ -17,7 +17,6 @@ class CreateThreadsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->string('body', 30);
-            $table->timestamp('latest_comment_time');
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');

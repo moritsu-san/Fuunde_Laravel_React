@@ -4,7 +4,6 @@ namespace App\Repositories;
 
 use App\Models\Thread;
 use App\Models\User;
-use Carbon\Carbon;
 
 class ThreadRepository
 {
@@ -69,13 +68,6 @@ class ThreadRepository
         return $this->thread->withCount('likes')->with(['answers' => function ($query) {
             $query->withCount('likes')->with(['user:id,name,username', 'likes:id,name,username'])->orderBy('likes_count', 'desc')->get();
         }, 'user:id,name,username', 'likes:id,name,username'])->where('id', $thread_id)->firstOrFail();
-    }
-
-    public function updateTime(int $id)
-    {
-        $thread = $this->findById($id);
-        $thread->latest_answer_time = Carbon::now();
-        return $thread->save();
     }
 
     public function deleteThread(int $id)
