@@ -1,16 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { Data } from "../../models/Thread";
+import { odaiData } from "../../models/Odai";
 
 const fetchUserOdaiListByTime = async (userId: number) => {
-    const { data } = await axios.get<Data[]>(
-        `/api/getThreadsByTime/${userId}`
-    );
+    const { data } = await axios.get<odaiData[]>(`/api/getThreadsByTime/${userId}`);
     return data;
 };
 
 const useFetchUserOdaiListByTime = (userId: number) => {
-    return useQuery<Data[]>(["user_odais"], () =>
+    return useQuery<odaiData[]>(["user_odais"], () =>
         fetchUserOdaiListByTime(userId)
     );
 };

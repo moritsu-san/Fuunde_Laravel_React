@@ -28,26 +28,27 @@ const SearchMainHeader: FC<Props> = ({ keyword, isAnswer }) => {
                     display="flex"
                     justifyContent="center"
                     alignItems="center"
-                    width="100%"
+                    width={1}
                     height="53px"
-                    px="16px"
+                    px={1}
                     pt="16px"
                     sx={{ maxWidth: { sm: "600px" } }}
                 >
-                    <Box position="absolute" left="0">
+                    <Box minWidth="56px">
                         <IconButton
                             disableRipple
                             onClick={() => {
                                 history.goBack();
                             }}
+                            sx={{ p: 0 }}
                         >
                             <ArrowBackOutlinedIcon color="primary" />
                         </IconButton>
                     </Box>
-                    <Box display="flex" alignItems="flex-start">
+                    <Box flexGrow={1}>
                         <SearchBox defKeyword={keyword} isAnswer={isAnswer} />
                     </Box>
-                    <Box></Box>
+                    <Box minWidth="56px"></Box>
                 </Box>
             </Box>
             <Box component="nav" borderBottom={1} borderColor={grey[300]}>

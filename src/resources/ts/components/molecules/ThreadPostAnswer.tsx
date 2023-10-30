@@ -11,15 +11,15 @@ import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import usePostAnswer from "../../hooks/post/usePostAnswer";
 import { AxiosError } from "axios";
-import { Data } from "../../models/Thread";
+import { odaiData } from "../../models/Odai";
 import { FC, ReactNode } from "react";
 import { Link } from "react-router-dom";
 import useCurrentUser from "../../hooks/user/useCurrentUser";
-import { cardAvatar } from "../../hooks/libs/cardAvatar";
+import { cardAvatarProps } from "../../hooks/libs/cardAvatarProps";
 import { grey } from "@mui/material/colors";
 
 type Props = {
-    thread: Data;
+    thread: odaiData;
 };
 
 const schema = z.object({
@@ -81,7 +81,7 @@ const ThreadPostAnswer: FC<Props> = ({ thread }) => {
                 mr="12px"
                 mb="20px"
             >
-                <Avatar {...cardAvatar(user?.name as string)} />
+                <Avatar {...cardAvatarProps(user?.name as string)} />
             </Box>
             <Box
                 component="form"

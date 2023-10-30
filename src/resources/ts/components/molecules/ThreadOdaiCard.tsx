@@ -1,28 +1,18 @@
 import { FC } from "react";
-import useCurrentUser from "../../hooks/user/useCurrentUser";
-import { Data } from "../../models/Thread";
-import { Avatar, Box, IconButton, Tooltip, Typography } from "@mui/material";
+import { odaiData } from "../../models/Odai";
+import { Avatar, Box, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
-import { cardAvatar } from "../../hooks/libs/cardAvatar";
+import { cardAvatarProps } from "../../hooks/libs/cardAvatarProps";
 import { grey } from "@mui/material/colors";
-import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
-import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
-import PostAnswerButton from "./PostAnswerButton";
-import LikeButton from "../atoms/LikeButton";
 import { format } from "date-fns";
+import CardFooter from "../atoms/CardFooter";
 
 type Props = {
-    thread: Data;
+    thread: odaiData;
 };
 
 const ThreadOdaiCard: FC<Props> = ({ thread }) => {
-    const user = useCurrentUser();
-    const defIsLiked =
-        thread?.likes?.find((i) => i.username === user?.username) === undefined
-            ? false
-            : true;
-
     return (
         <Box width={1}>
             <Box
@@ -46,7 +36,9 @@ const ThreadOdaiCard: FC<Props> = ({ thread }) => {
                                     component={Link}
                                     to={`/user/${thread.user.username}`}
                                 >
-                                    <Avatar {...cardAvatar(thread.user.name)} />
+                                    <Avatar
+                                        {...cardAvatarProps(thread.user.name)}
+                                    />
                                 </Box>
                             </Box>
                             <Box
@@ -126,107 +118,17 @@ const ThreadOdaiCard: FC<Props> = ({ thread }) => {
                             </Box>
                         </Box>
                         <Box
-                            height="48px"
-                            px="8px"
-                            display="flex"
-                            flexDirection="row"
+                            p="8px"
                             borderTop={1}
                             borderBottom={1}
                             borderColor={grey[300]}
                         >
-                            <Box
-                                mr="auto"
-                                display="flex"
-                                flexDirection="column"
-                                justifyContent="center"
-                            >
-                                <PostAnswerButton
-                                    data={thread}
-                                    toThreadPage={false}
-                                />
-                            </Box>
-                            <Box
-                                mr="50px"
-                                display="flex"
-                                flexDirection="column"
-                                justifyContent="center"
-                            >
-                                <LikeButton
-                                    isThreadCard={true}
-                                    mode="thread"
-                                    id={thread.id}
-                                    defIsLiked={defIsLiked}
-                                    defLikesCount={thread.likes_count}
-                                />
-                            </Box>
-                            <Box
-                                display="flex"
-                                flexDirection="column"
-                                justifyContent="center"
-                            >
-                                <Tooltip
-                                    title="ログインしてください"
-                                    placement="top"
-                                    arrow
-                                >
-                                    <IconButton sx={{ p: 0 }}>
-                                        <BookmarkBorderIcon
-                                            sx={{
-                                                width: "1.5rem",
-                                            }}
-                                        />
-                                    </IconButton>
-                                </Tooltip>
-                            </Box>
+                            <CardFooter
+                                isThreadCard={true}
+                                mode="odai"
+                                data={thread}
+                            />
                         </Box>
-
-                        {/* <Box display="flex">
-                                <Box mr="auto">
-                                    {user ? (
-                                        <PostAnswerButton
-                                            data={thread}
-                                            toThreadPage={false}
-                                        />
-                                    ) : (
-                                        <Tooltip
-                                            title="ログインしてください"
-                                            placement="top"
-                                            arrow
-                                        >
-                                            <IconButton sx={{ p: 0 }}>
-                                                <ChatBubbleOutlineIcon
-                                                    sx={{
-                                                        width: "1.25rem",
-                                                    }}
-                                                />
-                                            </IconButton>
-                                        </Tooltip>
-                                    )}
-                                </Box>
-                                <Box mr="50px">
-                                    <LikeButton
-                                        mode="thread"
-                                        id={thread.id}
-                                        defIsLiked={defIsLiked}
-                                        defLikesCount={thread.likes_count}
-                                    />
-                                </Box>
-                                <Box mr="20px">
-                                    <Tooltip
-                                        title="ログインしてください"
-                                        placement="top"
-                                        arrow
-                                    >
-                                        <IconButton sx={{ p: 0 }}>
-                                            <BookmarkBorderIcon
-                                                sx={{
-                                                    width: "1.25rem",
-                                                }}
-                                            />
-                                        </IconButton>
-                                    </Tooltip>
-                                </Box>
-                            </Box> */}
                     </>
                 </Box>
             </Box>

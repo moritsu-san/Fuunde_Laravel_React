@@ -28,7 +28,7 @@ import {
     ListItemText,
 } from "@mui/material";
 import { grey } from "@mui/material/colors";
-import { cardAvatar } from "../../hooks/libs/cardAvatar";
+import { cardAvatarProps } from "../../hooks/libs/cardAvatarProps";
 import PostThreadButton from "../molecules/PostThreadButton";
 
 type Props = {
@@ -133,8 +133,6 @@ const Header: FC<Props> = ({
                 position: "relative",
                 height: "100vh",
                 px: "4px",
-                zIndex: "3",
-                flexGrow: "1",
             }}
         >
             <Box
@@ -143,15 +141,13 @@ const Header: FC<Props> = ({
                     mr: { xs: "8px", xl: "0" },
                 }}
             >
-                <Box height="100%" position="fixed" top="0px">
+                <Box position="fixed" top="0px" height={1}>
                     <Box
-                        sx={{
-                            display: "flex",
-                            flexDirection: "column",
-                            justifyContent: "space-between",
-                            height: "100%",
-                            ml: { xl: "60px" },
-                        }}
+                        display="flex"
+                        flexDirection="column"
+                        justifyContent="space-between"
+                        height={1}
+                        sx={{ ml: { xl: "60px" } }}
                     >
                         <List>
                             {/* ロゴ */}
@@ -325,7 +321,7 @@ const Header: FC<Props> = ({
                                         >
                                             <ListItemIcon sx={{ ml: "6px" }}>
                                                 <Avatar
-                                                    {...cardAvatar(
+                                                    {...cardAvatarProps(
                                                         name as string
                                                     )}
                                                 />

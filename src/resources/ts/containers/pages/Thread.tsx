@@ -7,11 +7,12 @@ import { AxiosError } from "axios";
 
 const EnhancedThread = () => {
     const { threadId } = useParams<{ threadId: string }>();
-    const { data, isFetching, isPaused, error, refetch } = useFetchThreadOdai(threadId);
-    const statuscode = (error as unknown as AxiosError)?.response?.status
+    const { data, isFetching, isPaused, error, refetch } =
+        useFetchThreadOdai(threadId);
+    const statuscode = (error as unknown as AxiosError)?.response?.status;
 
     return (
-        <Box display="flex" flexDirection="column">
+        <Box>
             <ThreadMainHeader />
             <Thread
                 isFetching={isFetching}

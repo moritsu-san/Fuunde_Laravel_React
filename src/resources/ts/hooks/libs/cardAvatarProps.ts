@@ -1,6 +1,6 @@
 import { stringToColor } from "./stringToColor";
 
-export const cardAvatar = (
+export const cardAvatarProps = (
     name: string,
     size: number = 40,
     fontsize: number = 20

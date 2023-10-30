@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { AccountInfo } from "../../models/User";
-import { List, ListItem } from "@mui/material";
+import { ListItem } from "@mui/material";
 import useFetchUserOdaiListByTime from "../../hooks/fetch/useFetchUserOdaiListByTime";
 import OdaiCardSkeleton from "../../components/molecules/skeleton/OdaiCardSkeleton";
 import OdaiCard from "../../components/molecules/OdaiCard";
@@ -19,23 +19,15 @@ const AccountOdaiContent: FC<Props> = ({ user }) => {
 
     if (isFetching) {
         return (
-            <List
-                sx={{
-                    width: "100%",
-                }}
-            >
+            <ul>
                 <OdaiCardSkeleton cardNum={10} />
-            </List>
+            </ul>
         );
     }
 
     if (data && typeof data !== "string" && data?.length !== 0) {
         return (
-            <List
-                sx={{
-                    width: "100%",
-                }}
-            >
+            <ul>
                 {data?.map((data) => {
                     return (
                         <ListItem key={data.id} sx={{ width: 1, p: 0 }}>
@@ -43,7 +35,7 @@ const AccountOdaiContent: FC<Props> = ({ user }) => {
                         </ListItem>
                     );
                 })}
-            </List>
+            </ul>
         );
     } else if (data?.length === 0) {
         return <PostNotFound />;

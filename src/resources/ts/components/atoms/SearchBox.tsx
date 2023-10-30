@@ -66,7 +66,6 @@ const SearchBox: FC<Props> = ({ defKeyword, isAnswer }) => {
             p="2px 4px"
             display="flex"
             alignItems="center"
-            width={400}
             height={40}
             border={1}
             borderColor={isFocused ? "primary.main" : grey[300]}

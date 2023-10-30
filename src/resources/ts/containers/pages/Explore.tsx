@@ -6,7 +6,7 @@ import ExploreContent from "../../components/molecules/ExploreContent";
 const Explore = () => {
     const { data, isFetching, isPaused, refetch } = useFetchOdaiListByLike();
     return (
-        <Box display="flex" flexDirection="column">
+        <Box>
             <ExploreMainHeader />
             <ExploreContent
                 isFetching={isFetching}

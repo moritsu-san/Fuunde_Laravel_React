@@ -1,6 +1,6 @@
-import { Box, ListItem } from "@mui/material";
+import { ListItem } from "@mui/material";
 import { FC } from "react";
-import { Data } from "../../models/Answer";
+import { answerData } from "../../models/Answer";
 import AnswerCardSkeleton from "./skeleton/AnswerCardSkeleton";
 import AnswerCard from "./AnswerCard";
 import { UseQueryResult } from "@tanstack/react-query";
@@ -9,7 +9,7 @@ import RetryQuery from "../atoms/RetryQuery";
 
 type Props = {
     isFetching: boolean;
-    data?: Data[];
+    data?: answerData[];
     isPaused: boolean;
     refetch: (options?: {
         throwOnError: boolean;
@@ -19,12 +19,16 @@ type Props = {
 
 const AnswerContent: FC<Props> = ({ isFetching, data, isPaused, refetch }) => {
     if (isFetching) {
-        return <AnswerCardSkeleton cardNum={10} />;
+        return (
+            <ul>
+                <AnswerCardSkeleton cardNum={10} />
+            </ul>
+        );
     }
 
     if (data && typeof data !== "string") {
         return (
-            <Box>
+            <ul>
                 {data?.map((data) => {
                     return (
                         <ListItem key={data.id} sx={{ width: 1, p: 0 }}>
@@ -32,7 +36,7 @@ const AnswerContent: FC<Props> = ({ isFetching, data, isPaused, refetch }) => {
                         </ListItem>
                     );
                 })}
-            </Box>
+            </ul>
         );
     } else if (isPaused) {
         return <NotConnectionQuery refetch={refetch} />;

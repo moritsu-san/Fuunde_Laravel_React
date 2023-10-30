@@ -1,7 +1,7 @@
 import { FC } from "react";
 import useFetchUserAnswerListByTime from "../../hooks/fetch/useFetchUserAnswerListByTime";
 import { AccountInfo } from "../../models/User";
-import { List, ListItem } from "@mui/material";
+import { ListItem } from "@mui/material";
 import AnswerCardSkeleton from "../../components/molecules/skeleton/AnswerCardSkeleton";
 import AnswerCard from "../../components/molecules/AnswerCard";
 import PostNotFound from "../../components/atoms/PostNotFound";
@@ -18,23 +18,15 @@ const AccountAnswerContent: FC<Props> = ({ user }) => {
 
     if (isFetching) {
         return (
-            <List
-                sx={{
-                    width: "100%",
-                }}
-            >
+            <ul>
                 <AnswerCardSkeleton cardNum={10} />
-            </List>
+            </ul>
         );
     }
 
     if (data && typeof data !== "string" && data?.length !== 0) {
         return (
-            <List
-                sx={{
-                    width: "100%",
-                }}
-            >
+            <ul>
                 {data?.map((data) => {
                     return (
                         <ListItem key={data.id} sx={{ width: 1, p: 0 }}>
@@ -42,7 +34,7 @@ const AccountAnswerContent: FC<Props> = ({ user }) => {
                         </ListItem>
                     );
                 })}
-            </List>
+            </ul>
         );
     } else if (data?.length === 0) {
         return <PostNotFound />;
