@@ -98,11 +98,11 @@ const PostThreadButton = () => {
                     display: { xs: "none", xl: "block" },
                     width: "100%",
                     minWidth: "52px",
+                    textAlign: "center",
                     color: "white",
                     fontWeight: "bold",
                 }}
             >
-                {" "}
                 お題を投稿
             </Button>
             <Tooltip

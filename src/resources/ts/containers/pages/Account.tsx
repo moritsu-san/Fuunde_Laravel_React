@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import { AxiosError } from "axios";
-import { Box, CircularProgress } from "@mui/material";
+import { Box } from "@mui/material";
 import AccountMainHeader from "../../components/molecules/AccountMainHeader";
 import AccountContent from "../organisms/AccountContent";
 import useFetchAccountInfo from "../../hooks/fetch/useFetchAccountInfo";
@@ -12,7 +12,7 @@ const EnhancedAccount = () => {
     const statuscode = (error as unknown as AxiosError)?.response?.status;
 
     return (
-        <Box display="flex" flexDirection="column">
+        <Box>
             <AccountMainHeader name={data?.name} />
             <AccountContent
                 isFetching={isFetching}

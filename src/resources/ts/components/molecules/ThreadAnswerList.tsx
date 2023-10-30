@@ -1,4 +1,4 @@
-import { List, ListItem } from "@mui/material";
+import { ListItem } from "@mui/material";
 import { FC } from "react";
 import useFetchThreadAnswer from "../../hooks/fetch/useFetchThreadAnswer";
 import OdaiCardSkeleton from "./skeleton/OdaiCardSkeleton";
@@ -17,23 +17,15 @@ const ThreadAnswerList: FC<Props> = ({ threadId }) => {
 
     if (isFetching) {
         return (
-            <List
-                sx={{
-                    width: "100%",
-                }}
-            >
+            <ul>
                 <OdaiCardSkeleton cardNum={10} />
-            </List>
+            </ul>
         );
     }
 
     if (data && typeof data !== "string" && data?.length !== 0) {
         return (
-            <List
-                sx={{
-                    width: "100%",
-                }}
-            >
+            <ul>
                 {data?.map((data) => {
                     return (
                         <ListItem key={data.id} sx={{ width: 1, p: 0 }}>
@@ -41,7 +33,7 @@ const ThreadAnswerList: FC<Props> = ({ threadId }) => {
                         </ListItem>
                     );
                 })}
-            </List>
+            </ul>
         );
     } else if (data?.length === 0) {
         return <PostNotFound />;

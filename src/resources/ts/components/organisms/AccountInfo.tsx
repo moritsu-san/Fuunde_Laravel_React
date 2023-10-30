@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { AccountInfo } from "../../models/User";
 import { Avatar, Box, Button, Typography } from "@mui/material";
-import { cardAvatar } from "../../hooks/libs/cardAvatar";
+import { cardAvatarProps } from "../../hooks/libs/cardAvatarProps";
 import { grey } from "@mui/material/colors";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import FavoriteIcon from "@mui/icons-material/Favorite";
@@ -28,7 +28,7 @@ const AccountInfo: FC<Props> = ({ user }) => {
                 mb="20px"
             >
                 <Box>
-                    <Avatar {...cardAvatar(user?.name as string, 100, 40)} />
+                    <Avatar {...cardAvatarProps(user?.name as string, 100, 40)} />
                 </Box>
                 <Box display="flex" flexDirection="column" justifyContent="end">
                     <Box mb="8px">

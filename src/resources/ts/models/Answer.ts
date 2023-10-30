@@ -4,7 +4,7 @@ type userData = {
     username: string;
 };
 
-type threadData = {
+export type threadData = {
     id: number;
     body: string;
     user_id: number;
@@ -15,10 +15,10 @@ type threadData = {
     user: userData;
 };
 
-export type Data = {
+export type answerData = {
     id: number;
     user_id: number;
-    thread_id:number;
+    thread_id: number;
     body: string;
     likes_count: number;
     created_at: Date;

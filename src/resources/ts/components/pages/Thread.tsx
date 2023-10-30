@@ -6,12 +6,12 @@ import NotFound from "./NotFound";
 import { UseQueryResult } from "@tanstack/react-query";
 import NotConnectionQuery from "../atoms/NotConnectionQuery";
 import RetryQuery from "../atoms/RetryQuery";
-import { Data } from "../../models/Thread";
+import { odaiData } from "../../models/Odai";
 import ThreadAnswerList from "../molecules/ThreadAnswerList";
 
 type Props = {
     isFetching: boolean;
-    data?: Data;
+    data?: odaiData;
     isPaused: boolean;
     refetch: (options?: {
         throwOnError: boolean;
@@ -42,7 +42,7 @@ const Thread: FC<Props> = ({
 
     if (data && typeof data !== "string") {
         return (
-            <Box display="flex" flexDirection="column">
+            <Box>
                 <ThreadOdaiCard thread={data} />
                 <ThreadPostAnswer thread={data} />
                 <ThreadAnswerList threadId={data.id} />

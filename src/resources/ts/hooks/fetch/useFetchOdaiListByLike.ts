@@ -1,14 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { Data } from "../../models/Thread";
+import { odaiData } from "../../models/Odai";
 
 const fetchOdaiListByLike = async () => {
-    const { data } = await axios.get<Data[]>("/api/getThreadsByLike");
+    const { data } = await axios.get<odaiData[]>("/api/getThreadsByLike");
     return data;
 };
 
 const useFetchOdaiListByLike = () => {
-    return useQuery<Data[]>(["odaisByLike"], fetchOdaiListByLike);
+    return useQuery<odaiData[]>(["odaisByLike"], fetchOdaiListByLike);
 };
 
 export default useFetchOdaiListByLike;

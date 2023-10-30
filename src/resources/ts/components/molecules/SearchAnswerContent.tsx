@@ -1,16 +1,16 @@
-import { List, ListItem } from "@mui/material";
+import { ListItem } from "@mui/material";
 import { FC } from "react";
 import { UseQueryResult } from "@tanstack/react-query";
 import NotConnectionQuery from "../atoms/NotConnectionQuery";
 import RetryQuery from "../atoms/RetryQuery";
 import PostNotFound from "../atoms/PostNotFound";
 import AnswerCardSkeleton from "./skeleton/AnswerCardSkeleton";
-import { Data } from "../../models/Answer";
+import { answerData } from "../../models/Answer";
 import AnswerCard from "./AnswerCard";
 
 type Props = {
     isFetching: boolean;
-    data?: Data[];
+    data?: answerData[];
     isPaused: boolean;
     refetch: (options?: {
         throwOnError: boolean;
@@ -18,26 +18,23 @@ type Props = {
     }) => Promise<UseQueryResult>;
 };
 
-const SearchAnswerContent: FC<Props> = ({ isFetching, data, isPaused, refetch }) => {
+const SearchAnswerContent: FC<Props> = ({
+    isFetching,
+    data,
+    isPaused,
+    refetch,
+}) => {
     if (isFetching) {
         return (
-            <List
-                sx={{
-                    width: "100%",
-                }}
-            >
+            <ul>
                 <AnswerCardSkeleton cardNum={10} />
-            </List>
+            </ul>
         );
     }
 
     if (data && typeof data !== "string" && data?.length !== 0) {
         return (
-            <List
-                sx={{
-                    width: "100%",
-                }}
-            >
+            <ul>
                 {data?.map((data) => {
                     return (
                         <ListItem key={data.id} sx={{ width: 1, p: 0 }}>
@@ -45,7 +42,7 @@ const SearchAnswerContent: FC<Props> = ({ isFetching, data, isPaused, refetch })
                         </ListItem>
                     );
                 })}
-            </List>
+            </ul>
         );
     } else if (data?.length === 0) {
         return <PostNotFound />;

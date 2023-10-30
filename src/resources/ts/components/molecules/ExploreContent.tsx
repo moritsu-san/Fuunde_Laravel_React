@@ -1,13 +1,13 @@
-import { Box, List, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { FC } from "react";
-import { Data } from "../../models/Thread";
+import { odaiData } from "../../models/Odai";
 import { UseQueryResult } from "@tanstack/react-query";
 import OdaiContent from "./OdaiContent";
 import { grey } from "@mui/material/colors";
 
 type Props = {
     isFetching: boolean;
-    data?: Data[];
+    data?: odaiData[];
     isPaused: boolean;
     refetch: (options?: {
         throwOnError: boolean;
@@ -17,7 +17,7 @@ type Props = {
 
 const ExploreContent: FC<Props> = ({ isFetching, data, isPaused, refetch }) => {
     return (
-        <Box display="flex" flexDirection="column" height={700}>
+        <Box>
             <Box
                 px="12px"
                 py="12px"
@@ -30,18 +30,14 @@ const ExploreContent: FC<Props> = ({ isFetching, data, isPaused, refetch }) => {
                 </Typography>
             </Box>
             <Box>
-                <List
-                    sx={{
-                        width: "100%",
-                    }}
-                >
+                <ul>
                     <OdaiContent
                         isFetching={isFetching}
                         data={data}
                         isPaused={isPaused}
                         refetch={refetch}
                     />
-                </List>
+                </ul>
             </Box>
         </Box>
     );

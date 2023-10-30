@@ -29,7 +29,7 @@ const SearchThread = () => {
     return (
         <Box display="flex" flexDirection="column">
             <SearchMainHeader keyword={keyword as string} isAnswer={isAnswer} />
-            <Box height={700}>
+            <Box>
                 {!isAnswer ? (
                     <SearchThreadContent
                         isFetching={isFetching}

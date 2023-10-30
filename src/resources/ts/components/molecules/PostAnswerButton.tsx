@@ -10,7 +10,7 @@ import {
     InputAdornment,
     InputLabel,
     Slide,
-    Typography,
+    Tooltip,
 } from "@mui/material";
 import { TransitionProps } from "@mui/material/transitions";
 import { FC, ReactElement, ReactNode, Ref, forwardRef, useState } from "react";
@@ -25,10 +25,10 @@ import useCurrentUser from "../../hooks/user/useCurrentUser";
 import { LoadingButton } from "@mui/lab";
 import usePostAnswer from "../../hooks/post/usePostAnswer";
 import { grey } from "@mui/material/colors";
-import { Data } from "../../models/Thread";
+import { odaiData } from "../../models/Odai";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
-import { retweetAvatar } from "../../hooks/libs/retweetAvatar";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
+import RetweetCard from "../atoms/RetweetCard";
 
 const schema = z.object({
     body: z
@@ -52,11 +52,11 @@ const Transition = forwardRef(function Transition(
 });
 
 type Props = {
-    data: Data;
-    toThreadPage: boolean;
+    data: odaiData;
+    isRoute: boolean;
 };
 
-const PostAnswerButton: FC<Props> = ({ data, toThreadPage }) => {
+const PostAnswerButton: FC<Props> = ({ data, isRoute }) => {
     const history = useHistory();
 
     const {
@@ -80,7 +80,7 @@ const PostAnswerButton: FC<Props> = ({ data, toThreadPage }) => {
         mutate(postData, {
             onSuccess: (data) => {
                 handleClose();
-                if (toThreadPage) {
+                if (isRoute) {
                     history.push(`/thread/${data.thread_id}`);
                 }
             },
@@ -101,205 +101,130 @@ const PostAnswerButton: FC<Props> = ({ data, toThreadPage }) => {
         setOpenDialog(false);
     };
 
-    return (
-        <>
-            <IconButton
-                onClick={handleClickOpen}
-                sx={{
-                    p: 0,
-                }}
-                disableRipple
-            >
-                <ChatBubbleOutlineIcon
-                    sx={{ width: toThreadPage ? "1.25rem" : "1.5rem" }}
-                />
-            </IconButton>
-            <Dialog
-                open={openDialog}
-                TransitionComponent={Transition}
-                keepMounted
-                onClose={handleClose}
-                aria-describedby="alert-dialog-slide-description"
-            >
-                <Box
-                    component="form"
-                    onSubmit={handleSubmit(handlePostAnswer)}
-                    noValidate
-                    width="500px"
-                    px="32px"
-                    py="16px"
-                    display="flex"
-                    flexDirection="column"
-                    alignItems="center"
+    if (user) {
+        return (
+            <>
+                <IconButton
+                    onClick={handleClickOpen}
+                    sx={{
+                        p: 0,
+                    }}
+                    disableRipple
                 >
-                    {/* クローズボタン */}
-                    <IconButton onClick={handleClose} sx={{ p: 0, mr: "auto" }}>
-                        <CloseIcon sx={{ fontSize: 24 }} />
-                    </IconButton>
-                    {/* thread情報 */}
-                    <Box mt="12px" mb="-20px">
-                        <Box
-                            display="flex"
-                            flexDirection="column"
-                            minHeight="64px"
-                            border={1}
-                            borderColor={grey[300]}
-                            borderRadius="12px"
-                            component={Link}
-                            to={`/thread/${data.id}`}
+                    <ChatBubbleOutlineIcon
+                        sx={{ width: isRoute ? "1.25rem" : "1.5rem" }}
+                    />
+                </IconButton>
+                <Dialog
+                    open={openDialog}
+                    TransitionComponent={Transition}
+                    keepMounted
+                    onClose={handleClose}
+                    aria-describedby="alert-dialog-slide-description"
+                >
+                    <Box
+                        component="form"
+                        onSubmit={handleSubmit(handlePostAnswer)}
+                        noValidate
+                        width="500px"
+                        px="32px"
+                        py="16px"
+                        display="flex"
+                        flexDirection="column"
+                        alignItems="center"
+                    >
+                        {/* クローズボタン */}
+                        <IconButton
+                            onClick={handleClose}
+                            sx={{ p: 0, mr: "auto" }}
                         >
-                            <Box mt="4px" mx="12px">
-                                <Box
-                                    display="flex"
-                                    flexDirection="row"
-                                    alignItems="center"
-                                >
-                                    <Box
-                                        display="block"
-                                        width="20px"
-                                        height="20px"
-                                        mr="4px"
-                                    >
-                                        <Avatar
-                                            {...retweetAvatar(data.user.name)}
-                                        />
-                                    </Box>
-                                    <Box
-                                        display="flex"
-                                        flexDirection="row"
-                                        alignItems="baseline"
-                                    >
-                                        <Box>
-                                            <Typography
-                                                fontSize="12px"
-                                                fontWeight="bold"
-                                            >
-                                                {data.user.name}
-                                            </Typography>
-                                        </Box>
-                                        <Box
-                                            ml="4px"
-                                            display="flex"
-                                            flexDirection="row"
-                                            alignItems="baseline"
-                                        >
-                                            <Box>
-                                                <Typography
-                                                    fontSize="12px"
-                                                    sx={{
-                                                        color: grey[600],
-                                                    }}
-                                                >
-                                                    @{data.user.username}
-                                                </Typography>
-                                            </Box>
-                                            <Box
-                                                component="span"
-                                                fontSize="12px"
-                                                fontWeight="bold"
-                                                color={grey[600]}
-                                                px="4px"
-                                            >
-                                                ·
-                                            </Box>
-                                            <Box>
-                                                <Box
-                                                    component="time"
-                                                    dateTime={data.created_at.toString()}
-                                                    sx={{
-                                                        color: grey[600],
-                                                        fontSize: "12px",
-                                                    }}
-                                                >
-                                                    {data.diff_for_humans}
-                                                </Box>
-                                            </Box>
-                                        </Box>
-                                    </Box>
-                                </Box>
-                            </Box>
-                            <Box mx="12px" mb="12px">
-                                <Box my="4px">
-                                    <Typography
-                                        component="h6"
-                                        fontSize="15px"
-                                        textAlign="center"
-                                        fontWeight="bold"
-                                    >
-                                        {data.body}
-                                    </Typography>
-                                </Box>
+                            <CloseIcon sx={{ fontSize: 24 }} />
+                        </IconButton>
+                        {/* thread情報 */}
+                        <Box mt="12px" mb="-20px">
+                            <RetweetCard data={data} />
+                            <Box>
+                                <ArrowDownwardIcon
+                                    sx={{
+                                        display: "block",
+                                        color: grey[400],
+                                        mx: "auto",
+                                        mt: "-4px",
+                                    }}
+                                />
                             </Box>
                         </Box>
-                        <Box>
-                            <ArrowDownwardIcon
-                                sx={{
-                                    display: "block",
-                                    color: grey[400],
-                                    mx: "auto",
-                                    mt: "-4px",
+                        {/* 入力するフィールド */}
+                        <FormControl
+                            variant="standard"
+                            fullWidth
+                            margin="normal"
+                            error={isFrontError}
+                        >
+                            <InputLabel htmlFor="post-thread">
+                                アンサー
+                            </InputLabel>
+                            <Input
+                                id="post-thread"
+                                multiline
+                                inputProps={{
+                                    style: {
+                                        fontSize: "24px",
+                                        lineHeight: "30px",
+                                    },
+                                    maxLength: 100,
                                 }}
+                                startAdornment={
+                                    <InputAdornment position="start">
+                                        <Avatar
+                                            {...inputAvatar(
+                                                user?.name as string
+                                            )}
+                                        />
+                                    </InputAdornment>
+                                }
+                                {...register("body")}
                             />
-                        </Box>
-                    </Box>
-                    {/* 入力するフィールド */}
-                    <FormControl
-                        variant="standard"
-                        fullWidth
-                        margin="normal"
-                        error={isFrontError}
-                    >
-                        <InputLabel htmlFor="post-thread">アンサー</InputLabel>
-                        <Input
-                            id="post-thread"
-                            multiline
-                            inputProps={{
-                                style: {
-                                    fontSize: "24px",
-                                    lineHeight: "30px",
-                                },
-                                maxLength: 100,
-                            }}
-                            startAdornment={
-                                <InputAdornment position="start">
-                                    <Avatar
-                                        {...inputAvatar(user?.name as string)}
-                                    />
-                                </InputAdornment>
-                            }
-                            {...register("body")}
-                        />
-                        <FormHelperText
-                            id="post-thread-error-text"
-                            sx={{ color: "error.main" }}
+                            <FormHelperText
+                                id="post-thread-error-text"
+                                sx={{ color: "error.main" }}
+                            >
+                                {isFrontError || statusCode || isPaused
+                                    ? null
+                                    : "　"}
+                                {isFrontError &&
+                                    (errors.body?.message as ReactNode)}
+                                {statusCode &&
+                                    `エラーにより投稿できませんでした。(${statusCode})`}
+                                {isPaused &&
+                                    "インターネットに接続されておらず、投稿できません。"}
+                            </FormHelperText>
+                        </FormControl>
+                        {/* 送信ボタン */}
+                        <LoadingButton
+                            loading={isLoading}
+                            endIcon={<SendIcon />}
+                            loadingPosition="end"
+                            disabled={!isValid}
+                            type="submit"
+                            variant="contained"
+                            sx={{ mt: 2, mb: 2, ml: "auto" }}
                         >
-                            {isFrontError || statusCode || isPaused
-                                ? null
-                                : "　"}
-                            {isFrontError &&
-                                (errors.body?.message as ReactNode)}
-                            {statusCode &&
-                                `エラーにより投稿できませんでした。(${statusCode})`}
-                            {isPaused &&
-                                "インターネットに接続されておらず、投稿できません。"}
-                        </FormHelperText>
-                    </FormControl>
-                    {/* 送信ボタン */}
-                    <LoadingButton
-                        loading={isLoading}
-                        endIcon={<SendIcon />}
-                        loadingPosition="end"
-                        disabled={!isValid}
-                        type="submit"
-                        variant="contained"
-                        sx={{ mt: 2, mb: 2, ml: "auto" }}
-                    >
-                        投稿
-                    </LoadingButton>
-                </Box>
-            </Dialog>
-        </>
-    );
+                            投稿
+                        </LoadingButton>
+                    </Box>
+                </Dialog>
+            </>
+        );
+    } else {
+        return (
+            <Tooltip title="ログインしてください" placement="top" arrow>
+                <IconButton sx={{ p: 0 }}>
+                    <ChatBubbleOutlineIcon sx={{ width: "1.25rem" }} />
+                </IconButton>
+            </Tooltip>
+        );
+    }
 };
 
 export default PostAnswerButton;

@@ -1,7 +1,7 @@
-import { List, ListItem } from "@mui/material";
+import { ListItem } from "@mui/material";
 import OdaiCardSkeleton from "./skeleton/OdaiCardSkeleton";
 import { FC } from "react";
-import { Data } from "../../models/Thread";
+import { odaiData } from "../../models/Odai";
 import OdaiCard from "./OdaiCard";
 import { UseQueryResult } from "@tanstack/react-query";
 import NotConnectionQuery from "../atoms/NotConnectionQuery";
@@ -10,7 +10,7 @@ import PostNotFound from "../atoms/PostNotFound";
 
 type Props = {
     isFetching: boolean;
-    data?: Data[];
+    data?: odaiData[];
     isPaused: boolean;
     refetch: (options?: {
         throwOnError: boolean;
@@ -18,26 +18,23 @@ type Props = {
     }) => Promise<UseQueryResult>;
 };
 
-const SearchOdaiContent: FC<Props> = ({ isFetching, data, isPaused, refetch }) => {
+const SearchOdaiContent: FC<Props> = ({
+    isFetching,
+    data,
+    isPaused,
+    refetch,
+}) => {
     if (isFetching) {
         return (
-            <List
-                sx={{
-                    width: "100%",
-                }}
-            >
+            <ul>
                 <OdaiCardSkeleton cardNum={10} />
-            </List>
+            </ul>
         );
     }
 
     if (data && typeof data !== "string" && data?.length !== 0) {
         return (
-            <List
-                sx={{
-                    width: "100%",
-                }}
-            >
+            <ul>
                 {data?.map((data) => {
                     return (
                         <ListItem key={data.id} sx={{ width: 1, p: 0 }}>
@@ -45,7 +42,7 @@ const SearchOdaiContent: FC<Props> = ({ isFetching, data, isPaused, refetch }) =
                         </ListItem>
                     );
                 })}
-            </List>
+            </ul>
         );
     } else if (data?.length === 0) {
         return <PostNotFound />;

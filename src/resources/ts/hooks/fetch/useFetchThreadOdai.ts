@@ -1,16 +1,16 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { Data } from "../../models/Thread";
+import { odaiData } from "../../models/Odai";
 
 const fetchThreadOdai = async (threadId: string) => {
-    const { data } = await axios.get<Data>(
-        `/api/getThread/${threadId}`
-    );
+    const { data } = await axios.get<odaiData>(`/api/getThread/${threadId}`);
     return data;
 };
 
 const useFetchThreadOdai = (threadId: string) => {
-    return useQuery<Data>(["thread_odai", threadId], () => fetchThreadOdai(threadId));
+    return useQuery<odaiData>(["thread_odai", threadId], () =>
+        fetchThreadOdai(threadId)
+    );
 };
 
 export default useFetchThreadOdai;

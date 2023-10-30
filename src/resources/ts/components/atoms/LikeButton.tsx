@@ -98,7 +98,7 @@ const LikeButton: FC<Props> = ({
                 </IconButton>
             </Tooltip>
 
-            <Box ml="8px">{likesCount}</Box>
+            <Box ml="4px">{likesCount}</Box>
         </Box>
     );
 };

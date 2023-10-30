@@ -31,6 +31,7 @@ import {
     CssBaseline,
     ThemeProvider,
     createTheme,
+    useMediaQuery,
 } from "@mui/material";
 import { FC, ReactNode } from "react";
 import { themeOptions } from "./constants/themeOptions";
@@ -94,6 +95,7 @@ const AuthRoute: FC<Props> = ({ exact = false, path, children }) => {
 
 const App = () => {
     const sh = window.screen.height;
+    const matches: boolean = useMediaQuery("(min-width: 500px)");
 
     const { data } = useOpenSuccessSnackbar();
 
@@ -105,8 +107,8 @@ const App = () => {
 
     return (
         <Container fixed disableGutters maxWidth="xl" sx={{ display: "flex" }}>
-            <Header />
-            <Box component="main" width="100%" flexGrow="2" flexShrink="1">
+            {matches && <Header />}
+            <Box component="main" flexGrow={1} minWidth={0}>
                 <Box
                     sx={{
                         width: {
@@ -121,6 +123,7 @@ const App = () => {
                 >
                     <Box
                         sx={{
+                            width: "100%",
                             maxWidth: { sm: "600px" },
                             minHeight: `${sh}px`,
                             m: 0,
@@ -128,7 +131,6 @@ const App = () => {
                             borderRight: 1,
                             borderColor: grey[300],
                             zIndex: 1,
-                            flexGrow: 1,
                         }}
                     >
                         <Switch>
